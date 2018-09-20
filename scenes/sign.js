@@ -160,9 +160,7 @@ class SignScene extends Phaser.Scene
     
     showMenuBar();
 
-    //sign_footer = this.add.image(959, 1022, currentScene+'footer');
-    //sign_footer.depth = 50;
-    //sign_footer.visible = false;
+    menuBarPreviewButton.on('pointerdown', ShowSignHelp, _this);
 
     wrongSignIcon = this.add.image(-1000, -1000, currentScene+'wrong');
     wrongSignIcon.depth = 49;
@@ -311,3 +309,15 @@ function newSignGame()
 
 }
 
+
+function ShowSignHelp(){
+
+  if(isGameOver || isGamePaused){return;}
+
+  timePenalty += timeToRemove * 7;
+  timerEventGame.delay -= timeToRemove * 7 * 1000;
+
+  if (selectedLevel === 1) { ShowSign1HelpWord(); }
+  else if (selectedLevel === 2) { ShowSign1HelpWord(); }
+  else if (selectedLevel === 3) { ShowSign1HelpWord(); }
+}

@@ -299,6 +299,8 @@ function Sign1Create(){
 
   _this.input.on('pointerdown', function (pointer) {
 
+    if(pointer.x<100){return;}
+
     if(isSignTouchActive === false || isGameOver || isGamePaused){return;}
 
     if(IsOnSignRock1())

@@ -85,8 +85,6 @@ class TypeScene extends Phaser.Scene {
   preload () {
     DebugLog('loading ' + currentScene);
 
-    this.load.image(currentScene + 'previewButton', getSceneImagesFolder() + 'previewButton.png');
-
     loadBackground();
 
     loadMenuBar();
@@ -262,23 +260,18 @@ class TypeScene extends Phaser.Scene {
 
     createPopUpMessage();
 
-    previewButton = _this.add.image(1200, 930, currentScene + 'previewButton');
-    previewButton.setInteractive({ cursor: 'pointer' });
-    previewButton.on('pointerdown', function () {
+    menuBarPreviewButton.on('pointerdown', function () {
       if (!isPreviewOn) {
         isGamePaused = true;
         timePenalty += timeToRemove * 3;
         timerEventGame.delay -= timeToRemove * 3 * 1000;
         typeShowPreview();
         isPreviewOn = true;
-        previewButton.visible = true;
       } else {
         isPreviewOn = false;
         typeHidePreview();
       }
     }, _this);
-    previewButton.depth = 10;
-    previewButton.visible = false;
 
     createHelp();
 
@@ -361,13 +354,16 @@ function addToBase (piece) {
 }
 
 function loseTypeGame () {
+  menuBarPreviewButton.visible = false;
   for (var i = 0; i < piecesOnBoard.length; i++) {
     piecesOnBoard[i].visible = false
   }
 }
 
 function winTypeGame () {
-  DebugLog('You win ' + currentScene + ' game!')
+  DebugLog('You win ' + currentScene + ' game!');
+
+  menuBarPreviewButton.visible = false;
 
   var myScore = selectedLevel * timeOfGame;
   if (myScore > scoreType) {
@@ -425,7 +421,6 @@ function newTypeGame () {
 function typeShowPreview () {
   isGamePaused = true;
   isTypeCanDrag = false;
-  previewButton.visible = false;
   templePreview.visible = true;
   menuBarPauseButton.visible = false;
   menuBarHelpButton.visible = false;
@@ -434,7 +429,6 @@ function typeShowPreview () {
 function typeHidePreview(){
   isGamePaused = false;
   isTypeCanDrag = true;
-  previewButton.visible = true;
   templePreview.visible = false;
   menuBarPauseButton.visible = true;
   menuBarHelpButton.visible = true;

@@ -106,6 +106,7 @@ class FormScene extends Phaser.Scene {
 
     loadMenuBar();
 
+
     // load pieces images
     for (var p = 0; p < 4; p++) { // DebugLog(piecesDorikos[p])
       this.load.image(piecesDorikos[p], getSceneImagesFolder() + 'dorikos/' + piecesDorikos[p] + '.png')
@@ -118,7 +119,6 @@ class FormScene extends Phaser.Scene {
     this.load.image(currentScene + 'baseDorikos', getSceneImagesFolder() + 'baseDorikos.png');
     this.load.image(currentScene + 'baseIonikos', getSceneImagesFolder() + 'baseIonikos.png');
     this.load.image(currentScene + 'baseKorinthiakos', getSceneImagesFolder() + 'baseKorinthiakos.png');
-    this.load.image(currentScene + 'previewButton', getSceneImagesFolder() + 'previewButton.png');
 
     this.load.image('arrowDown', imagesGeneral + 'arrow_down.png');
 
@@ -1024,7 +1024,7 @@ function helpShowHide () {
 
 function loseFormGame()
 {
-  previewButton.visible = false;
+  menuBarPreviewButton.visible = false;
   currentPiece.visible = false;
   nextPiece.visible = false;
   arrowDown.visible = false;
@@ -1035,7 +1035,7 @@ function winFormGame()
 {
   currentPiece.visible = false;
   arrowDown.visible = false;
-  previewButton.visible = false;
+  menuBarPreviewButton.visible = false;
 
   DebugLog('You win '+ currentScene + ' game!');
 
@@ -1053,7 +1053,7 @@ function winFormGame()
     
 }
 
-function ContinueForm(){
+function ContinueForm() {
   isGameOver = true;
   isGamePaused = true;
   var myScore = selectedLevel * timeOfGame;
@@ -1069,44 +1069,38 @@ var dorikos1Help, dorikos2Help, dorikos3Help, dorikos4Help;
 var ionikos1Help, ionikos2Help, ionikos3Help, ionikos4Help;
 var korinth1Help, korinth2Help, korinth3Help, korinth4Help;
 
-function formHelpCreateAllColumns(){
+function formHelpCreateAllColumns() {
 
-  previewButton = _this.add.image(1743, 645, currentScene + 'previewButton');
-  previewButton.setInteractive({ cursor: 'pointer' });
-  previewButton.on('pointerdown',  function () 
-  {
+  menuBarPreviewButton.on('pointerdown', function () {
     if (!isPreviewOn) {
       isGamePaused = true;
       timePenalty += timeToRemove * 3;
       timerEventGame.delay -= timeToRemove * 3 * 1000;
       formShowPreview();
       isPreviewOn = true;
-      previewButton.visible = true;
-    }else{
+    } else {
       isPreviewOn = false;
       formHidePreview();
     }
   }, _this);
-  previewButton.depth = 10;
-  previewButton.visible = false;
 
-   // prepare kolones pieces
-   dorikos1Help = _this.add.image(pos_Dorikos.x1, pos_Dorikos.y1, piecesDorikos[0]);
-   dorikos2Help = _this.add.image(pos_Dorikos.x2, pos_Dorikos.y2, piecesDorikos[1]);
-   dorikos3Help = _this.add.image(pos_Dorikos.x3, pos_Dorikos.y3, piecesDorikos[2]);
-   dorikos4Help = _this.add.image(pos_Dorikos.x4, pos_Dorikos.y4, piecesDorikos[3]);
+  // prepare kolones pieces
+  dorikos1Help = _this.add.image(pos_Dorikos.x1, pos_Dorikos.y1, piecesDorikos[0]);
+  dorikos2Help = _this.add.image(pos_Dorikos.x2, pos_Dorikos.y2, piecesDorikos[1]);
+  dorikos3Help = _this.add.image(pos_Dorikos.x3, pos_Dorikos.y3, piecesDorikos[2]);
+  dorikos4Help = _this.add.image(pos_Dorikos.x4, pos_Dorikos.y4, piecesDorikos[3]);
 
-   ionikos1Help = _this.add.image(pos_Ionikos.x1,pos_Ionikos.y1, piecesIonikos[0]);
-   ionikos2Help = _this.add.image(pos_Ionikos.x2,pos_Ionikos.y2, piecesIonikos[1]);
-   ionikos3Help = _this.add.image(pos_Ionikos.x3,pos_Ionikos.y3, piecesIonikos[2]);
-   ionikos4Help = _this.add.image(pos_Ionikos.x4,pos_Ionikos.y4, piecesIonikos[3]);
+  ionikos1Help = _this.add.image(pos_Ionikos.x1, pos_Ionikos.y1, piecesIonikos[0]);
+  ionikos2Help = _this.add.image(pos_Ionikos.x2, pos_Ionikos.y2, piecesIonikos[1]);
+  ionikos3Help = _this.add.image(pos_Ionikos.x3, pos_Ionikos.y3, piecesIonikos[2]);
+  ionikos4Help = _this.add.image(pos_Ionikos.x4, pos_Ionikos.y4, piecesIonikos[3]);
 
-   korinth1Help = _this.add.image(pos_Korinthiakos.x1, pos_Korinthiakos.y1, piecesKorinthiakos[0]);
-   korinth2Help = _this.add.image(pos_Korinthiakos.x2, pos_Korinthiakos.y2, piecesKorinthiakos[1]);
-   korinth3Help = _this.add.image(pos_Korinthiakos.x3, pos_Korinthiakos.y3, piecesKorinthiakos[2]);
-   korinth4Help = _this.add.image(pos_Korinthiakos.x4, pos_Korinthiakos.y4, piecesKorinthiakos[3]);
+  korinth1Help = _this.add.image(pos_Korinthiakos.x1, pos_Korinthiakos.y1, piecesKorinthiakos[0]);
+  korinth2Help = _this.add.image(pos_Korinthiakos.x2, pos_Korinthiakos.y2, piecesKorinthiakos[1]);
+  korinth3Help = _this.add.image(pos_Korinthiakos.x3, pos_Korinthiakos.y3, piecesKorinthiakos[2]);
+  korinth4Help = _this.add.image(pos_Korinthiakos.x4, pos_Korinthiakos.y4, piecesKorinthiakos[3]);
 
-   // hide pieces
+  // hide pieces
   dorikos1Help.visible = false;
   dorikos2Help.visible = false;
   dorikos3Help.visible = false;
@@ -1122,24 +1116,24 @@ function formHelpCreateAllColumns(){
   korinth3Help.visible = false;
   korinth4Help.visible = false;
 
-   dorikos1Help.depth = 100;
-   dorikos2Help.depth = 100;
-   dorikos3Help.depth = 100;
-   dorikos4Help.depth = 100;
+  dorikos1Help.depth = 100;
+  dorikos2Help.depth = 100;
+  dorikos3Help.depth = 100;
+  dorikos4Help.depth = 100;
 
-   ionikos1Help.depth = 100;
-   ionikos2Help.depth = 100;
-   ionikos3Help.depth = 100;
-   ionikos4Help.depth = 100;
+  ionikos1Help.depth = 100;
+  ionikos2Help.depth = 100;
+  ionikos3Help.depth = 100;
+  ionikos4Help.depth = 100;
 
-   korinth1Help.depth = 100;
-   korinth2Help.depth = 100;
-   korinth3Help.depth = 100;
-   korinth4Help.depth = 100;
+  korinth1Help.depth = 100;
+  korinth2Help.depth = 100;
+  korinth3Help.depth = 100;
+  korinth4Help.depth = 100;
 }
 
 function formShowPreview(){
-  previewButton.visible = false;
+
   if(isRealValue(currentPiece)){  currentPiece.visible = false; }
   if(isRealValue(btnDorikos)){  btnDorikos.visible = false; }
   if(isRealValue(btnIonikos)){  btnIonikos.visible = false; }
@@ -1166,7 +1160,6 @@ function formShowPreview(){
 }
 
 function formHidePreview(){
-  previewButton.visible = true;
   currentPiece.visible = true;
   btnDorikos.visible = true;
   btnIonikos.visible = true;

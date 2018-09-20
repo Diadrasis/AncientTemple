@@ -392,6 +392,7 @@ var allFotoContainers = [];
 var allFotoTitlesTexts = [];
 
 var inGame_MenuLeft = 'menuLeft';
+var inGame_MenuLeft2 = 'menuLeft2';
 var inGame_BarTimer = 'timerBar';
 var inGame_Player = 'player';
 
@@ -400,7 +401,7 @@ var backgroundObject;
 var helpObject;
 var pauseTextObject, pauseFog;
 
-var menuBarHomeButton, menuBarPauseButton, menuBarRestartButton, menuBarHelpButton;
+var menuBarHomeButton, menuBarPauseButton, menuBarRestartButton, menuBarHelpButton, menuBarPreviewButton;
 
 var popUpMessage, popUpText, popUpTitle;
 var posPopUpMessage = {x: 941, y:740};
@@ -442,6 +443,7 @@ function showBackground()
 function loadMenuBar()
 {
     _this.load.image(inGame_MenuLeft, imagesGeneral + 'menu.png');
+    _this.load.image(inGame_MenuLeft2, imagesGeneral + 'menu_2.png');
     _this.load.image(inGame_BarTimer, imagesGeneral + 'timeBar.png');
     _this.load.image(inGame_Player, imagesGeneral + 'player.png');
     _this.load.image('btnMenuEmpty', imagesGeneral + 'btnMenuEmpty.png');
@@ -489,7 +491,15 @@ function showMenuBar()
     pauseTextObject.setOrigin(0.5, 0.5);
     pauseTextObject.visible = false;
 
-    menuBarInGame_MenuLeft = _this.add.sprite(87, 494, inGame_MenuLeft);
+    if(currentScene === 'form' || currentScene === 'sign' || currentScene === 'type'){
+        menuBarInGame_MenuLeft = _this.add.sprite(87, 494, inGame_MenuLeft2);
+        menuBarPreviewButton = _this.add.sprite(55, 551, 'btnMenuEmpty').setInteractive({ cursor: 'pointer' });
+        menuBarPreviewButton.depth = 10;
+    }else{
+        menuBarInGame_MenuLeft = _this.add.sprite(87, 494, inGame_MenuLeft);
+        if(isRealValue(menuBarPreviewButton)){menuBarPreviewButton.destroy();}
+    }
+
     menuBarInGame_BarTimer = _this.add.sprite(0, 66, inGame_BarTimer).setOrigin(0, 0.5).setTint('0xa3a3a3');
 
     timeBar = _this.add.sprite(0, 66, inGame_BarTimer);
