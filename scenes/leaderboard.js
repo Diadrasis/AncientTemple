@@ -21,6 +21,7 @@ class LeaderboardScene extends Phaser.Scene {
     loadBackground();
 
     this.load.image(currentScene + 'btnHome', imagesGeneral + 'home_button.png');
+    this.load.image(currentScene + 'arrow', getSceneImagesFolder()  + 'arrow.png');
 
   }
 
@@ -56,8 +57,88 @@ class LeaderboardScene extends Phaser.Scene {
 
     controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
 
+    btnRight = this.add.image(68, 525, currentScene + 'arrow').setScrollFactor(0);
+    btnRight.setInteractive({ cursor: 'pointer' });
+    btnRight.depth = 200;
+
+    btnRight.on('pointerup',
+    function () {
+
+    }
+    );
+
+    btnRight.on('pointerdown',
+      function () {
+
+        if(waitToMove){return;}
+
+        waitToMove = true;
+
+        var cam = _this.cameras.main;
+
+        if (camStep === 0) {
+          cam.pan(1920 + 960, 0, 2000, 'Power2');
+        }
+        else if (camStep === 1) {
+          cam.pan(3840 + 960, 0, 2000, 'Power2');
+        }
+        else if (camStep === 2) {
+          cam.pan(5760 + 960, 0, 2000, 'Power2');
+        }
+
+        camStep++;
+
+        if(camStep> 0){ btnLeft.visible = true;}
+        if(camStep>2){btnRight.visible = false;}
+
+        _this.time.delayedCall(2000, ResetWaitToMove, [], _this);
+
+      }
+    );
+
+    btnLeft = this.add.image(68, 578, currentScene + 'arrow').setScrollFactor(0);
+    btnLeft.setInteractive({ cursor: 'pointer' });
+    btnLeft.flipX = true;
+    btnLeft.depth = 200;
+
+    btnLeft.visible = false;
+
+    btnLeft.on('pointerup',
+      function () {}
+    );
+
+    btnLeft.on('pointerdown',
+      function () {
+
+        if(waitToMove){return;}
+
+        waitToMove = true;
+
+
+        var cam = _this.cameras.main;
+
+        if (camStep === 3) {
+          cam.pan(3840 + 960, 0, 2000, 'Power2');
+        }
+        else if (camStep === 2) {
+          cam.pan(1920 + 960, 0, 2000, 'Power2');
+        }
+        else if (camStep === 1) {
+          cam.pan(0 + 960, 0, 2000, 'Power2');
+        }
+
+        camStep--;
+
+        if(camStep<= 0){ camStep = 0;  btnLeft.visible = false;}
+        if(camStep<3){btnRight.visible = true;}
+
+        _this.time.delayedCall(2000, ResetWaitToMove, [], _this);
+
+      }
+    );
+
     //  A sprite, doesn't scroll with the camera (is fixed to camera)
-    var btnHome = this.add.image(24, 494, currentScene + 'btnHome').setScrollFactor(0);
+    btnHome = this.add.image(24, 494, currentScene + 'btnHome').setScrollFactor(0);
 
     btnHome.setInteractive({ cursor: 'pointer' });
 
@@ -90,8 +171,18 @@ class LeaderboardScene extends Phaser.Scene {
 
   update(time, delta) {
     controls.update(delta);
+
+    // console.log(camStep);
   }
 
+}
+
+var btnRight, btnLeft, btnHome;
+var camStep = 0;
+var waitToMove = false;
+
+function ResetWaitToMove(){
+  waitToMove = false;
 }
 
 var  best_scores= [];
