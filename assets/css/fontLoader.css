@@ -1,0 +1,13 @@
+@font-face {
+	font-family: "centuryGothicRegular";
+	font-style: normal;
+	font-weight: 400;
+	src: url("../Fonts/centuryGothicRegular.ttf");
+}
+
+@font-face {
+	font-family: "zoo";
+	font-style: normal;
+	font-weight: 400;
+	src: url("../Fonts/zoo.ttf");
+}

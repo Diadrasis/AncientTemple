@@ -1,0 +1,100 @@
+﻿<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>ΕΝΑΣ ΑΡΧΑΙΟΣ ΝΑΟΣ</title>
+
+    <link rel="stylesheet" type = "text/css" href = "assets/css/fontLoader.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/forms.css">
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/phaser@3.12.0/dist/phaser.js"></script>
+    <script type="text/javascript" src="core/canvasMethods.js"></script>
+    <script type="text/javascript" src="scenes/bootScenes.js"></script>
+    <script type="text/javascript">loadScript("core/init.js", function(){initialize();});</script>
+
+</head>
+
+<body>
+    <script>
+        doc = this.document;
+        myWindow = this.window;
+        setAutoresize();
+    </script>
+    <!-- <button onclick="goFullscreen()">FULL SCREEN</button> -->
+
+
+    <!-- 
+    <script>
+        function GetPassword() {
+            var user = document.getElementById("txtUser").value;
+            var password = document.getElementById("txtPsw").value;
+
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("txtHint").innerHTML = this.responseText;
+                }
+            };
+
+            var PageToSendTo = "http://localhost/phaser/manageancienttempledb.php?";
+            var action = "select";
+            var UrlToSend = PageToSendTo + "action=" + action + "&user=" + user + "&psw=" + password;
+
+            xmlhttp.open("GET", UrlToSend, true);
+            xmlhttp.send();
+        }
+
+        function CreateUser() {
+            var user = document.getElementById("txtUser").value;
+            var password = document.getElementById("txtPsw").value;
+
+            if (user.length < 6) {
+                document.getElementById("txtHint").innerHTML = "το όνομα χρήστη πρέπει να έχει τουλάχιστον έξι χαρακτήρες!";
+            } else if (password.length < 6) {
+                document.getElementById("txtHint").innerHTML = "ο κωδικός πρέπει επίσης να έχει τουλάχιστον έξι χαρακτήρες!";
+            } else {
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("txtHint").innerHTML = this.responseText;
+                    }
+                };
+
+                var PageToSendTo = "http://localhost/phaser/manageancienttempledb.php?";
+                var action = "insert";
+
+                var UrlToSend = PageToSendTo + "action=" + action + "&user=" + user + "&psw=" + password;
+
+                xmlhttp.open("GET", UrlToSend, true);
+                xmlhttp.send();
+            }
+        }
+    </script>
+    -->
+
+
+    <!-- 
+    <input style="position:absolute; top:50px; left:20px" type="text" id="txtUser" name="txtUser" />
+    <input style="position:absolute; top:90px; left:20px" type="text" id="txtPsw" name="txtPsw" />
+
+    <button style="position:absolute; top:120px; left:20px" type="button" onclick="GetPassword()"> CheckPassword </button>
+    <button style="position:absolute; top:150px; left:20px" type="button" onclick="CreateUser()"> CreateUser </button>
+
+     
+    <div style="position:absolute; top:190px; left:20px"  id="txtHint">
+    </div>
+    -->
+</body>
+
+</html>

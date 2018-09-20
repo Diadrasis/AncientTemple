@@ -1,0 +1,69 @@
+﻿
+body {
+    background-image:url("/assets/images/global/game_intro_backround_fullscreen.jpg");
+    background-size:cover;
+}
+
+
+
+
+
+input {
+    position:absolute;
+	background-color: transparent;
+	border: 0px solid;
+	height: 20px;	
+	color: #fff;
+    font-family:centuryGothicRegular;
+}
+
+input:focus{
+	outline: none;
+}
+
+button {
+    position:absolute;
+    cursor:pointer;
+	background-color: transparent;
+	border: 0px solid;
+	height: 45px;	
+	color: #CCC;
+    font-family:centuryGothicRegular;
+}
+
+button:focus {
+    outline: none;
+}
+
+@media screen and (min-width: 1700px) {
+  input, button {
+      font-size:1.5em;
+  }
+}
+
+
+@media screen and (min-width: 1200px) and (max-width:1700px) {
+  input, button {
+      font-size:1.5em;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  input, button {
+      font-size:1.1em;
+  }
+}
+
+#txtHint {
+    font-family:centuryGothicRegular;
+    text-align:center;
+    color:#666;
+}
+
+canvas {
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+
