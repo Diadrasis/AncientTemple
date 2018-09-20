@@ -83,10 +83,12 @@ class SculptureScene extends Phaser.Scene {
 
     // #region Load Images
 
-    this.load.image(currentScene + 'lathos', getSceneImagesFolder() + 'lathos.png')
-    this.load.image(currentScene + 'sosto', getSceneImagesFolder() + 'sosto.png')
-    this.load.image(currentScene + 'hitArea', getSceneImagesFolder() + 'hitArea.png')
-    this.load.image(currentScene + 'selected', getSceneImagesFolder() + 'selected.png')
+    this.load.image(currentScene + 'lathos', getSceneImagesFolder() + 'lathos.png');
+    this.load.image(currentScene + 'sosto', getSceneImagesFolder() + 'sosto.png');
+    this.load.image(currentScene + 'hitArea', getSceneImagesFolder() + 'hitArea.png');
+    this.load.image(currentScene + 'selected', getSceneImagesFolder() + 'selected.png');
+
+    this.load.image(currentScene + 'temple_spots_'+ languange, getSceneImagesFolder() + 'temple_spots_'+ languange+'.png');
 
     for (var i = 1; i < 7; i++) {
       this.load.image(currentScene + 'img_0' + i, getSceneImagesFolder() + 'img_0' + i + '.png')
@@ -116,7 +118,9 @@ class SculptureScene extends Phaser.Scene {
 
     showBackground()
 
-    showMenuBar()
+    showMenuBar();
+
+    this.add.image(1061, 410, currentScene + 'temple_spots_'+ languange);
 
     // this.input.setDefaultCursor('url(assets/input/cursors/vigyori/arrow.cur), pointer')
     //  Create some custom cursor boxes
