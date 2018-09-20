@@ -41,7 +41,15 @@ class IntroScene extends Phaser.Scene
         introTxtMessage2.x = 875;
         introTxtMessage2.y = 732;
 
-        ChangeIntroLang();
+        //ChangeIntroLang();
+        if (languange == 'gr') {
+            introTxtMessage1.setText('Νέος παίκτης!');
+            introTxtMessage2.setText('Έχω ξαναπαίξει...');
+    
+        } else {
+            introTxtMessage1.setText('New player!');
+            introTxtMessage2.setText("I 've played again...");
+        }
 
         var btnNewPlayer =  _this.add.image(986, 648, 'draftButton').setInteractive({ cursor: 'pointer' });
         btnNewPlayer.on('pointerup',
