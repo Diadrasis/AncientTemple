@@ -21,9 +21,9 @@ var ionikosCorrect = 0;
 var korinthiakosCorrect = 0;
 
 // θέσεις κομματιών
-var pos_Dorikos = {x1: 428, y1: 895, x2: 428, y2: 741, x3: 427, y3: 574, x4: 428, y4: 409};
-var pos_Ionikos = {x1: 881, y1: 851, x2: 881, y2: 701, x3: 883, y3: 544, x4: 885, y4: 404};
-var pos_Korinthiakos = {x1: 1315, y1: 859, x2: 1316, y2: 693, x3: 1316, y3: 512, x4: 1316, y4: 356};
+var pos_Dorikos = {x1: 426, y1: 882, x2: 425, y2: 701, x3: 425, y3: 518, x4: 468, y4: 319};
+var pos_Ionikos = {x1: 881, y1: 884, x2: 882, y2: 703, x3: 883, y3: 517, x4: 953, y4: 328};
+var pos_Korinthiakos = {x1: 1318, y1: 882, x2: 1318, y2: 702, x3: 1318, y3: 520, x4: 1331, y4: 311};
 
 // κομμάτια
 var dorikos1, dorikos2, dorikos3, dorikos4;
@@ -180,7 +180,7 @@ class FormScene extends Phaser.Scene {
 
     //#endregion
 
-    // #region BUTTONS FOT PIECE MOVEMENT AND ROTATION
+    // #region BUTTONS FOR PIECE MOVEMENT AND ROTATION
 
     // first time setup
     dorikosCorrect = 0;
@@ -205,7 +205,7 @@ class FormScene extends Phaser.Scene {
     nextPiece = this.add.image(pos_NextElement.x, pos_NextElement.y, nextPieceName);
     nextPiece.angle = getRandomAngle();
 
-    var baseDorikos = this.matter.add.sprite(427, 995, currentScene + 'baseDorikos').setStatic(true);
+    var baseDorikos = this.matter.add.sprite(427, 997, currentScene + 'baseDorikos').setStatic(true);
     btnDorikos = this.add.sprite(425, 507, currentScene + 'btnPiece').setInteractive({ cursor: 'pointer' });
     var x = 0;
     var y = 0;
@@ -223,7 +223,7 @@ class FormScene extends Phaser.Scene {
 
     btnDorikos.depth = 10;
 
-    var baseIonikos = this.matter.add.sprite(880, 971, currentScene + 'baseIonikos').setStatic(true);
+    var baseIonikos = this.matter.add.sprite(880, 997, currentScene + 'baseIonikos').setStatic(true);
     btnIonikos = this.add.sprite(879, 507, currentScene + 'btnPiece').setInteractive({ cursor: 'pointer' });
     btnIonikos.on('pointerdown', function () {
       if (currentPiece.x === 881) { x++; }else { currentPiece.x = 881; arrowDown.x = 882;}
@@ -237,7 +237,7 @@ class FormScene extends Phaser.Scene {
 
     btnIonikos.depth = 10;
 
-    var baseKorinthiakos = this.matter.add.sprite(1317, 974, currentScene + 'baseKorinthiakos').setStatic(true);
+    var baseKorinthiakos = this.matter.add.sprite(1317, 997, currentScene + 'baseKorinthiakos').setStatic(true);
     btnKotinthiakos = this.add.sprite(1316, 507, currentScene + 'btnPiece').setInteractive({ cursor: 'pointer' });
     btnKotinthiakos.on('pointerdown', function () {
       if (currentPiece.x === 1317) { x++; }else { currentPiece.x = 1317; arrowDown.x = 1317;}
@@ -275,28 +275,28 @@ class FormScene extends Phaser.Scene {
           if (currPieceName === piecesDorikos[0]) {
             if (dorikos1.visible === false) {
               // set next piece to fall
-              currPieceName = nextPieceName
-              currentPiece.setTexture(currPieceName)
+              currPieceName = nextPieceName;
+              currentPiece.setTexture(currPieceName);
               currentPiece.setPosition(getRandomPosX(), 100);
               currentPiece.angle = nextPiece.angle; // getRandomAngle()
-              currentPiece.getBounds()
+              currentPiece.getBounds();
 
-              dorikosCorrect = 1
+              dorikosCorrect = 1;
 
-              piecesActive = []
+              piecesActive = [];
 
               if (ionikosCorrect <= 3) { piecesActive.push(piecesIonikos[ionikosCorrect]); }
               if (korinthiakosCorrect <= 3) { piecesActive.push(piecesKorinthiakos[korinthiakosCorrect]); }
 
               // show next piece
-              nextPieceName = getRandomNextPiece()
-              nextPiece.setTexture(nextPieceName)
-              nextPiece.angle = getRandomAngle()
+              nextPieceName = getRandomNextPiece();
+              nextPiece.setTexture(nextPieceName);
+              nextPiece.angle = getRandomAngle();
 
-              dorikos1.setPosition(pos_Dorikos.x1, pos_Dorikos.y1)
-              dorikos1.setStatic(true)
-              dorikos1.setCollisionCategory(cat1)
-              dorikos1.visible = true
+              dorikos1.setPosition(pos_Dorikos.x1, pos_Dorikos.y1);
+              dorikos1.setStatic(true);
+              dorikos1.setCollisionCategory(cat1);
+              dorikos1.visible = true;
 
               extraSpeed = 1; 
 
@@ -1024,16 +1024,18 @@ function helpShowHide () {
 
 function loseFormGame()
 {
+  previewButton.visible = false;
   currentPiece.visible = false;
   nextPiece.visible = false;
-  arrowDown.visible = true;
+  arrowDown.visible = false;
 }
 
 
 function winFormGame()
 {
   currentPiece.visible = false;
-  arrowDown.visible = true;
+  arrowDown.visible = false;
+  previewButton.visible = false;
 
   DebugLog('You win '+ currentScene + ' game!');
 
