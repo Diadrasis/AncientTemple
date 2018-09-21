@@ -1,7 +1,7 @@
 
 
 
-let bg1, bg2, bg3;
+let bg1, bg1b, bg2, bg3;
 let textbox1, textbox2, text1, text2;
 
 let columns_back, columns_front;
@@ -38,7 +38,7 @@ class IntroSiteScene extends Phaser.Scene
 
   preload () {
 
-    showProgress();
+    //showProgress();
 
     this.load.audio('themeIntro', [
       'assets/audio/oedipus_wizball_highscore.ogg',
@@ -46,6 +46,7 @@ class IntroSiteScene extends Phaser.Scene
     ]);
 
     var folderPlano1 = 'plano_1/';
+    var folderPlano1b = 'plano_1b/';
     var folderPlano2 = 'plano_2/';
     var folderPlano3 = 'plano_3/';
 
@@ -54,6 +55,7 @@ class IntroSiteScene extends Phaser.Scene
     _this.load.image(currentScene+'frame', getSceneImagesFolder() + 'frame' + '.png');
     _this.load.image(currentScene+'skip', getSceneImagesFolder() + 'skip' + '.png');
     _this.load.image(currentScene+'bg1', getSceneImagesFolder() + folderPlano1+ 'bg' + '.jpg');
+    _this.load.image(currentScene+'bg1b', getSceneImagesFolder() + folderPlano1b+ 'bg' + '.jpg');
     _this.load.image(currentScene+'text_box1', getSceneImagesFolder() + folderPlano1 + 'text_box' + '.png');
     _this.load.image(currentScene+'bg2', getSceneImagesFolder() + folderPlano2 + 'bg' + '.jpg');
     _this.load.image(currentScene+'text_box2', getSceneImagesFolder() + folderPlano2 + 'text_box' + '.png');
@@ -138,6 +140,8 @@ class IntroSiteScene extends Phaser.Scene
 }
 
 
+var plaisio;
+
 function showPlaisio(){
 
   musicIntroSite.volume = 0;
@@ -156,13 +160,15 @@ function showPlaisio(){
     onComplete: () => {   }
   });
 
-  _this.add.image(0, 0, currentScene+'frame').setOrigin(0, 0).depth = 100;
+  plaisio = _this.add.image(0, 0, currentScene+'frame');
+  plaisio.setOrigin(0, 0);
+  plaisio.depth = 100;
   _this.time.delayedCall(100, showbg1, [], _this);
 }
 
 function showbg1(){
 
-  _this.add.image(0, 0, currentScene+'bg1').setOrigin(0, 0).depth = 10;
+  _this.add.image(0, 0, currentScene+'bg1').setOrigin(0, 0).depth = 9;
   _this.time.delayedCall(2500, showText1, [], _this);
 }
 
@@ -170,7 +176,7 @@ function showText1(){
 
   text1 = _this.add.image(948, 142, currentScene+'text_box1');
   text1.visible = false;
-  text1.depth = 11;
+  text1.depth = 10;
   text1.alpha =0;
   text1.visible = true;
 
@@ -188,15 +194,72 @@ function showText1(){
     }
   });
 
-  _this.time.delayedCall(4500, showbg2, [], _this);
+  _this.time.delayedCall(3500, showbg1b, [], _this);
+}
+
+function showbg1b(){
+
+
+  bg1b = _this.add.image(0, 0, currentScene+'bg1b').setOrigin(0, 0);
+  bg1b.depth = 11;
+  bg1b.visible = false;
+  bg1b.alpha = 0;
+  bg1b.visible = true;
+
+  _this.add.tween({
+    targets: [plaisio],
+    ease: 'Sine.easeInOut',
+    duration: 1000,
+    delay: 0,
+    alpha: {
+      getStart: () => 1,
+      getEnd: () => 0
+    },
+    onComplete: () => {
+      //handle completion
+    }
+  });
+
+  _this.add.tween({
+    targets: [bg1b],
+    ease: 'Sine.easeInOut',
+    duration: 1000,
+    delay: 0,
+    alpha: {
+      getStart: () => 0,
+      getEnd: () => 1
+    },
+    onComplete: () => {
+      //handle completion
+    }
+  });
+
+  _this.time.delayedCall(3500, showbg2, [], _this);
 }
 
 function showbg2(){
+
+  plaisio.visible = true;
+
   bg2 = _this.add.image(0, 0, currentScene+'bg2').setOrigin(0, 0);
   bg2.depth = 12;
   bg2.visible = false;
   bg2.alpha = 0;
   bg2.visible = true;
+
+  _this.add.tween({
+    targets: [plaisio],
+    ease: 'Sine.easeInOut',
+    duration: 1000,
+    delay: 0,
+    alpha: {
+      getStart: () => 0,
+      getEnd: () => 1
+    },
+    onComplete: () => {
+      //handle completion
+    }
+  });
 
   _this.add.tween({
     targets: [bg2],
@@ -212,7 +275,7 @@ function showbg2(){
     }
   });
 
-  _this.time.delayedCall(3000, showText2, [], _this);
+  _this.time.delayedCall(1500, showText2, [], _this);
 }
 
 function showText2(){
@@ -236,7 +299,7 @@ function showText2(){
     }
   });
 
-  _this.time.delayedCall(4500, showbg3, [], _this);
+  _this.time.delayedCall(3500, showbg3, [], _this);
 }
 
 function showbg3(){
@@ -262,7 +325,7 @@ function showbg3(){
     }
   });
 
-  _this.time.delayedCall(3500, showArxitektona, [], _this);
+  _this.time.delayedCall(1500, showLithoxoos, [], _this);
 }
 
 
@@ -288,13 +351,30 @@ function showArxitektona(){
 }
 
 function showArxitektonaBubble(){
+
   arxitektonas_bubble.alpha = 0;
  arxitektonas_bubble.visible = true;
+
+  _this.add.tween({
+    targets: [iereia, iereia_bubble],
+    ease: 'Sine.easeInOut',
+    duration: 500,
+    delay: 0,
+    alpha: {
+      getStart: () => 1,
+      getEnd: () => 0
+    },
+    onComplete: () => {
+      iereia.visible = false;
+      iereia_bubble.visible = false;
+    }
+  });
+  
 
  _this.add.tween({
   targets: [arxitektonas_bubble],
   ease: 'Sine.easeInOut',
-  duration: 1000,
+  duration: 1500,
   delay: 0,
   alpha: {
     getStart: () => 0,
@@ -305,13 +385,14 @@ function showArxitektonaBubble(){
   }
 });
 
-  _this.time.delayedCall(3500, hideArxitektonas, [], _this);
+  _this.time.delayedCall(3000, SkipIntro, [], _this);
 }
 
-function hideArxitektonas(){
+
+function showIereia(){
 
   _this.add.tween({
-    targets: [arxitektonas, arxitektonas_bubble],
+    targets: [naopoios, naopoios_bubble],
     ease: 'Sine.easeInOut',
     duration: 1000,
     delay: 0,
@@ -320,17 +401,11 @@ function hideArxitektonas(){
       getEnd: () => 0
     },
     onComplete: () => {
-      //handle completion
-      arxitektonas.visible = false;
-      arxitektonas_bubble.visible = false;
+      naopoios.visible = false;
+      naopoios_bubble.visible = false;
     }
   });
 
-  
-  _this.time.delayedCall(1500, showIereia, [], _this);
-}
-
-function showIereia(){
   iereia.alpha=0;
   iereia.visible = true;
 
@@ -369,25 +444,11 @@ function showIereiaBubble(){
     }
   });
 
-  _this.time.delayedCall(3500, showLithoxoos, [], _this);
+  _this.time.delayedCall(3000, showArxitektona, [], _this);
 }
 
 function showLithoxoos(){
-  _this.add.tween({
-    targets: [iereia, iereia_bubble],
-    ease: 'Sine.easeInOut',
-    duration: 1000,
-    delay: 0,
-    alpha: {
-      getStart: () => 1,
-      getEnd: () => 0
-    },
-    onComplete: () => {
-      iereia.visible = false;
-      iereia_bubble.visible = false;
-    }
-  });
-
+ 
   lithoxoos.alpha = 0;
   lithoxoos.visible = true;
 
@@ -426,7 +487,7 @@ function showLithoxoosBubble(){
     }
   });
 
-  _this.time.delayedCall(3500, showNaopoios, [], _this);
+  _this.time.delayedCall(3000, showNaopoios, [], _this);
 }
 
 function showNaopoios(){
@@ -462,7 +523,7 @@ function showNaopoios(){
     }
   });
 
-  _this.time.delayedCall(2500, showNaopoiosBubble, [], _this);
+  _this.time.delayedCall(1500, showNaopoiosBubble, [], _this);
 }
 
 function showNaopoiosBubble(){
@@ -483,7 +544,7 @@ function showNaopoiosBubble(){
     }
   });
 
-  _this.time.delayedCall(3500, SkipIntro, [], _this);
+  _this.time.delayedCall(3000, showIereia, [], _this);
 }
 
 function SkipIntro() {
