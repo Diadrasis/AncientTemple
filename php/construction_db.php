@@ -15,7 +15,7 @@
 	    switch($action){
 	    case 'select_activities':    
 		    $lang=$_GET['lang'];
-            $sql_activities="SELECT * FROM construction_activities";
+            $sql_activities="SELECT * FROM construction_activities ORDER BY activity_no";
 		    $activities_result = $conn->query($sql_activities);
             $activities=array();    
 		    if ($activities_result->num_rows > 0) {
