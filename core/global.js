@@ -705,16 +705,22 @@ var btnRating, btnLearnMore, btnCredits;
 
 function createButtonsExtra()
 {
-  btnRating =  _this.add.image(650, 1022, 'btnExtra').setInteractive({ cursor: 'pointer' });
-    btnRating.on('pointerup',
-      function () {
-        DebugLog('ΒΑΘΜΟΛΟΓΙΑ');
-        isGameOver = true;
-        previousScene = currentScene;
-        game.scene.stop(currentScene);
-        game.scene.start('leaderboard');
-      }
-    );
+
+    if (currentScene != 'leaderboard') {
+
+        btnRating = _this.add.image(650, 1022, 'btnExtra').setInteractive({ cursor: 'pointer' });
+        btnRating.on('pointerup',
+            function () {
+                DebugLog('ΒΑΘΜΟΛΟΓΙΑ');
+                isGameOver = true;
+                previousScene = currentScene;
+                game.scene.stop(currentScene);
+                game.scene.start('leaderboard');
+            }
+        );
+
+        btnRating.depth = 3002;
+    }
 
     btnLearnMore =  _this.add.image(964, 1022, 'btnExtra').setInteractive({ cursor: 'pointer' });
     btnLearnMore.on('pointerup',
@@ -740,20 +746,25 @@ function createButtonsExtra()
       }
     );
 
-    btnCredits =  _this.add.image(1280, 1022, 'btnExtra').setInteractive({ cursor: 'pointer' });
-    btnCredits.on('pointerup',
-      function () {
-        DebugLog('ΣΥΝΤΕΛΕΣΤΕΣ');
-        isGameOver = true;
-        previousScene = currentScene;
-        game.scene.stop(currentScene);
-        game.scene.start('credits');
-      }
-    );
-
-    btnRating.depth = 3002;
     btnLearnMore.depth = 3002;
-    btnCredits.depth = 3002;
+
+    if (currentScene != 'credits') {
+
+        btnCredits = _this.add.image(1280, 1022, 'btnExtra').setInteractive({ cursor: 'pointer' });
+        btnCredits.on('pointerup',
+            function () {
+                DebugLog('ΣΥΝΤΕΛΕΣΤΕΣ');
+                isGameOver = true;
+                previousScene = currentScene;
+                game.scene.stop(currentScene);
+                game.scene.start('credits');
+            }
+        );
+
+         btnCredits.depth = 3002;
+    }
+
+    
 }
 
 function destroyButtonsExtra(){ DebugLog('destroyButtonsExtra');
