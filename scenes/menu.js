@@ -90,8 +90,8 @@ class Menu extends Phaser.Scene
     helpMenu = this.add.image(0, 0, 'menu_help_gr').setInteractive({ cursor: 'pointer' });
     helpMenu.setOrigin(0, 0); 
     helpMenu.visible = false;
-    helpMenu.depth = 100;
-    helpMenu.on('pointerdown', function(){ helpMenu.visible = false;}, this);
+    helpMenu.depth = 5000;
+    helpMenu.on('pointerup', function(){ helpMenu.visible = false;}, this);
 
     if(!isMenuFirstHelp){
         this.time.delayedCall(1000, ShowMenuHelp, [], this);
