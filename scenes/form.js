@@ -47,6 +47,7 @@ var timerEventGame;
 
 var btnDorikos, btnIonikos, btnKotinthiakos;
 
+
 class FormScene extends Phaser.Scene {
 
   // #region config
@@ -95,6 +96,25 @@ class FormScene extends Phaser.Scene {
 
     posIntroCharacter = posIntroCharacterForm;
 
+    //GR
+
+    areaEntablature = new Phaser.Geom.Rectangle(introZeroPos.x + 278, introZeroPos.y + 419,106, 35);
+    RepositionRect(areaEntablature);
+
+    areaPediments = new Phaser.Geom.Rectangle(introZeroPos.x + 410, introZeroPos.y + 419,130, 35);
+    RepositionRect(areaPediments);
+
+    areaDoric = new Phaser.Geom.Rectangle(introZeroPos.x + 702, introZeroPos.y + 492, 117, 35);
+    RepositionRect(areaDoric);
+    
+    areaIonic = new Phaser.Geom.Rectangle(introZeroPos.x + 850, introZeroPos.y + 492, 110, 35);
+    RepositionRect(areaIonic);
+
+    areaKorinthian = new Phaser.Geom.Rectangle(introZeroPos.x + 369, introZeroPos.y + 527, 172, 40);
+    RepositionRect(areaKorinthian);
+
+    //EN
+
   }
 
   preload () {
@@ -122,6 +142,8 @@ class FormScene extends Phaser.Scene {
 
     this.load.image('arrowDown', imagesGeneral + 'arrow_down.png');
 
+    this.load.image(currentScene + 'board', imagesGeneral + 'board.jpg');
+
     loadSceneFooter();
 
     loadLevelSelectPanel();
@@ -134,6 +156,83 @@ class FormScene extends Phaser.Scene {
   }
 
   create () {
+
+    imageMouseOver = this.add.image(0,0, currentScene + 'board');
+    imageMouseOver.setOrigin(0.5);
+    imageMouseOver.depth = 5000;
+    imageMouseOver.visible = false;
+
+    textMouseOver = this.make.text(configMouseOverText);
+    textMouseOver.depth = 5006;
+    textMouseOver.setOrigin(0.5);
+
+    this.input.on('pointermove', function (pointer) {
+
+      if(areaEntablature.contains(pointer.x, pointer.y))
+      {
+        textMouseOver.setText(entablature_gr);
+        textMouseOver.x = pointer.x;
+        textMouseOver.y = pointer.y - 70;
+       
+       // console.log(textMouseOver.getBounds());
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else if(areaPediments.contains(pointer.x, pointer.y))
+      {
+        textMouseOver.setText(pediments_gr);
+        textMouseOver.x = pointer.x;
+        textMouseOver.y = pointer.y - 70;
+       
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else if(areaDoric.contains(pointer.x, pointer.y))
+      {
+        textMouseOver.setText(doric_gr);
+        textMouseOver.x = pointer.x;
+        textMouseOver.y = pointer.y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else if(areaIonic.contains(pointer.x, pointer.y))
+      {
+        textMouseOver.setText(ionic_gr);
+        textMouseOver.x = pointer.x;
+        textMouseOver.y = pointer.y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else if(areaKorinthian.contains(pointer.x, pointer.y))
+      {
+        textMouseOver.setText(korinthian_gr);
+        textMouseOver.x = pointer.x;
+        textMouseOver.y = pointer.y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else
+      {
+        imageMouseOver.visible = false;
+        textMouseOver.setText('');
+      }
+
+
+  });
 
     showBackground();
 

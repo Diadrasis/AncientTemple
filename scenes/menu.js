@@ -78,6 +78,10 @@ class Menu extends Phaser.Scene
 
     createButtonsExtra(); 
 
+    var btnPrint = this.add.image(54, 260, 'btnEmpty').setInteractive({ cursor: 'pointer' });
+    btnPrint.on('pointerdown', PrintPage, this);
+    btnPrint.depth = 70;
+
     btnHelpMenu = this.add.image(56, 108, 'btnEmpty').setInteractive({ cursor: 'pointer' });
     btnHelpMenu.on('pointerdown', ShowMenuHelp, this);
     btnHelpMenu.depth = 70;

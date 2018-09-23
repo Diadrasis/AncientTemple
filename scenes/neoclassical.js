@@ -275,7 +275,7 @@ class NeoclassicalScene extends Phaser.Scene
 
     //#endregion
 
-    btnClear = this.add.sprite(54, 567, currentScene + 'clear').setInteractive({ cursor: 'pointer' });
+    btnClear = this.add.sprite(54, 787, currentScene + 'clear').setInteractive({ cursor: 'pointer' });
     btnClear.on('pointerdown', ClearHouse, _this);
     btnClear.depth=12;
 

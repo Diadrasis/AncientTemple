@@ -1,3 +1,43 @@
+
+
+//intro mouse over texts
+
+var textMouseOver, imageMouseOver;
+
+var introZeroPos = {x:769, y:189};
+
+var areaEntablature, areaPediments, areaDoric, areaIonic, areaKorinthian, areaAltar;
+var areaDoricFrieze, areaIonicFrieze, areaAkroteria, areaCofferings, areaInscriptions;
+var areaCella, areaFacade;
+
+
+//θριγκός
+var entablature_gr = 'Θριγκός: το τμήμα του ναού που βρισκόταν επάνω από τους κίονες κι αποτελούνταν από το επιστύλιο, τη ζωφόρο και το γείσο';
+//Αέτωμα
+var pediments_gr = 'Αέτωμα: ο τριγωνικός χώρος που σχηματίζεται από τη στέγη στις δύο στενές πλευρές του ναού και έχει γλυπτά';
+//δωρικός ρυθμός
+var doric_gr = 'Δωρικός ρυθμός : ';
+//ιωνικός ρυθμός
+var ionic_gr = 'Ιωνικός ρυθμός : ';
+//κορινθιακός ρυθμός
+var korinthian_gr = 'Κορινθιακός ρυθμός : ';
+//Βωμός
+var altar_gr = 'Βωμός: το μέρος όπου συγκεντρώνονταν οι πιστοί για να επικοινωνήσουν με το θεό, να παρακολουθήσουν τις θυσίες και να δώσουν τις προσφορές τους.';
+//
+var doric_frieze_gr = 'Δωρική ζωφόρος:  η ζώνη που βρίσκεται πάνω από το επιστύλιο κι αποτελείται από τρίγλυφα και μετόπες που εναλλάσσονται.';
+//
+var ionic_frieze_gr = 'Ιωνική ζωφόρος:  η συνεχής ζώνη που βρίσκεται πάνω από το επιστύλιο και διακοσμείται με ανάγλυφες παραστάσεις';
+
+var akroteria_gr = 'Ακρωτήριο : ';
+
+var cofferings_gr = 'Φατνώματα : ';
+
+var inscriptions_gr = 'Επιγραφή: μαρμάρινη στήλη με χαραγμένα κείμενα';
+
+var cella_gr = 'Σηκός: ο κυρίως ναός, μέσα από την κιονοστοιχία, όπου στεγαζόταν το άγαλμα του θεού ή της θεάς';
+
+var facade_gr = 'Πρόσοψη: η κύρια (μπροστινή) πλευρά ενός κτιρίου';
+
 //#region General Variables
 
 var inDevelopmentState = false;
@@ -495,9 +535,15 @@ function showMenuBar()
         menuBarInGame_MenuLeft = _this.add.sprite(87, 494, inGame_MenuLeft2);
         menuBarPreviewButton = _this.add.sprite(55, 551, 'btnMenuEmpty').setInteractive({ cursor: 'pointer' });
         menuBarPreviewButton.depth = 10;
+        var btnPrint = _this.add.sprite(55, 635, 'btnMenuEmpty').setInteractive({ cursor: 'pointer' });
+        btnPrint.on('pointerdown', PrintPage, _this);
+        btnPrint.depth = 10;
     }else{
         menuBarInGame_MenuLeft = _this.add.sprite(87, 494, inGame_MenuLeft);
         if(isRealValue(menuBarPreviewButton)){menuBarPreviewButton.destroy();}
+        var btnPrint = _this.add.sprite(55, 545, 'btnMenuEmpty').setInteractive({ cursor: 'pointer' });
+        btnPrint.on('pointerdown', PrintPage, _this);
+        btnPrint.depth = 10;
     }
 
     menuBarInGame_BarTimer = _this.add.sprite(0, 66, inGame_BarTimer).setOrigin(0, 0.5).setTint('0xa3a3a3');
@@ -563,6 +609,7 @@ function showMenuBar()
     menuBarHelpButton = _this.add.sprite(55, 210, 'btnMenuEmpty').setInteractive({ cursor: 'help' });
     menuBarHelpButton.on('pointerdown', function () { showHelp(); }, _this);
     menuBarHelpButton.depth = 10;
+    
 }
 
 
@@ -830,6 +877,7 @@ var posIntroPlayerGirl = {x:0, y:0};
 var posIntroPlayerThing = {x:0, y:0};
 var introCharacter;
 var btnIntroHome, footer_menu;
+var btnPrintIntro, imageHomeIntro;
 var introAvatarShadow , introAvatarBody, introAvatarHead;
 
 var posIntroAvatarBoyShadow = {x:689, y:797};
@@ -888,15 +936,23 @@ function loadLevelSelectPanel()
     DebugLog(getSceneImagesFolder() + currentScene + '_intro_character.png');
 
    // if (currentScene != sceneNames[6]) {//if not neoclassic
-        _this.load.image(currentScene + 'intro_bubble', getSceneImagesFolder() + currentScene + '_intro_bubble.png');
-        _this.load.image(currentScene + 'intro_text', getSceneImagesFolder() + currentScene + '_intro_text.png');
+
+       // _this.load.image(currentScene + 'intro_bubble', getSceneImagesFolder() + currentScene + '_intro_bubble.png');
+        _this.load.image(currentScene + 'intro_bubble' + languange, getSceneImagesFolder() + currentScene + '_intro_bubble_'+languange+'.png');
+
+        _this.load.image(currentScene + 'intro_text'  + languange, getSceneImagesFolder() + currentScene + '_intro_text_'+languange+'.png');
+
+
         _this.load.image(currentScene + 'intro_character', getSceneImagesFolder() + currentScene + '_intro_character.png');
         _this.load.image(currentScene + 'level_buttons' +languange, getSceneImagesFolder() + currentScene + '_level_'+languange+'.png');
+
    // }
 
     _this.load.image('intro_bg', imagesGeneral + 'intro_bg.jpg');
     _this.load.image('home_button', imagesGeneral + 'home_button.png');
     _this.load.image('footer_menu'+languange, imagesGeneral + 'footer_menu_'+languange+'.png');
+
+
 
     if (currentScene === sceneNames[6]) {
         _this.load.image(currentScene + 'difficultyButton', imagesGeneral + 'levelButton.png');
@@ -914,6 +970,9 @@ function loadLevelSelectPanel()
     } else {
         _this.load.image('globalplayerShadow', imagesFolder + 'player/' + 'girl_shadow' + '.png');
     }
+
+    _this.load.image('btnEmpty', imagesGeneral + 'btnMenuEmpty.png');
+    
     
 }
 
@@ -938,6 +997,10 @@ function LoadIntroTexts() {
 function showLevelSelectPanel()
 {
     DebugLog(currentScene + ' >> showLevelSelectPanel');
+
+    btnPrintIntro = _this.add.image(54, 536, 'btnEmpty').setInteractive({ cursor: 'pointer' });
+    btnPrintIntro.on('pointerdown', PrintPage, this);
+    btnPrintIntro.depth = 70;
     
     var posShadow = posIntroAvatarBoyShadow;
     var posHead = posIntroAvatarBoyHead;
@@ -963,10 +1026,10 @@ function showLevelSelectPanel()
 
     introBackground = _this.add.image(0, 0, 'intro_bg').setOrigin(0, 0).setInteractive(); 
 
-    introPanelBubble = _this.add.image(posIntroBubble.x, posIntroBubble.y, currentScene+'intro_bubble');
+    introPanelBubble = _this.add.image(posIntroBubble.x, posIntroBubble.y, currentScene+'intro_bubble'+ languange);
     introPanelBubble.setOrigin(0.5, 0.5);
 
-    introPanelTextImage = _this.add.image(posIntroTextImage.x, posIntroTextImage.y, currentScene+'intro_text');
+    introPanelTextImage = _this.add.image(posIntroTextImage.x, posIntroTextImage.y, currentScene+'intro_text'+ languange);
     introPanelTextImage.setOrigin(0.5, 0.5);
 
     introPanelLevelButtons = _this.add.image(1353, 880, currentScene + 'level_buttons'+languange);
@@ -982,10 +1045,8 @@ function showLevelSelectPanel()
     IntroTextDescription = _this.make.text(configIntroTextDescription);
     IntroTextBubble = _this.make.text(configIntroTextBubble);
 
-    //alert('call intro texts!');
     
-    //_this.time.delayedCall(500, delayLoadIntroTexts, [], _this);
-    GetGameIntroTexts(gameId);
+    //GetGameIntroTexts(gameId);
 
     var count = 0;
     function onIntroEvent() {
@@ -1019,7 +1080,9 @@ function showLevelSelectPanel()
     footer_menu.setOrigin(0.5, 0.5);
     footer_menu.depth = 55;
 
-    btnIntroHome = _this.add.sprite(55, 458, 'home_button').setInteractive({ cursor: 'pointer' });
+    imageHomeIntro =_this.add.sprite(55, 458, 'home_button');
+    imageHomeIntro.depth = 60;
+    btnIntroHome = _this.add.sprite(24, 430, 'btnEmpty').setInteractive({ cursor: 'pointer' });
     btnIntroHome.once('pointerdown', function (event) 
     {  
         DebugLog('from '+currentScene+' to menu');
@@ -1112,6 +1175,8 @@ function destroySelectPanel(){  DebugLog('destroySelectPanel');
     introAvatarBody.destroy();
     introAvatarHead.destroy();
     footer_menu.destroy();
+    btnPrintIntro.destroy();
+    imageHomeIntro.destroy();
     btnIntroHome.destroy();
     introBackground.destroy();
     introPanelBubble.destroy();

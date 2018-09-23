@@ -43,6 +43,10 @@ function loadScript(url, callback){
 var doc;
 var myWindow;
 
+function PrintPage(){
+    myWindow.print();
+}
+
 function setAutoresize()
 {
     myWindow.onload = function () {
