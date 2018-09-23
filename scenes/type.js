@@ -126,13 +126,19 @@ class TypeScene extends Phaser.Scene {
     textMouseOver.depth = 5006;
     textMouseOver.setOrigin(0.5);
 
+    isOnWord = false;
+
     this.input.on('pointermove', function (pointer) {
+
 
       if(areaCella.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(cella_gr);
-        textMouseOver.x = pointer.x;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaCella).x;
+        textMouseOver.y = RectCenter(areaCella).y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -141,9 +147,12 @@ class TypeScene extends Phaser.Scene {
       }
       else if(areaFacade.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(facade_gr);
-        textMouseOver.x = pointer.x;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaFacade).x;
+        textMouseOver.y = RectCenter(areaFacade).y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -152,6 +161,11 @@ class TypeScene extends Phaser.Scene {
       }
       else
       {
+        if (isOnWord) {
+          mouseSetCursor(cursorType.default);
+          isOnWord = false;
+        }
+
         imageMouseOver.visible = false;
         textMouseOver.setText('');
       }

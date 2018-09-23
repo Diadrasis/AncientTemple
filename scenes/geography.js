@@ -208,13 +208,18 @@ class GeographyScene extends Phaser.Scene
     textMouseOver.depth = 5006;
     textMouseOver.setOrigin(0.5);
 
+    isOnWord = false;
+
     this.input.on('pointermove', function (pointer) {
 
       if(areaAltar.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(altar_gr);
-        textMouseOver.x = pointer.x;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaAltar).x;// pointer.x;
+        textMouseOver.y = RectCenter(areaAltar).y - 70;// pointer.y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -223,6 +228,11 @@ class GeographyScene extends Phaser.Scene
       }
       else
       {
+        if (isOnWord) {
+          mouseSetCursor(cursorType.default);
+          isOnWord = false;
+        }
+
         imageMouseOver.visible = false;
         textMouseOver.setText('');
       }

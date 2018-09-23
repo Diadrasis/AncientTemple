@@ -166,26 +166,33 @@ class FormScene extends Phaser.Scene {
     textMouseOver.depth = 5006;
     textMouseOver.setOrigin(0.5);
 
+    isOnWord = false;
+
     this.input.on('pointermove', function (pointer) {
 
       if(areaEntablature.contains(pointer.x, pointer.y))
       {
-        textMouseOver.setText(entablature_gr);
-        textMouseOver.x = pointer.x;
-        textMouseOver.y = pointer.y - 70;
-       
-       // console.log(textMouseOver.getBounds());
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
 
+        textMouseOver.setText(entablature_gr);
+        textMouseOver.x = RectCenter(areaEntablature).x;// areaEntablature.x + areaEntablature.width/2;//  pointer.x;
+        textMouseOver.y = RectCenter(areaEntablature).y- 70; //areaEntablature.y + areaEntablature.height/2;// pointer.y - 70;
+       
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
         imageMouseOver.y = textMouseOver.y;
         imageMouseOver.visible = true;
+
       }
       else if(areaPediments.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(pediments_gr);
-        textMouseOver.x = pointer.x;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaPediments).x; // pointer.x;
+        textMouseOver.y = RectCenter(areaPediments).y- 70; //pointer.y - 70;
        
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -194,9 +201,12 @@ class FormScene extends Phaser.Scene {
       }
       else if(areaDoric.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(doric_gr);
-        textMouseOver.x = pointer.x;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaDoric).x; //  pointer.x;
+        textMouseOver.y = RectCenter(areaDoric).y- 70; // pointer.y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -205,9 +215,12 @@ class FormScene extends Phaser.Scene {
       }
       else if(areaIonic.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(ionic_gr);
-        textMouseOver.x = pointer.x;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaIonic).x; //  pointer.x;
+        textMouseOver.y = RectCenter(areaIonic).y- 70; // pointer.y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -216,9 +229,12 @@ class FormScene extends Phaser.Scene {
       }
       else if(areaKorinthian.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(korinthian_gr);
-        textMouseOver.x = pointer.x;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaKorinthian).x; // pointer.x;
+        textMouseOver.y = RectCenter(areaKorinthian).y- 70; // pointer.y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -227,6 +243,11 @@ class FormScene extends Phaser.Scene {
       }
       else
       {
+        if (isOnWord) {
+          mouseSetCursor(cursorType.default);
+          isOnWord = false;
+        }
+
         imageMouseOver.visible = false;
         textMouseOver.setText('');
       }

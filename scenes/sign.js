@@ -68,10 +68,7 @@ function MoveObject(pos, objectTarget){
   objectTarget.visible = true;
 }
 
-function RepositionRect(rect){
-  rect.x -= rect.width / 2;
-  rect.y -= rect.height / 2;
-}
+
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -173,13 +170,18 @@ class SignScene extends Phaser.Scene
     textMouseOver.depth = 5006;
     textMouseOver.setOrigin(0.5);
 
+    isOnWord = false;
+
     this.input.on('pointermove', function (pointer) {
 
       if(areaInscriptions.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(inscriptions_gr);
-        textMouseOver.x = pointer.x;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaInscriptions).x;// pointer.x;
+        textMouseOver.y = RectCenter(areaInscriptions).y - 70; //pointer.y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -188,6 +190,11 @@ class SignScene extends Phaser.Scene
       }
       else
       {
+        if (isOnWord) {
+          mouseSetCursor(cursorType.default);
+          isOnWord = false;
+        }
+
         imageMouseOver.visible = false;
         textMouseOver.setText('');
       }

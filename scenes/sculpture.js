@@ -149,6 +149,8 @@ class SculptureScene extends Phaser.Scene {
     textMouseOver.depth = 5006;
     textMouseOver.setOrigin(0.5);
 
+    isOnWord = false;
+
     this.input.on('pointermove', function (pointer) {
 
       var posX = pointer.x < 1615 ? pointer.x : 1615;
@@ -156,13 +158,14 @@ class SculptureScene extends Phaser.Scene {
 
       if(areaAkroteria.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(akroteria_gr);
 
-        textMouseOver.x = posX;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x =  RectCenter(areaAkroteria).x;
+        textMouseOver.y = RectCenter(areaAkroteria).y - 70;// pointer.y - 70;
        
-       // console.log(textMouseOver.getBounds());
-
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
         imageMouseOver.y = textMouseOver.y;
@@ -170,9 +173,12 @@ class SculptureScene extends Phaser.Scene {
       }
       else if(areaPediments.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(pediments_gr);
-        textMouseOver.x = posX;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaPediments).x;
+        textMouseOver.y = RectCenter(areaPediments).y - 70; //pointer.y - 70;
        
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -181,9 +187,12 @@ class SculptureScene extends Phaser.Scene {
       }
       else if(areaDoricFrieze.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(doric_frieze_gr);
-        textMouseOver.x = posX;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = 1615;
+        textMouseOver.y = RectCenter(areaDoricFrieze).y - 70;// pointer.y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -192,9 +201,12 @@ class SculptureScene extends Phaser.Scene {
       }
       else if(areaIonicFrieze.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(ionic_frieze_gr);
-        textMouseOver.x = posX;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaIonicFrieze).x;
+        textMouseOver.y = RectCenter(areaIonicFrieze).y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -203,9 +215,12 @@ class SculptureScene extends Phaser.Scene {
       }
       else if(areaCofferings.contains(pointer.x, pointer.y))
       {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
         textMouseOver.setText(cofferings_gr);
-        textMouseOver.x = posX;
-        textMouseOver.y = pointer.y - 70;
+        textMouseOver.x = RectCenter(areaCofferings).x;
+        textMouseOver.y = RectCenter(areaCofferings).y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -214,6 +229,11 @@ class SculptureScene extends Phaser.Scene {
       }
       else
       {
+        if (isOnWord) {
+          mouseSetCursor(cursorType.default);
+          isOnWord = false;
+        }
+
         imageMouseOver.visible = false;
         textMouseOver.setText('');
       }

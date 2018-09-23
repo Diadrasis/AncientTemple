@@ -10,6 +10,9 @@ var areaEntablature, areaPediments, areaDoric, areaIonic, areaKorinthian, areaAl
 var areaDoricFrieze, areaIonicFrieze, areaAkroteria, areaCofferings, areaInscriptions;
 var areaCella, areaFacade;
 
+var isOnWord = false;
+
+
 
 //θριγκός
 var entablature_gr = 'Θριγκός: το τμήμα του ναού που βρισκόταν επάνω από τους κίονες κι αποτελούνταν από το επιστύλιο, τη ζωφόρο και το γείσο';
@@ -158,6 +161,18 @@ function setScoreOfGame(indx, score){
     if(indx===6){ scoreSculpture = score;}else
     if(indx===7){ scoreNeoclassic = score;}
 
+}
+
+function RepositionRect(rect) {
+    rect.x -= rect.width / 2;
+    rect.y -= rect.height / 2;
+}
+
+function RectCenter(rect) {
+    var posX = rect.x + rect.width / 2;
+    var posY = rect.y + rect.height / 2;
+
+    return {x: posX, y:posY };
 }
 
 //EFFORTS or TRIES ##################################################
