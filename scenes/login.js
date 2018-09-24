@@ -60,6 +60,8 @@ class LoginScene extends Phaser.Scene
   { 
       showBackground();
 
+      
+
       _this.anims.create({
           key: 'kitsos',
           frames: _this.anims.generateFrameNumbers('mitsos', { start: 0, end: 6 }),

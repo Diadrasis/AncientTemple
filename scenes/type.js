@@ -81,14 +81,21 @@ class TypeScene extends Phaser.Scene {
 
 
     //GR
+    if (languange === 'gr') {
+      areaCella = new Phaser.Geom.Rectangle(introZeroPos.x + 243, introZeroPos.y + 346, 80, 39);
+      RepositionRect(areaCella);
 
-    areaCella = new Phaser.Geom.Rectangle(introZeroPos.x + 243, introZeroPos.y + 346, 80, 39);
-    RepositionRect(areaCella);
+      areaFacade = new Phaser.Geom.Rectangle(introZeroPos.x + 625, introZeroPos.y + 348, 135, 36);
+      RepositionRect(areaFacade);
+    }
+    else{//EN
+      areaCella = new Phaser.Geom.Rectangle(introZeroPos.x + 356, introZeroPos.y + 346, 75, 35);
+      RepositionRect(areaCella);
 
-    areaFacade = new Phaser.Geom.Rectangle(introZeroPos.x + 625, introZeroPos.y + 348, 135, 36);
-    RepositionRect(areaFacade);
+      areaFacade = new Phaser.Geom.Rectangle(introZeroPos.x + 777, introZeroPos.y + 346, 110, 35);
+      RepositionRect(areaFacade);
+    }
 
-    //EN
 
   }
 
@@ -136,7 +143,9 @@ class TypeScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(cella_gr);
+        if(languange === 'gr'){ textMouseOver.setText(cella_gr); }
+        else{ textMouseOver.setText(cella_en); }
+
         textMouseOver.x = RectCenter(areaCella).x;
         textMouseOver.y = RectCenter(areaCella).y - 70;
 
@@ -150,7 +159,9 @@ class TypeScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(facade_gr);
+        if(languange === 'gr'){ textMouseOver.setText(facade_gr); }
+        else{ textMouseOver.setText(facade_en); }
+        
         textMouseOver.x = RectCenter(areaFacade).x;
         textMouseOver.y = RectCenter(areaFacade).y - 70;
 
@@ -345,7 +356,7 @@ class TypeScene extends Phaser.Scene {
 
     createHelp();
 
-    fadeInCamera(2)
+    fadeInCamera(1);
   } // create
 
   update (time, delta) {

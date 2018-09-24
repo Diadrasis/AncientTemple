@@ -75,23 +75,38 @@ class SculptureScene extends Phaser.Scene {
 
 
     //GR
+    if (languange === 'gr') {
+      areaAkroteria = new Phaser.Geom.Rectangle(introZeroPos.x + 528, introZeroPos.y + 475, 151, 35);
+      RepositionRect(areaAkroteria);
 
-    areaAkroteria = new Phaser.Geom.Rectangle(introZeroPos.x + 528, introZeroPos.y + 475, 151, 35);
-    RepositionRect(areaAkroteria);
+      areaPediments = new Phaser.Geom.Rectangle(introZeroPos.x + 825, introZeroPos.y + 366, 134, 35);
+      RepositionRect(areaPediments);
 
-    areaPediments = new Phaser.Geom.Rectangle(introZeroPos.x + 825, introZeroPos.y + 366, 134, 35);
-    RepositionRect(areaPediments);
+      areaDoricFrieze = new Phaser.Geom.Rectangle(introZeroPos.x + 890, introZeroPos.y + 404, 104, 35);
+      RepositionRect(areaDoricFrieze);
 
-    areaDoricFrieze = new Phaser.Geom.Rectangle(introZeroPos.x + 890, introZeroPos.y + 404, 104, 35);
-    RepositionRect(areaDoricFrieze);
-    
-    areaIonicFrieze = new Phaser.Geom.Rectangle(introZeroPos.x + 471, introZeroPos.y + 440, 89, 37);
-    RepositionRect(areaIonicFrieze);
+      areaIonicFrieze = new Phaser.Geom.Rectangle(introZeroPos.x + 471, introZeroPos.y + 440, 89, 37);
+      RepositionRect(areaIonicFrieze);
 
-    areaCofferings = new Phaser.Geom.Rectangle(introZeroPos.x + 349, introZeroPos.y + 510, 160, 36);
-    RepositionRect(areaCofferings);
+      areaCofferings = new Phaser.Geom.Rectangle(introZeroPos.x + 349, introZeroPos.y + 510, 160, 36);
+      RepositionRect(areaCofferings);
+    }
+    else{//EN
+      areaAkroteria = new Phaser.Geom.Rectangle(introZeroPos.x + 486, introZeroPos.y + 492, 123, 35);
+      RepositionRect(areaAkroteria);
 
-    //EN
+      areaPediments = new Phaser.Geom.Rectangle(introZeroPos.x + 761, introZeroPos.y + 386, 142, 35);
+      RepositionRect(areaPediments);
+
+      areaDoricFrieze = new Phaser.Geom.Rectangle(introZeroPos.x + 876, introZeroPos.y + 419, 72, 35);
+      RepositionRect(areaDoricFrieze);
+
+      areaIonicFrieze = new Phaser.Geom.Rectangle(introZeroPos.x + 417, introZeroPos.y + 455, 73, 34);
+      RepositionRect(areaIonicFrieze);
+
+      areaCofferings = new Phaser.Geom.Rectangle(introZeroPos.x + 858, introZeroPos.y + 493, 135, 39);
+      RepositionRect(areaCofferings);
+    }
 
 
 
@@ -161,7 +176,8 @@ class SculptureScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(akroteria_gr);
+        if(languange === 'gr'){ textMouseOver.setText(akroteria_gr); }
+        else{ textMouseOver.setText(akroteria_en); }
 
         textMouseOver.x =  RectCenter(areaAkroteria).x;
         textMouseOver.y = RectCenter(areaAkroteria).y - 70;// pointer.y - 70;
@@ -176,7 +192,9 @@ class SculptureScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(pediments_gr);
+        if(languange === 'gr'){ textMouseOver.setText(pediments_gr); }
+        else{ textMouseOver.setText(pediments_en); }
+
         textMouseOver.x = RectCenter(areaPediments).x;
         textMouseOver.y = RectCenter(areaPediments).y - 70; //pointer.y - 70;
        
@@ -190,7 +208,9 @@ class SculptureScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(doric_frieze_gr);
+        if(languange === 'gr'){ textMouseOver.setText(doric_frieze_gr); }
+        else{ textMouseOver.setText(doric_frieze_en); }
+
         textMouseOver.x = 1615;
         textMouseOver.y = RectCenter(areaDoricFrieze).y - 70;// pointer.y - 70;
 
@@ -204,7 +224,9 @@ class SculptureScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(ionic_frieze_gr);
+        if(languange === 'gr'){ textMouseOver.setText(ionic_frieze_gr); }
+        else{ textMouseOver.setText(ionic_frieze_en); }
+
         textMouseOver.x = RectCenter(areaIonicFrieze).x;
         textMouseOver.y = RectCenter(areaIonicFrieze).y - 70;
 
@@ -218,7 +240,9 @@ class SculptureScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(cofferings_gr);
+        if(languange === 'gr'){ textMouseOver.setText(cofferings_gr); }
+        else{ textMouseOver.setText(cofferings_en); }
+
         textMouseOver.x = RectCenter(areaCofferings).x;
         textMouseOver.y = RectCenter(areaCofferings).y - 70;
 
@@ -387,15 +411,15 @@ class SculptureScene extends Phaser.Scene {
 
     createSceneFooter();
 
-    showLevelSelectPanel()
+    showLevelSelectPanel();
 
-    createPopUpMessage()
+    createPopUpMessage();
 
     // onCanvasLoseFocus()
 
-    fadeInCamera(2)
+    fadeInCamera(1);
 
-    createHelp()
+    createHelp();
   } // create
 
   update (time, delta) {

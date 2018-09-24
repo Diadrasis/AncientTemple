@@ -130,7 +130,7 @@ class IntroSiteScene extends Phaser.Scene
     );
     btnskip.depth = 105;
 
-    fadeInCamera(2);
+    fadeInCamera(1);
     //SkipIntro();
 
 

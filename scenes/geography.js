@@ -84,29 +84,13 @@ var configGeographyTempleName = {
   }
 };
 
-var zoomBackgroundImage;
-var zoomButtonClose;
 
-var currentButtonDoubleClickCheck;
-function btnDoubleClickCheck(){     DebugLog(clickCounts);
-  if(clickCounts>=2){ DebugLog("Zoom "+ currentButtonDoubleClickCheck.name); ZoomImage(currentButtonDoubleClickCheck.name); }
-  else if(clickCounts === 1) { selectedAnswer = currentButtonDoubleClickCheck.name;  selectedPhotoPos = {x:currentButtonDoubleClickCheck.x, y:currentButtonDoubleClickCheck.y}; checkAnswer(currentButtonDoubleClickCheck); clickCounts = 0;}
+function btnDoubleClickCheck(){     //DebugLog(clickCounts);
+  if(clickCounts>=2){ ZoomImage(currentImageDoubleClickCheck.name); }
+  else if(clickCounts === 1) { selectedAnswer = currentImageDoubleClickCheck.name;  selectedPhotoPos = {x:currentImageDoubleClickCheck.x, y:currentImageDoubleClickCheck.y}; checkAnswer(currentImageDoubleClickCheck); clickCounts = 0;}
 }
 
-var zoomedImageObject;
-function ZoomImage(key){
-  if(isRealValue(zoomedImageObject)){zoomedImageObject.destroy();}
-  zoomedImageObject = _this.add.image(1920/2, 1080/2, key);
-  zoomedImageObject.setOrigin(0.5);
 
-  zoomButtonClose.visible = true;
-  zoomBackgroundImage.visible = true;
-  zoomBackgroundImage.depth = 100;
-  zoomedImageObject.depth = 101;
-  zoomButtonClose.depth = 102;
-
-  clickCounts=0;
-}
 
 class GeographyScene extends Phaser.Scene 
 {
@@ -156,9 +140,13 @@ class GeographyScene extends Phaser.Scene
 
 
 //GR
-
-    areaAltar = new Phaser.Geom.Rectangle(introZeroPos.x + 440, introZeroPos.y + 500, 106, 52);
-    RepositionRect(areaAltar);
+    if (languange === 'gr') {
+      areaAltar = new Phaser.Geom.Rectangle(introZeroPos.x + 440, introZeroPos.y + 500, 106, 52);
+      RepositionRect(areaAltar);
+    }else{
+      areaAltar = new Phaser.Geom.Rectangle(introZeroPos.x + 463, introZeroPos.y + 495, 91, 47);
+      RepositionRect(areaAltar);
+    }
 
   }
 
@@ -217,7 +205,9 @@ class GeographyScene extends Phaser.Scene
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(altar_gr);
+        if(languange === 'gr'){ textMouseOver.setText(altar_gr); }
+        else{ textMouseOver.setText(altar_en); }
+
         textMouseOver.x = RectCenter(areaAltar).x;// pointer.x;
         textMouseOver.y = RectCenter(areaAltar).y - 70;// pointer.y - 70;
 
@@ -268,17 +258,17 @@ class GeographyScene extends Phaser.Scene
     // }
 
     btnG1 = this.add.image(posFotosStatic[0].x, posFotosStatic[0].y,currentScene +  'photo_box_back').setInteractive({ cursor: 'pointer' });
-    btnG1.on('pointerdown', function () {  clickCounts++; currentButtonDoubleClickCheck = btnG1;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
+    btnG1.on('pointerdown', function () {  clickCounts++; currentImageDoubleClickCheck = btnG1;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
     btnG2 = this.add.image(posFotosStatic[1].x, posFotosStatic[1].y,currentScene +  'photo_box_back').setInteractive({ cursor: 'pointer' });
-    btnG2.on('pointerdown', function () {  clickCounts++; currentButtonDoubleClickCheck = btnG2;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
+    btnG2.on('pointerdown', function () {  clickCounts++; currentImageDoubleClickCheck = btnG2;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
     btnG3 = this.add.image(posFotosStatic[2].x, posFotosStatic[2].y,currentScene +  'photo_box_back').setInteractive({ cursor: 'pointer' });
-    btnG3.on('pointerdown', function () {  clickCounts++; currentButtonDoubleClickCheck = btnG3;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
+    btnG3.on('pointerdown', function () {  clickCounts++; currentImageDoubleClickCheck = btnG3;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
     btnG4 = this.add.image(posFotosStatic[3].x, posFotosStatic[3].y,currentScene +  'photo_box_back').setInteractive({ cursor: 'pointer' });
-    btnG4.on('pointerdown', function () {  clickCounts++; currentButtonDoubleClickCheck = btnG4;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
+    btnG4.on('pointerdown', function () {  clickCounts++; currentImageDoubleClickCheck = btnG4;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
     btnG5 = this.add.image(posFotosStatic[4].x, posFotosStatic[4].y,currentScene +  'photo_box_back').setInteractive({ cursor: 'pointer' });
-    btnG5.on('pointerdown', function () {  clickCounts++; currentButtonDoubleClickCheck = btnG5;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
+    btnG5.on('pointerdown', function () {  clickCounts++; currentImageDoubleClickCheck = btnG5;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
     btnG6 = this.add.image(posFotosStatic[5].x, posFotosStatic[5].y,currentScene +  'photo_box_back').setInteractive({ cursor: 'pointer' });
-    btnG6.on('pointerdown', function () {  clickCounts++; currentButtonDoubleClickCheck = btnG6;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
+    btnG6.on('pointerdown', function () {  clickCounts++; currentImageDoubleClickCheck = btnG6;  _this.time.delayedCall(250, btnDoubleClickCheck, [], _this);});
 
     
 
@@ -351,7 +341,7 @@ class GeographyScene extends Phaser.Scene
    
     createHelp();   
 
-    fadeInCamera(2);
+    fadeInCamera(1);
 
   }//create
 

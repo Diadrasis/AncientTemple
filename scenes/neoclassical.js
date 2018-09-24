@@ -291,7 +291,7 @@ class NeoclassicalScene extends Phaser.Scene
 
     //onCanvasLoseFocus();
 
-   // fadeInCamera(1);
+  fadeInCamera(1);
 
   createHelp();  
 

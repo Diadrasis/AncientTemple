@@ -209,7 +209,7 @@ function readBestScores() {
 
             DebugLog(">>> best scores are loaded!");     
 
-            var boolboy = ['true', 'false', 'true', 'false'];
+            var boolboy = ['false', 'girl2'];// ['true', 'false', 'boy2', 'girl2'];
             var colorhead = ['brown', 'yellow', 'black', 'brown'];
             var colorbody = ['red', 'green', 'blue', 'navy', 'purple'];
 
@@ -254,8 +254,11 @@ function LoadHouses(){
   _this.load.image(currentScene+ 'player_score', getSceneImagesFolder() + 'player_score.png');
 
   for(var i=0; i<best_scores.length; i++){
-    DebugLog(best_scores[i][2] + ' - ' + best_scores[i][3] + ' - ' + best_scores[i][4]);
-    leaderLoadPlayerAvatar(best_scores[i][0], best_scores[i][2], best_scores[i][3], best_scores[i][4]);
+
+    console.log(best_scores[i][0] + ' - ' + best_scores[i][1] + ' - ' + best_scores[i][2] + ' - ' + best_scores[i][3]  + ' - ' + best_scores[i][4]+ ' - ' + best_scores[i][4]);
+
+    leaderLoadPlayerAvatar(best_scores[i][0] , best_scores[i][3], best_scores[i][4], best_scores[i][5]);
+
     _this.load.image(best_scores[i][0] + 'house', getSceneImagesFolder() + 'house.jpg');
 
   }
@@ -268,7 +271,7 @@ var houseStartPos = {x:413, y:784}; //+=672 *9 times
 var flagTextPos = {x:369, y:476} //+=672 *9 times
 var leaderBoyShadowPos = {x:249, y: 405};
 var leaderBoyBodyPos = {x:243, y: 437};
-var leaderBoyHeadPos = {x:250, y: 331};
+var leaderBoyHeadPos = {x:250, y: 352}; //250, 311
 
 var leaderGirlShadowPos = {x:259, y: 406};
 var leaderGirlBodyPos = {x:259, y: 438};
@@ -298,18 +301,21 @@ function AddHouses(){
 
   for(var i=0; i<best_scores.length; i++){
 
-    //DebugLog('Adding house....'+i);
+    console.log('Adding house....'+i);
 
     _this.add.image(houseStartPos.x, houseStartPos.y, best_scores[i][0] + 'house');
     _this.add.image(flagTextPos.x, flagTextPos.y, currentScene + 'player_score');
 
-    if(best_scores[i][2] === 'true'){
+    if(best_scores[i][2] === 'true' || best_scores[i][2] === 'boy2'){
       var shadow = _this.add.image(leaderBoyShadowPos.x, leaderBoyShadowPos.y, best_scores[i][0] + 'leaderShadow');
       var body = _this.add.image(leaderBoyBodyPos.x, leaderBoyBodyPos.y, best_scores[i][0] + 'leaderbody');
       var head = _this.add.image(leaderBoyHeadPos.x, leaderBoyHeadPos.y, best_scores[i][0] + 'leaderhead');
       shadow.setScale(0.45);
       body.setScale(0.45);
       head.setScale(0.45);
+   
+      console.log('is boy '+leaderBoyHeadPos);
+
     }else{
       var shadow = _this.add.image(leaderGirlShadowPos.x, leaderGirlShadowPos.y, best_scores[i][0] + 'leaderShadow');
       var body = _this.add.image(leaderGirlBodyPos.x, leaderGirlBodyPos.y, best_scores[i][0] + 'leaderbody');
@@ -317,6 +323,8 @@ function AddHouses(){
       shadow.setScale(0.45);
       body.setScale(0.45);
       head.setScale(0.45);
+
+      console.log('is girl ' + Date.now());
     }
 
     var nameText = _this.make.text(configLeaderNameText);

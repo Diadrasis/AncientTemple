@@ -13,70 +13,33 @@ var areaCella, areaFacade;
 var isOnWord = false;
 
 
-function DestroyIntroAreas(){
-    if(isRealValue(areaEntablature)){areaEntablature.setEmpty();}
-    if(isRealValue(areaCella)){areaCella.setEmpty();}
-    if(isRealValue(areaPediments)){areaPediments.setEmpty();}
-    if(isRealValue(areaDoric)){areaDoric.setEmpty();}
-    if(isRealValue(areaIonic)){areaIonic.setEmpty();}
-    if(isRealValue(areaKorinthian)){areaKorinthian.setEmpty();}
-    if(isRealValue(areaAltar)){areaAltar.setEmpty();}
-    if(isRealValue(areaDoricFrieze)){areaDoricFrieze.setEmpty();}
-    if(isRealValue(areaIonicFrieze)){areaIonicFrieze.setEmpty();}
-    if(isRealValue(areaAkroteria)){areaAkroteria.setEmpty();}
-    if(isRealValue(areaCofferings)){areaCofferings.setEmpty();}
-    if(isRealValue(areaInscriptions)){areaInscriptions.setEmpty();}
-    if(isRealValue(areaFacade)){areaFacade.setEmpty();}
-}
-
 
 //θριγκός
 var entablature_gr = 'Θριγκός: το τμήμα του ναού που βρισκόταν επάνω από τους κίονες κι αποτελούνταν από το επιστύλιο, τη ζωφόρο και το γείσο';
-var entablature_en = 'Entablature: the superstructure of moldings and bands which lies horizontally above columns and consists of the architrave, the frieze and the cornice';
-
 //Αέτωμα
 var pediments_gr = 'Αέτωμα: ο τριγωνικός χώρος που σχηματίζεται από τη στέγη στις δύο στενές πλευρές του ναού και έχει γλυπτά';
-var pediments_en = 'Pediment: the triangular area with sculptures, formed by the roof at each narrow side of the temple';
-
 //δωρικός ρυθμός
-var doric_gr = 'Δωρικός ρυθμός: ';
-var doric_en = 'Dorian order: ';
-
+var doric_gr = 'Δωρικός ρυθμός : ';
 //ιωνικός ρυθμός
 var ionic_gr = 'Ιωνικός ρυθμός : ';
-var ionic_en = 'Ionian order: ';
-
 //κορινθιακός ρυθμός
 var korinthian_gr = 'Κορινθιακός ρυθμός : ';
-var korinthian_en = 'Corinthian Order: ';
-
 //Βωμός
 var altar_gr = 'Βωμός: το μέρος όπου συγκεντρώνονταν οι πιστοί για να επικοινωνήσουν με το θεό, να παρακολουθήσουν τις θυσίες και να δώσουν τις προσφορές τους.';
-var altar_en = 'Altar: the place where the faithful gathered to communicate with the god, to attend the sacrifices and give their offerings.';
-
 //
-var doric_frieze_gr = 'Δωρική ζωφόρος: η ζώνη που βρίσκεται πάνω από το επιστύλιο κι αποτελείται από τρίγλυφα και μετόπες που εναλλάσσονται.';
-var doric_frieze_en = 'Frieze Doric: it consists of triglyphs and metopes';
-
+var doric_frieze_gr = 'Δωρική ζωφόρος:  η ζώνη που βρίσκεται πάνω από το επιστύλιο κι αποτελείται από τρίγλυφα και μετόπες που εναλλάσσονται.';
 //
 var ionic_frieze_gr = 'Ιωνική ζωφόρος:  η συνεχής ζώνη που βρίσκεται πάνω από το επιστύλιο και διακοσμείται με ανάγλυφες παραστάσεις';
-var ionic_frieze_en = 'Frieze Ionic : the continuous relief band that ran around the upper part of the main temple, the cella.';
 
-var akroteria_gr = 'Ακρωτήριο: γλυπτό με μορφή λουλουδιού που στόλιζε την κορυφή του αετώματος';
-var akroteria_en = 'Akroterion: the sculpture in the shape of a flower that decorated the top of the pediments. ';
+var akroteria_gr = 'Ακρωτήριο : ';
 
-var cofferings_gr = 'Φατνώματα: Τετράγωνες βαθύνσεις κάτω από την μαρμάρινη σκεπή';
-var cofferings_en = 'Coffers: Square recesses\nunder the marble ceiling';
+var cofferings_gr = 'Φατνώματα : ';
 
 var inscriptions_gr = 'Επιγραφή: μαρμάρινη στήλη με χαραγμένα κείμενα';
-var inscriptions_en = 'Inscription: μαρμάρινη στήλη με χαραγμένα κείμενα';
 
 var cella_gr = 'Σηκός: ο κυρίως ναός, μέσα από την κιονοστοιχία, όπου στεγαζόταν το άγαλμα του θεού ή της θεάς';
-var cella_en = 'Cella:  the main temple, behind the colonnade, where the statue of the god or goddess stood';
 
 var facade_gr = 'Πρόσοψη: η κύρια (μπροστινή) πλευρά ενός κτιρίου';
-var facade_en = 'Facade: the main front part of the building';
-
 
 //#region General Variables
 
@@ -112,7 +75,8 @@ var gameId;
 // boolean to determine if the data of each game have been read from the database
 var gameDataRead = false;
 
-
+//to determine double click (is not implement yet in phaser 3)
+var clickCounts = 0;
 
 //hit top sprite
 // this.input.topOnly = true;
@@ -210,33 +174,6 @@ function RectCenter(rect) {
 
     return {x: posX, y:posY };
 }
-
-//####### ZOOM ###############################
-
-//to determine double click (is not implement yet in phaser 3)
-var clickCounts = 0;
-
-var zoomBackgroundImage;
-var zoomButtonClose;
-var currentImageDoubleClickCheck;
-var zoomedImageObject;
-
-function ZoomImage(key){
-  if(isRealValue(zoomedImageObject)){zoomedImageObject.destroy();}
-  zoomedImageObject = _this.add.image(1920/2, 1080/2, key);
-  zoomedImageObject.setOrigin(0.5);
-
-  zoomButtonClose.visible = true;
-  zoomBackgroundImage.visible = true;
-  zoomBackgroundImage.depth = 100;
-  zoomedImageObject.depth = 101;
-  zoomButtonClose.depth = 102;
-
-  clickCounts=0;
-}
-
-//############################################
-
 
 //EFFORTS or TRIES ##################################################
 var maxEfforts = 7;
@@ -855,31 +792,17 @@ function createButtonsExtra()
           /* go to learnomore.ancienttemple.gr, according to the current scene
         previousScene = currentScene;
         game.scene.stop(currentScene);
-        game.scene.start('moreToLearn'); */                 
+        game.scene.start('moreToLearn'); */
+          //alert(currentScene);
           switch (currentScene) {
-              case 'geography':
-                  window.open("http://learnmore.ancienttemple.gr/sacred-place/", "_blank");
-                  break;
-              case 'sign':
-                  window.open("http://learnmore.ancienttemple.gr/programming/", "_blank");
-                  break;
-              case 'type':
-                  window.open("http://learnmore.ancienttemple.gr/type/", "_blank");
-                  break;
-              case 'construction':
-                  window.open("http://learnmore.ancienttemple.gr/construction/", "_blank");
+              case 'geogrphy':
+                  window.location.href = "http://learnmore.ancienttemple.gr";
                   break;
               case 'form':
-                  window.open("http://learnmore.ancienttemple.gr/form/", "_blank");
-                  break;
-              case 'sculpture':
-                  window.open("http://learnmore.ancienttemple.gr/statues-reliefs-and-color/", "_blank");
-                  break;
-              case 'neoclassic':
-                  window.open("http://learnmore.ancienttemple.gr/neoclassical/", "_blank");
+                  window.location.href = "http://learnmore.ancienttemple.gr";
                   break;
               default:
-                  window.open("http://learnmore.ancienttemple.gr/", "_blank");
+                  window.location.href = "http://learnmore.ancienttemple.gr"; 
           }
 
       }
@@ -1059,14 +982,7 @@ function loadLevelSelectPanel()
 
     if (currAvatarIsBoy === 'true') {
         _this.load.image('globalplayerShadow', imagesFolder + 'player/' + 'boy_shadow' + '.png');
-    } 
-    else if (currAvatarIsBoy === 'boy2') {
-        _this.load.image('globalplayerShadow', imagesFolder + 'player/' + 'boy2_shadow' + '.png');
-    }
-    else if (currAvatarIsBoy === 'girl2') {
-        _this.load.image('globalplayerShadow', imagesFolder + 'player/' + 'girl2_shadow' + '.png');
-    }    
-    else {
+    } else {
         _this.load.image('globalplayerShadow', imagesFolder + 'player/' + 'girl_shadow' + '.png');
     }
 
@@ -1290,8 +1206,6 @@ function destroySelectPanel(){  DebugLog('destroySelectPanel');
     lvl2.destroy();
     if(lvl3)
     lvl3.destroy();
-
-    DestroyIntroAreas();
 
 }
 

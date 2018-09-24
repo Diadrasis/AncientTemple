@@ -19,13 +19,17 @@ var posGirlBody = { x: 1568, y: 849 };
 var posBoyBody = { x: 1530, y: 848 };
 var posBoyHead = { x: 1544, y: 607 };
 
-var posBtnBoy = {x:815, y:246};
-var posBtnGirl = {x:519, y:246};
+var posBtnBoy = {x:549, y:246};
+var posBtnGirl = {x:320, y:246};
+var posBtnBoy2 = {x:1007, y:246};
+var posBtnGirl2 = {x:781, y:246};
 
 var posShadowGirl = {x:1567, y:775};
 var posShadowBoy = {x:1543, y:774};
+var posShadowGirl2 = {x:1568, y:775};
+var posShadowBoy2 = {x:1530, y:784};
 
-var btnBoy, btnGirl;
+var btnBoy, btnBoy2, btnGirl, btnGirl2;
 
 var btnClothRed, btnClothGreen, btnClothBlue, btnClothNavy, btnClothPurple;
 var btnHairBlack, btnHairBrown, btnHairYellow;
@@ -50,13 +54,22 @@ class PlayerScene extends Phaser.Scene
 
     initPlayerArrays();
 
+    mouseSetCursor(cursorType.wait);
+
   }
 
   preload () {
 
     showProgress();
 
-    loadBackground();
+    //loadBackground();
+    background = 'avatar_background' + currentScene;
+    if (languange === 'gr') {
+      _this.load.image(background, getSceneImagesFolder() + 'avatar_background.jpg');
+    }else{
+      _this.load.image(background, getSceneImagesFolder() + 'avatar_background_en.jpg');
+    }
+
 
     //load images
     loadImagesPlayerScene();
@@ -65,7 +78,11 @@ class PlayerScene extends Phaser.Scene
 
   create () 
   { 
-    showBackground();
+
+    mouseSetCursor(cursorType.default);
+
+    //showBackground();
+    backgroundObject = _this.add.image(0, 0, background).setOrigin(0, 0);
 
     var btnCreateAvatar =  _this.add.image(1263, 274, currentScene + 'draftButton').setInteractive({ cursor: 'pointer' });
     btnCreateAvatar.on('pointerup',
@@ -110,7 +127,14 @@ function createAvatar()
   
   if(currAvatarIsBoy === 'true'){
     avatarShadow = _this.add.image(posShadowBoy.x, posShadowBoy.y,currentScene +'boy_shadow');
-  }else{
+  }
+  else if(currAvatarIsBoy === 'boy2'){
+    avatarShadow = _this.add.image(posShadowBoy2.x, posShadowBoy2.y,currentScene +'boy2_shadow');
+  }
+  else if(currAvatarIsBoy === 'girl2'){
+    avatarShadow = _this.add.image(posShadowGirl2.x, posShadowGirl2.y,currentScene +'girl2_shadow');
+  }
+  else{
     avatarShadow = _this.add.image(posShadowGirl.x, posShadowGirl.y,currentScene +'girl_shadow');
   }
 
@@ -129,14 +153,21 @@ function setAvatar()
 
   if(currAvatarIsBoy === 'true'){
     avatarShadow.setTexture(currentScene +'boy_shadow').setPosition(posShadowBoy.x, posShadowBoy.y);
-  }else{
+  }
+  else if(currAvatarIsBoy === 'boy2'){
+    avatarShadow.setTexture(currentScene +'boy2_shadow').setPosition(posShadowBoy2.x, posShadowBoy2.y);
+  }
+  else if(currAvatarIsBoy === 'girl2'){
+    avatarShadow.setTexture(currentScene +'girl2_shadow').setPosition(posShadowGirl2.x, posShadowGirl2.y);
+  }
+  else{
     avatarShadow.setTexture(currentScene +'girl_shadow').setPosition(posShadowGirl.x, posShadowGirl.y);
   }
 }
 
 function getHeadPosition()
 {
-  if(currAvatarIsBoy === 'true'){
+  if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
     return posBoyHead;
   }else{
     return posGirlHead;
@@ -145,7 +176,7 @@ function getHeadPosition()
 
 function getBodyPosition()
 {
-  if(currAvatarIsBoy === 'true'){
+  if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
     return posBoyBody;
   }else{
     return posGirlBody;
@@ -156,21 +187,42 @@ function getHeadName(){
   if (currHairColor === 'brown') {
     if(currAvatarIsBoy === 'true'){
       return currentScene + boyHeadNames.brown;
-    }else{
+    }
+    else if(currAvatarIsBoy === 'boy2'){
+      return currentScene + boy2HeadNames.brown;
+    }
+    else if(currAvatarIsBoy === 'girl2'){
+      return currentScene + girl2HeadNames.brown;
+    }
+    else if(currAvatarIsBoy === 'false'){
       return currentScene +  girlHeadNames.brown;
     }
   } else
   if (currHairColor === 'yellow') {
     if(currAvatarIsBoy === 'true'){
       return currentScene + boyHeadNames.yellow;
-    }else{
+    }
+    else if(currAvatarIsBoy === 'boy2'){
+      return currentScene + boy2HeadNames.yellow;
+    }
+    else if(currAvatarIsBoy === 'girl2'){
+      return currentScene + girl2HeadNames.yellow;
+    }
+    else if(currAvatarIsBoy === 'false'){
       return currentScene +  girlHeadNames.yellow;
     }
   } else
   if (currHairColor === 'black') {
     if(currAvatarIsBoy === 'true'){
       return currentScene + boyHeadNames.black;
-    }else{
+    }
+    else if(currAvatarIsBoy === 'boy2'){
+      return currentScene + boy2HeadNames.black;
+    }
+    else if(currAvatarIsBoy === 'girl2'){
+      return currentScene + girl2HeadNames.black;
+    }
+    else if(currAvatarIsBoy === 'false'){
       return currentScene +  girlHeadNames.black;
     }
   }else{
@@ -180,35 +232,35 @@ function getHeadName(){
 
 function getClothName() {
   if (currClothColor === 'red') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return currentScene + boyBodyNames.red;
     }else{
       return currentScene +  girlBodyNames.red;
     }
   } else
   if (currClothColor === 'green') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return currentScene + boyBodyNames.green;
     }else{
       return currentScene +  girlBodyNames.green;
     }
   } else
   if (currClothColor === 'blue') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return currentScene + boyBodyNames.blue;
     }else{
       return currentScene +  girlBodyNames.blue;
     }
   } else
   if (currClothColor === 'navy') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return currentScene + boyBodyNames.navy;
     }else{
       return currentScene +  girlBodyNames.navy;
     }
   } else
   if (currClothColor === 'purple') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return currentScene + boyBodyNames.purple;
     }else{
       return currentScene +  girlBodyNames.purple;
@@ -331,6 +383,8 @@ function createAvatarButtons()
     function () {
       btnGirl.setTexture(currentScene +'girl_button_off');
       btnBoy.setTexture(currentScene +'boy_button_on');
+      btnGirl2.setTexture(currentScene +'girl2_button_off');
+      btnBoy2.setTexture(currentScene +'boy2_button_off');
       currAvatarIsBoy = 'true';
       setAvatar();
     }
@@ -341,7 +395,33 @@ function createAvatarButtons()
     function () {
       btnBoy.setTexture(currentScene +'boy_button_off');
       btnGirl.setTexture(currentScene +'girl_button_on');
+      btnGirl2.setTexture(currentScene +'girl2_button_off');
+      btnBoy2.setTexture(currentScene +'boy2_button_off');
       currAvatarIsBoy = 'false';
+      setAvatar();
+    }
+  );
+
+  btnBoy2 = _this.add.image(posBtnBoy2.x, posBtnBoy2.y, currentScene + 'boy2_button_off').setInteractive();
+  btnBoy2.on('pointerdown',
+    function () {
+      btnBoy2.setTexture(currentScene +'boy2_button_on');
+      btnGirl.setTexture(currentScene +'girl_button_off');
+      btnBoy.setTexture(currentScene +'boy_button_off');
+      btnGirl2.setTexture(currentScene +'girl2_button_off');
+      currAvatarIsBoy = 'boy2';
+      setAvatar();
+    }
+  );
+
+  btnGirl2 = _this.add.image(posBtnGirl2.x, posBtnGirl2.y, currentScene + 'girl2_button_off').setInteractive();
+  btnGirl2.on('pointerdown',
+    function () {
+      btnGirl2.setTexture(currentScene +'girl2_button_on');
+      btnBoy.setTexture(currentScene +'boy_button_off');
+      btnBoy2.setTexture(currentScene +'boy2_button_off');
+      btnGirl.setTexture(currentScene +'girl_button_off');
+      currAvatarIsBoy = 'girl2';
       setAvatar();
     }
   );
@@ -363,6 +443,10 @@ function loadImagesPlayerScene()
   _this.load.image(currentScene + 'boy_button_off', getSceneImagesFolder() + 'boy_button_off' + '.png');
   _this.load.image(currentScene + 'girl_button_on', getSceneImagesFolder() + 'girl_button_on' + '.png');
   _this.load.image(currentScene + 'girl_button_off', getSceneImagesFolder() + 'girl_button_off' + '.png');
+  _this.load.image(currentScene + 'boy2_button_on', getSceneImagesFolder() + 'boy2_button_on' + '.png');
+  _this.load.image(currentScene + 'boy2_button_off', getSceneImagesFolder() + 'boy2_button_off' + '.png');
+  _this.load.image(currentScene + 'girl2_button_on', getSceneImagesFolder() + 'girl2_button_on' + '.png');
+  _this.load.image(currentScene + 'girl2_button_off', getSceneImagesFolder() + 'girl2_button_off' + '.png');
 
   //load cloth color buttons
   _this.load.image(currentScene + btnClothColorNames.red, getSceneImagesFolder() + btnClothColorNames.red + '.png');
@@ -395,6 +479,12 @@ function loadImagesPlayerScene()
   _this.load.image(currentScene + boyHeadNames.brown, getSceneImagesFolder() + boyHeadNames.brown + '.png');
   _this.load.image(currentScene + boyHeadNames.yellow, getSceneImagesFolder() + boyHeadNames.yellow + '.png');
   _this.load.image(currentScene + boyHeadNames.black, getSceneImagesFolder() + boyHeadNames.black + '.png');
+  _this.load.image(currentScene + girl2HeadNames.brown, getSceneImagesFolder() + girl2HeadNames.brown + '.png');
+  _this.load.image(currentScene + girl2HeadNames.yellow, getSceneImagesFolder() + girl2HeadNames.yellow + '.png');
+  _this.load.image(currentScene + girl2HeadNames.black, getSceneImagesFolder() + girl2HeadNames.black + '.png');
+  _this.load.image(currentScene + boy2HeadNames.brown, getSceneImagesFolder() + boy2HeadNames.brown + '.png');
+  _this.load.image(currentScene + boy2HeadNames.yellow, getSceneImagesFolder() + boy2HeadNames.yellow + '.png');
+  _this.load.image(currentScene + boy2HeadNames.black, getSceneImagesFolder() + boy2HeadNames.black + '.png');
 
   //load bodies
   _this.load.image(currentScene + girlBodyNames.red, getSceneImagesFolder() + girlBodyNames.red + '.png');
@@ -412,6 +502,8 @@ function loadImagesPlayerScene()
   //load shadows
   _this.load.image(currentScene + 'girl_shadow', getSceneImagesFolder() + 'girl_shadow' + '.png');
   _this.load.image(currentScene + 'boy_shadow', getSceneImagesFolder() + 'boy_shadow' + '.png');
+  _this.load.image(currentScene + 'girl2_shadow', getSceneImagesFolder() + 'girl2_shadow' + '.png');
+  _this.load.image(currentScene + 'boy2_shadow', getSceneImagesFolder() + 'boy2_shadow' + '.png');
 
 }
 
@@ -443,11 +535,25 @@ var girlHeadNames =
   black: 'girl_head_03'
 }
 
+var girl2HeadNames =
+{
+  brown: 'girl2_head_1',
+  yellow: 'girl2_head_2',
+  black: 'girl2_head_3'
+}
+
 var boyHeadNames =
 {
   brown: 'boy_head_01',
   yellow: 'boy_head_02',
   black: 'boy_head_03'
+}
+
+var boy2HeadNames =
+{
+  brown: 'boy2_head_1',
+  yellow: 'boy2_head_2',
+  black: 'boy2_head_3'
 }
 
 var girlBodyNames =
@@ -513,7 +619,14 @@ function getHeadFileName(){
 
   if (avatarGlobal[0][0] === 'true') {
     currAvatarIsBoy = 'true';
-  } else {
+  }
+  else if(avatarGlobal[0][0]  === 'boy2'){
+    currAvatarIsBoy = 'boy2';
+  }
+  else if(avatarGlobal[0][0]  === 'girl2'){
+    currAvatarIsBoy = 'girl2';
+  }
+  else {
     currAvatarIsBoy = 'false';
   }
   currHairColor = avatarGlobal[0][1];
@@ -522,69 +635,100 @@ function getHeadFileName(){
   if (currHairColor === 'brown') {
     if(currAvatarIsBoy === 'true'){
       return boyHeadNames.brown;
-    }else{
-      return girlHeadNames.brown;
     }
-  } else
+    else if(currAvatarIsBoy === 'boy2'){
+      return boy2HeadNames.brown;
+    }
+    else if(currAvatarIsBoy === 'girl2'){
+      return girl2HeadNames.brown;
+    }
+    else if(currAvatarIsBoy === 'false'){
+      return  girlHeadNames.brown;
+    }
+  } 
+  else
   if (currHairColor === 'yellow') {
     if(currAvatarIsBoy === 'true'){
       return boyHeadNames.yellow;
-    }else{
-      return girlHeadNames.yellow;
     }
-  } else
+    else if(currAvatarIsBoy === 'boy2'){
+      return boy2HeadNames.yellow;
+    }
+    else if(currAvatarIsBoy === 'girl2'){
+      return girl2HeadNames.yellow;
+    }
+    else if(currAvatarIsBoy === 'false'){
+      return  girlHeadNames.yellow;
+    }
+  } 
+  else
   if (currHairColor === 'black') {
     if(currAvatarIsBoy === 'true'){
       return boyHeadNames.black;
-    }else{
-      return girlHeadNames.black;
     }
-  }else{
+    else if(currAvatarIsBoy === 'boy2'){
+      return boy2HeadNames.black;
+    }
+    else if(currAvatarIsBoy === 'girl2'){
+      return girl2HeadNames.black;
+    }
+    else if(currAvatarIsBoy === 'false'){
+      return  girlHeadNames.black;
+    }
+  }
+  else{
     if(currAvatarIsBoy === 'true'){
       return boyHeadNames.black;
-    }else{
-      return girlHeadNames.black;
+    }
+    else if(currAvatarIsBoy === 'boy2'){
+      return boy2HeadNames.black;
+    }
+    else if(currAvatarIsBoy === 'girl2'){
+      return girl2HeadNames.black;
+    }
+    else if(currAvatarIsBoy === 'false'){
+      return  girlHeadNames.black;
     }
   }
 }
 
 function getClothFileName() {
   if (currClothColor === 'red') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return boyBodyNames.red;
     }else{
       return girlBodyNames.red;
     }
   } else
   if (currClothColor === 'green') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return boyBodyNames.green;
     }else{
       return girlBodyNames.green;
     }
   } else
   if (currClothColor === 'blue') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return boyBodyNames.blue;
     }else{
       return girlBodyNames.blue;
     }
   } else
   if (currClothColor === 'navy') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return boyBodyNames.navy;
     }else{
       return girlBodyNames.navy;
     }
   } else
   if (currClothColor === 'purple') {
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return boyBodyNames.purple;
     }else{
       return girlBodyNames.purple;
     }
   }else{
-    if(currAvatarIsBoy === 'true'){
+    if(currAvatarIsBoy === 'true' || currAvatarIsBoy === 'boy2'){
       return boyBodyNames.purple;
     }else{
       return girlBodyNames.purple;
@@ -597,9 +741,17 @@ function getClothFileName() {
 function leaderLoadPlayerAvatar(username, boy, headColor, bodyColor) {
   _this.load.image(username + 'leaderhead', imagesFolder + 'player/' + getLeaderHeadFileName(boy, headColor) + '.png');
   _this.load.image(username + 'leaderbody', imagesFolder + 'player/' + getLeaderClothFileName(boy, bodyColor) + '.png');
+  
   if (boy === 'true') {
     _this.load.image(username + 'leaderShadow', imagesFolder + 'player/' + 'boy_shadow' + '.png');
-  } else {
+  } 
+  else if (boy === 'boy2') {
+    _this.load.image(username + 'leaderShadow', imagesFolder + 'player/' + 'boy2_shadow' + '.png');
+  } 
+  else if (boy === 'girl2') {
+    _this.load.image(username + 'leaderShadow', imagesFolder + 'player/' + 'girl2_shadow' + '.png');
+  } 
+  else {
     _this.load.image(username + 'leaderShadow', imagesFolder + 'player/' + 'girl_shadow' + '.png');
   }
 }
@@ -608,69 +760,98 @@ function getLeaderHeadFileName(boy, color) {
   if (color === 'brown') {
     if (boy === 'true') {
       return boyHeadNames.brown;
-    } else {
-      return girlHeadNames.brown;
+    } 
+    else if(boy === 'boy2'){
+      return boy2HeadNames.brown;
     }
-  } else
-    if (color === 'yellow') {
-      if (boy === 'true') {
-        return boyHeadNames.yellow;
-      } else {
-        return girlHeadNames.yellow;
-      }
-    } else
-      if (color === 'black') {
-        if (boy === 'true') {
-          return boyHeadNames.black;
-        } else {
-          return girlHeadNames.black;
-        }
-      } else {
-        if (boy === 'true') {
-          return boyHeadNames.black;
-        } else {
-          return girlHeadNames.black;
-        }
-      }
+    else if(boy === 'girl2'){
+      return girl2HeadNames.brown;
+    }
+    else if(boy === 'false'){
+      return  girlHeadNames.brown;
+    }
+  } 
+  else if (color === 'yellow') {
+    if (boy === 'true') {
+      return boyHeadNames.yellow;
+    } 
+    else if(boy === 'boy2'){
+      return boy2HeadNames.yellow;
+    }
+    else if(boy === 'girl2'){
+      return girl2HeadNames.yellow;
+    }
+    else if(boy === 'false'){
+      return  girlHeadNames.yellow;
+    }
+  }
+  else if (color === 'black') {
+    if (boy === 'true') {
+      return boyHeadNames.black;
+    } 
+    else if(boy === 'boy2'){
+      return boy2HeadNames.black;
+    }
+    else if(boy === 'girl2'){
+      return girl2HeadNames.black;
+    }
+    else if(boy === 'false'){
+      return  girlHeadNames.black;
+    }
+  }
+  else {
+    if (boy === 'true') {
+      return boyHeadNames.black;
+    } 
+    else if(boy === 'boy2'){
+      return boy2HeadNames.black;
+    }
+    else if(boy === 'girl2'){
+      return girl2HeadNames.black;
+    }
+    else if(boy === 'false'){
+      return  girlHeadNames.black;
+    }
+  }
 }
 
 function getLeaderClothFileName(boy, color) {
   if (color === 'red') {
-    if(boy === 'true'){
+    if(boy === 'true' || boy === 'boy2'){
       return boyBodyNames.red;
     }else{
       return girlBodyNames.red;
     }
   } else
   if (color === 'green') {
-    if(boy === 'true'){
+    if(boy === 'true' || boy === 'boy2'){
       return boyBodyNames.green;
     }else{
       return girlBodyNames.green;
     }
   } else
   if (color === 'blue') {
-    if(boy === 'true'){
+    if(boy === 'true' || boy === 'boy2'){
       return boyBodyNames.blue;
     }else{
       return girlBodyNames.blue;
     }
   } else
   if (color === 'navy') {
-    if(boy === 'true'){
+    if(boy === 'true' || boy === 'boy2'){
       return boyBodyNames.navy;
     }else{
       return girlBodyNames.navy;
     }
   } else
   if (color === 'purple') {
-    if(boy === 'true'){
+    if(boy === 'true' || boy === 'boy2'){
       return boyBodyNames.purple;
     }else{
       return girlBodyNames.purple;
     }
   }else{
-    if(boy === 'true'){
+    if(boy === 'true' || boy === 'boy2'){
       return boyBodyNames.purple;
     }else{
       return girlBodyNames.purple;

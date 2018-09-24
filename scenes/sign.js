@@ -114,12 +114,14 @@ class SignScene extends Phaser.Scene
     posIntroCharacter = posIntroCharacterSign;
 
     //GR
-
-    areaInscriptions = new Phaser.Geom.Rectangle(introZeroPos.x + 530, introZeroPos.y + 407, 175, 45);
-    RepositionRect(areaInscriptions);
-    
-
-    //EN
+    if (languange === 'gr') {
+      areaInscriptions = new Phaser.Geom.Rectangle(introZeroPos.x + 530, introZeroPos.y + 407, 175, 45);
+      RepositionRect(areaInscriptions);
+    }
+    else{//EN
+      areaInscriptions = new Phaser.Geom.Rectangle(introZeroPos.x + 791, introZeroPos.y + 384, 190, 45);
+      RepositionRect(areaInscriptions);
+    }
 
   }
 
@@ -179,7 +181,9 @@ class SignScene extends Phaser.Scene
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(inscriptions_gr);
+        if(languange === 'gr'){ textMouseOver.setText(inscriptions_gr); }
+        else{ textMouseOver.setText(inscriptions_en); }
+
         textMouseOver.x = RectCenter(areaInscriptions).x;// pointer.x;
         textMouseOver.y = RectCenter(areaInscriptions).y - 70; //pointer.y - 70;
 
@@ -250,7 +254,7 @@ class SignScene extends Phaser.Scene
 
     //onCanvasLoseFocus();
 
-    fadeInCamera(2);
+    fadeInCamera(1);
 
     createHelp();
 

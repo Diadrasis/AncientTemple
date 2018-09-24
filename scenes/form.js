@@ -98,22 +98,39 @@ class FormScene extends Phaser.Scene {
 
     //GR
 
-    areaEntablature = new Phaser.Geom.Rectangle(introZeroPos.x + 278, introZeroPos.y + 419,106, 35);
-    RepositionRect(areaEntablature);
+    if (languange === 'gr') {
+      areaEntablature = new Phaser.Geom.Rectangle(introZeroPos.x + 278, introZeroPos.y + 419, 106, 35);
+      RepositionRect(areaEntablature);
 
-    areaPediments = new Phaser.Geom.Rectangle(introZeroPos.x + 410, introZeroPos.y + 419,130, 35);
-    RepositionRect(areaPediments);
+      areaPediments = new Phaser.Geom.Rectangle(introZeroPos.x + 410, introZeroPos.y + 419, 130, 35);
+      RepositionRect(areaPediments);
 
-    areaDoric = new Phaser.Geom.Rectangle(introZeroPos.x + 702, introZeroPos.y + 492, 117, 35);
-    RepositionRect(areaDoric);
-    
-    areaIonic = new Phaser.Geom.Rectangle(introZeroPos.x + 850, introZeroPos.y + 492, 110, 35);
-    RepositionRect(areaIonic);
+      areaDoric = new Phaser.Geom.Rectangle(introZeroPos.x + 702, introZeroPos.y + 492, 117, 35);
+      RepositionRect(areaDoric);
 
-    areaKorinthian = new Phaser.Geom.Rectangle(introZeroPos.x + 369, introZeroPos.y + 527, 172, 40);
-    RepositionRect(areaKorinthian);
+      areaIonic = new Phaser.Geom.Rectangle(introZeroPos.x + 850, introZeroPos.y + 492, 110, 35);
+      RepositionRect(areaIonic);
 
-    //EN
+      areaKorinthian = new Phaser.Geom.Rectangle(introZeroPos.x + 369, introZeroPos.y + 527, 172, 40);
+      RepositionRect(areaKorinthian);
+    }
+    else{//EN
+      areaEntablature = new Phaser.Geom.Rectangle(introZeroPos.x + 323, introZeroPos.y + 355, 154, 33);
+      RepositionRect(areaEntablature);
+
+      areaPediments = new Phaser.Geom.Rectangle(introZeroPos.x + 482, introZeroPos.y + 357, 149, 35);
+      RepositionRect(areaPediments);
+
+      areaDoric = new Phaser.Geom.Rectangle(introZeroPos.x + 561, introZeroPos.y + 428, 72, 35);
+      RepositionRect(areaDoric);
+
+      areaIonic = new Phaser.Geom.Rectangle(introZeroPos.x + 643, introZeroPos.y + 428, 71, 35);
+      RepositionRect(areaIonic);
+
+      areaKorinthian = new Phaser.Geom.Rectangle(introZeroPos.x + 812, introZeroPos.y + 426, 141, 40);
+      RepositionRect(areaKorinthian);
+
+    }
 
   }
 
@@ -175,7 +192,9 @@ class FormScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(entablature_gr);
+        if(languange === 'gr'){ textMouseOver.setText(entablature_gr); }
+        else{ textMouseOver.setText(entablature_en); }
+
         textMouseOver.x = RectCenter(areaEntablature).x;// areaEntablature.x + areaEntablature.width/2;//  pointer.x;
         textMouseOver.y = RectCenter(areaEntablature).y- 70; //areaEntablature.y + areaEntablature.height/2;// pointer.y - 70;
        
@@ -190,7 +209,9 @@ class FormScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(pediments_gr);
+        if(languange === 'gr'){ textMouseOver.setText(pediments_gr); }
+        else{ textMouseOver.setText(pediments_en); }
+
         textMouseOver.x = RectCenter(areaPediments).x; // pointer.x;
         textMouseOver.y = RectCenter(areaPediments).y- 70; //pointer.y - 70;
        
@@ -204,7 +225,9 @@ class FormScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(doric_gr);
+        if(languange === 'gr'){ textMouseOver.setText(doric_gr); }
+        else{ textMouseOver.setText(doric_en); }
+
         textMouseOver.x = RectCenter(areaDoric).x; //  pointer.x;
         textMouseOver.y = RectCenter(areaDoric).y- 70; // pointer.y - 70;
 
@@ -218,7 +241,9 @@ class FormScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(ionic_gr);
+        if(languange === 'gr'){ textMouseOver.setText(ionic_gr); }
+        else{ textMouseOver.setText(ionic_en); }
+
         textMouseOver.x = RectCenter(areaIonic).x; //  pointer.x;
         textMouseOver.y = RectCenter(areaIonic).y- 70; // pointer.y - 70;
 
@@ -232,9 +257,11 @@ class FormScene extends Phaser.Scene {
         isOnWord = true;
         mouseSetCursor(cursorType.pointer);
 
-        textMouseOver.setText(korinthian_gr);
+        if(languange === 'gr'){ textMouseOver.setText(korinthian_gr); }
+        else{ textMouseOver.setText(korinthian_en); }
+
         textMouseOver.x = RectCenter(areaKorinthian).x; // pointer.x;
-        textMouseOver.y = RectCenter(areaKorinthian).y- 70; // pointer.y - 70;
+        textMouseOver.y = RectCenter(areaKorinthian).y - 70; // pointer.y - 70;
 
         imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
         imageMouseOver.x = textMouseOver.x;
@@ -998,7 +1025,7 @@ class FormScene extends Phaser.Scene {
 
     createHelp();
 
-    fadeInCamera(2);
+    fadeInCamera(1);
     
   }//create
 

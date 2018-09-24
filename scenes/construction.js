@@ -5,7 +5,7 @@ let imgW = 400;
 let imgH = 250;
 let imgS = 20;
 let imgX1 = 500;
-let imgY1 = 180;
+let imgY1 = 220;
 let difNo = 0;
 
 //includes all sorted activites that will be created from database
@@ -43,6 +43,13 @@ let allImages, allTexts;
 
 var posIntroCharacterConstruction = {x:354 , y:690};
 
+
+function checkZoomClickConstruction(){     console.log(clickCounts);
+  if(clickCounts>=2){ ZoomImage(currentImageDoubleClickCheck); }
+  else if(clickCounts === 1) { clickCounts = 0;}
+}
+
+
 class ConstructionScene extends Phaser.Scene 
 {
 
@@ -61,7 +68,7 @@ class ConstructionScene extends Phaser.Scene
 
     initTimer();
 
-    totalTime = {easy: 120000, medium: 120000, hard: 90000, champion: 90000};
+    totalTime = {easy: 600000, medium: 500000, hard: 300000, champion: 90000};
 
     allImages = [];
     allTexts = [];
@@ -109,8 +116,17 @@ class ConstructionScene extends Phaser.Scene
 
     loadMenuBar();
 
-    
     //#region Load Images
+
+
+    this.load.image(currentScene + 'try', getSceneImagesFolder() + 'try.png');
+    this.load.image(currentScene + 'try_checked', getSceneImagesFolder() + 'try_checked.png');
+
+    this.load.image('bg_grey', getSceneImagesFolder() + 'bg_grey.png');
+
+    this.load.image(currentScene + 'wrong', getSceneImagesFolder() + 'wrong.png');
+
+    
     //this.load.image(currentScene+'_icons', getSceneImagesFolder() + 'icons.png');
     //this.load.image(currentScene+'_numbers', getSceneImagesFolder() + 'numbers.png');
       this.load.image(currentScene + '_emptyButton', getSceneImagesFolder() + 'emptyButton.png');
@@ -125,7 +141,6 @@ class ConstructionScene extends Phaser.Scene
       }
       */
 
-      
 
     //for(let i=1; i<=4; i++)
     //{
@@ -155,6 +170,17 @@ class ConstructionScene extends Phaser.Scene
     showBackground();
     
     showMenuBar();
+    
+    zoomBackgroundImage = this.add.image(0,0,'bg_grey').setOrigin(0, 0); 
+    zoomBackgroundImage.setInteractive();
+    zoomBackgroundImage.visible = false;
+
+    //1835, 85
+    zoomButtonClose = this.add.sprite(1835, 85, currentScene + 'wrong');
+    zoomButtonClose.setInteractive({ cursor: 'pointer' });
+    zoomButtonClose.visible = false;
+    zoomButtonClose.setScale(0.5);
+    zoomButtonClose.on('pointerdown', function () { zoomBackgroundImage.visible = false; zoomButtonClose.visible = false; if(isRealValue(zoomedImageObject)){zoomedImageObject.destroy();} });
 
     //#region create scene currObjectSculpture
 
@@ -162,11 +188,33 @@ class ConstructionScene extends Phaser.Scene
     //this.add.image(posNumberIcons.x, posNumberIcons.y, currentScene+'_icons');
     //this.add.image(posNumberIcons.x, posNumberIcons.y, currentScene+'_numbers');
 
-   
-
-    
-
     //#endregion
+
+    groupEffortIcons = _this.add.group({
+        key: currentScene + 'try',
+        maxSize: 10,
+        setXY:
+          {
+            x: 821,
+            y: 998,
+            stepX: 62
+          },
+        repeat: 10
+      });
+  
+      groupCorrectIcons = _this.add.group({
+        key: currentScene + 'try_checked',
+        maxSize: 10,
+        setXY:
+          {
+            x: 821,
+            y: 998,
+            stepX: 62
+          },
+        repeat: 10
+      });
+  
+      hideGroupCorrectIcons();
 
     createSceneFooter();
 
@@ -174,7 +222,7 @@ class ConstructionScene extends Phaser.Scene
 
     createPopUpMessage();
 
-    fadeInCamera(2);
+    fadeInCamera(1);
 
     createHelp();
 
@@ -208,6 +256,10 @@ function checkMatchKorres(gameObject) {
             let myCorrectIndex = selectedKorresObject.data.get('pair');
             selectedKorresObject.data.set('active', 'false');
             //gameObject.data, set('active', 'false');
+
+            //show correct icon
+            showCorrectEffort(myCorrectIndex);
+
             checkSolutionConstruction();
 
             //let myCorrectIndex = selectedKorresObject.data.get('index');
@@ -229,6 +281,7 @@ function checkMatchKorres(gameObject) {
                 timePenalty += timeToRemove;
                 timerEventGame.delay -= timeToRemove * 1000;
             }
+            
         }
 
 
@@ -266,6 +319,8 @@ function winConstructionGame() {
   isGameOver = true;
   isGamePaused = true;
 
+  hideGroupCorrectIcons();
+
   var myScore = selectedLevel * timeOfGame;
 
   if (myScore > scoreConstruction) {
@@ -288,6 +343,8 @@ function loseConstructionGame()
     allImages[i].visible = false;
     allTexts[i].visible = false;
   }
+
+  hideGroupCorrectIcons();
 
 }
 
@@ -330,14 +387,30 @@ function newConstructionGame()
         difNo = 4;
         imgS=20
 
+        totalTimeSelected = totalTime.easy;
+        timeToRemove = 10;
+        usePenaltyTime = true;
+
     } else if (selectedLevel === 2) {
         difNo = 5;
         imgS = 15;
 
+        totalTimeSelected = totalTime.medium;
+        timeToRemove = 20;
+        usePenaltyTime = true;
+
     } else if (selectedLevel === 3) {
         difNo = 6;
         imgS = 10;
+
+        totalTimeSelected = totalTime.hard;
+        timeToRemove = 30;
+        usePenaltyTime = true;
     }
+
+    maxEfforts = difNo;
+
+    showEfforts();
 
     imgW = game.config.width / (difNo + 1);
     imgX1=imgW*1.2;   
@@ -346,7 +419,7 @@ function newConstructionGame()
     for (var i = 0; i < difNo; i++) {           
 
        // this.add.image(imgX1 + i * (imgW + imgS), imgY1 + 200, currentScene + '_img_icon');
-        this.add.image(imgX1 + i * (imgW + imgS), imgY1 + 530, currentScene + '_img_icon');
+        this.add.image(imgX1 + i * (imgW + imgS), imgY1 + 480, currentScene + '_img_icon');
        // this.add.image(imgX1 + i * (imgW + imgS), imgY1 + 400, currentScene + '_text_icon');
                         
         posFinalImagesKorres[i] = {
@@ -431,10 +504,10 @@ function SetInteraction() {
     allImages = [];  
     for (let i = 0; i < difNo; i++) {
         let btnImg = _this.add.image(imgX1 + i * (imgW + imgS), imgY1, currentScene + '_img_' + rand_activities[i][1]);
-        //alert(btnImg.image);
+        
         let scale=(imgW / btnImg.width);
         btnImg.setDisplaySize(imgW, btnImg.height*scale);
-        btnImg.setInteractive();
+        btnImg.setInteractive({ cursor: 'pointer' });
         btnImg.setDataEnabled();
         btnImg.data.set('pair', i.toString());
         //btnImg.data.set('index', i.toString());
@@ -448,6 +521,10 @@ function SetInteraction() {
                 selectedKorresObject = this;
                 resetSelection();
                 //alert(this.index)
+
+                clickCounts++; 
+                currentImageDoubleClickCheck = currentScene + '_img_' + rand_activities[i][1];
+                _this.time.delayedCall(250, checkZoomClickConstruction, [], _this);
             }
             //checkMatchKorres(btnImg);
         });
@@ -456,11 +533,22 @@ function SetInteraction() {
       
     //texts
     allTexts = [];
-    for (let i = 0; i < difNo; i++) {
-        let btnText = _this.make.text(configConstructionText);        
+    for (let i = 0; i < difNo; i++) {       
+        let btnText;
+        if (selectedLevel === 1) {
+            btnText = _this.make.text(configConstructionText);
+        } else if (selectedLevel === 2) {
+            btnText = _this.make.text(configConstructionTextL2);
+        } else if (selectedLevel === 3) {
+            btnText = _this.make.text(configConstructionTextL3);
+        }
+
         btnText.x = imgX1 + (i-1/2) * (imgW) + (i)*imgS;
-        btnText.y = imgY1 + 570;
+        btnText.y = imgY1 + 570;        
         btnText.setText(rand_activities[i][2]);
+        btnText.width = imgW;
+
+        //alert(imgW - 25);
         //btnText.setInteractive();
         //btnText.setDataEnabled();
         //btnText.data.set('pair', i.toString());
@@ -501,7 +589,7 @@ var constructionTextStyle = {
     color: '#FFFFFF',
     backgroundColor: '#7cb4ab',
     align: 'top',
-    wordWrap: { width: imgW-25, useAdvancedWrap: true }
+    wordWrap: { width: imgW - 25, useAdvancedWrap: true }    
 }
 
 var configConstructionText = {
@@ -511,5 +599,44 @@ var configConstructionText = {
     text: '',
     style: constructionTextStyle
 }
+
+/************* Level2 ***************/
+
+var constructionTextStyleL2 = {
+    fontSize: '19px',
+    fontFamily: 'centuryGothicRegular',
+    color: '#FFFFFF',
+    backgroundColor: '#7cb4ab',
+    align: 'top',
+    wordWrap: {width: 300, useAdvancedWrap: true }
+}
+
+var configConstructionTextL2 = {
+    x: 0,
+    y: 0,
+    padding: 8,
+    text: '',
+    style: constructionTextStyleL2
+}
+
+/************* Level2 ***************/
+
+var constructionTextStyleL3 = {
+    fontSize: '18px',
+    fontFamily: 'centuryGothicRegular',
+    color: '#FFFFFF',
+    backgroundColor: '#7cb4ab',
+    align: 'top',
+    wordWrap: { width: 270, useAdvancedWrap: true }
+}
+
+var configConstructionTextL3 = {
+    x: 0,
+    y: 0,
+    padding: 8,
+    text: '',
+    style: constructionTextStyleL3
+}
+
 
 //********************************************/

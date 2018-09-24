@@ -10,7 +10,12 @@ var cursorType = Object.freeze(
         "no-drop": 'no-drop', 
         "wait": 'wait', 
         "none": 'none', 
-        "crosshair": 'crosshair'
+        "crosshair": 'crosshair',
+        "zoom-in": 'zoom-in',
+        "zoom-out": 'zoom-out',
+        "grab": 'grab',
+        "grabbing": 'grabbing',
+        "url":'url'
     });
 
 function mouseSetCursor(type){
