@@ -51,9 +51,9 @@ class Credits extends Phaser.Scene {
     //show footer loaded from menu
     footer_menu = _this.add.image(game.config.width / 2, game.config.height - 50, 'footer_menu_' + languange);
 
-    _this.add.image(87, 200, 'side_menu_credits');
+    _this.add.image(87, 150, 'side_menu_credits');
 
-    var btnHomeIntro = this.add.image(55, 113, 'btnEmpty').setInteractive({ cursor: 'pointer' });
+    var btnHomeIntro = this.add.image(55, 63, 'btnEmpty').setInteractive({ cursor: 'pointer' });
     btnHomeIntro.depth = 70;
     btnHomeIntro.on('pointerup',
       function () {
@@ -64,13 +64,17 @@ class Credits extends Phaser.Scene {
     );
 
 
-    var btnNext = this.add.image(56, 189, 'btnEmpty').setInteractive({ cursor: 'pointer' });
+    var btnNext = this.add.image(56, 139, 'btnEmpty').setInteractive({ cursor: 'pointer' });
     btnNext.on('pointerdown', NextCreditPage, this);
     btnNext.depth = 70;
 
-    var btnPrevious = this.add.image(56, 287, 'btnEmpty').setInteractive({ cursor: 'pointer' });
+    var btnPrevious = this.add.image(56, 227, 'btnEmpty').setInteractive({ cursor: 'pointer' });
     btnPrevious.on('pointerdown', PreviousCreditPage, this);
     btnPrevious.depth = 70;
+
+    var btnPrint = this.add.image(56, 310, 'btnEmpty').setInteractive({ cursor: 'pointer' });
+    btnPrint.on('pointerdown', PrintPage, this);
+    btnPrint.depth = 70;
 
     createButtonsExtra();
 

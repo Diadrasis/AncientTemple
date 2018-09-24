@@ -153,6 +153,13 @@ class GeographyScene extends Phaser.Scene
 
     _this.time.delayedCall(500, delayLoadTempleImages, [], _this);
     //delayLoadTempleImages();
+
+
+//GR
+
+    areaAltar = new Phaser.Geom.Rectangle(introZeroPos.x + 440, introZeroPos.y + 500, 106, 52);
+    RepositionRect(areaAltar);
+
   }
 
   preload () {
@@ -174,6 +181,8 @@ class GeographyScene extends Phaser.Scene
 
     this.load.image('bg_grey', getSceneImagesFolder() + 'bg_grey.png');
 
+    this.load.image(currentScene + 'board', imagesGeneral + 'board.jpg');
+
     loadSceneFooter();
 
     loadLevelSelectPanel();
@@ -188,6 +197,51 @@ class GeographyScene extends Phaser.Scene
 
   create () 
   { 
+
+
+    imageMouseOver = this.add.image(0,0, currentScene + 'board');
+    imageMouseOver.setOrigin(0.5);
+    imageMouseOver.depth = 5000;
+    imageMouseOver.visible = false;
+
+    textMouseOver = this.make.text(configMouseOverText);
+    textMouseOver.depth = 5006;
+    textMouseOver.setOrigin(0.5);
+
+    isOnWord = false;
+
+    this.input.on('pointermove', function (pointer) {
+
+      if(areaAltar.contains(pointer.x, pointer.y))
+      {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
+        textMouseOver.setText(altar_gr);
+        textMouseOver.x = RectCenter(areaAltar).x;// pointer.x;
+        textMouseOver.y = RectCenter(areaAltar).y - 70;// pointer.y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else
+      {
+        if (isOnWord) {
+          mouseSetCursor(cursorType.default);
+          isOnWord = false;
+        }
+
+        imageMouseOver.visible = false;
+        textMouseOver.setText('');
+      }
+
+
+  });
+
+
+
     showBackground();
     
     showMenuBar();  

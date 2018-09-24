@@ -23,6 +23,7 @@ class LeaderboardScene extends Phaser.Scene {
     this.load.image(currentScene + 'btnHome', imagesGeneral + 'home_button.png');
     this.load.image(currentScene + 'arrow', getSceneImagesFolder()  + 'arrow.png');
 
+    this.load.image('btnEmpty', imagesGeneral + 'btnMenuEmpty.png');
   }
 
   create () {
@@ -57,7 +58,7 @@ class LeaderboardScene extends Phaser.Scene {
 
     controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
 
-    btnRight = this.add.image(68, 525, currentScene + 'arrow').setScrollFactor(0);
+    btnRight = this.add.image(90, 525, currentScene + 'arrow').setScrollFactor(0);
     btnRight.setInteractive({ cursor: 'pointer' });
     btnRight.depth = 200;
 
@@ -96,7 +97,7 @@ class LeaderboardScene extends Phaser.Scene {
       }
     );
 
-    btnLeft = this.add.image(68, 578, currentScene + 'arrow').setScrollFactor(0);
+    btnLeft = this.add.image(90, 578, currentScene + 'arrow').setScrollFactor(0);
     btnLeft.setInteractive({ cursor: 'pointer' });
     btnLeft.flipX = true;
     btnLeft.depth = 200;
@@ -137,8 +138,17 @@ class LeaderboardScene extends Phaser.Scene {
       }
     );
 
+    var btnPrint = _this.add.image(23, 564, 'btnEmpty').setInteractive({ cursor: 'pointer' });
+    btnPrint.setScrollFactor(0);
+    btnPrint.on('pointerdown', PrintPage, this);
+    btnPrint.depth = 70;
+
+    var imageHome =_this.add.sprite(24, 494, currentScene + 'btnHome');
+    imageHome.depth = 200;
+    imageHome.setScrollFactor(0);
+
     //  A sprite, doesn't scroll with the camera (is fixed to camera)
-    btnHome = this.add.image(24, 494, currentScene + 'btnHome').setScrollFactor(0);
+    var btnHome = this.add.image(24, 430, 'btnEmpty').setScrollFactor(0);
 
     btnHome.setInteractive({ cursor: 'pointer' });
 

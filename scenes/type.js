@@ -77,13 +77,27 @@ class TypeScene extends Phaser.Scene {
 
     // DISABLE RIGHT MOUSE CLICK
     //  You can also set this in the game config
-    this.input.mouse.disableContextMenu()
+    this.input.mouse.disableContextMenu();
+
+
+    //GR
+
+    areaCella = new Phaser.Geom.Rectangle(introZeroPos.x + 243, introZeroPos.y + 346, 80, 39);
+    RepositionRect(areaCella);
+
+    areaFacade = new Phaser.Geom.Rectangle(introZeroPos.x + 625, introZeroPos.y + 348, 135, 36);
+    RepositionRect(areaFacade);
+
+    //EN
+
   }
 
   // #endregion
 
   preload () {
     DebugLog('loading ' + currentScene);
+
+    this.load.image(currentScene + 'board', imagesGeneral + 'board.jpg');
 
     loadBackground();
 
@@ -101,7 +115,63 @@ class TypeScene extends Phaser.Scene {
   }
 
   create () {
-    console.info(currentScene + ' create')
+    console.info(currentScene + ' create');
+
+    imageMouseOver = this.add.image(0,0, currentScene + 'board');
+    imageMouseOver.setOrigin(0.5);
+    imageMouseOver.depth = 5000;
+    imageMouseOver.visible = false;
+
+    textMouseOver = this.make.text(configMouseOverText);
+    textMouseOver.depth = 5006;
+    textMouseOver.setOrigin(0.5);
+
+    isOnWord = false;
+
+    this.input.on('pointermove', function (pointer) {
+
+
+      if(areaCella.contains(pointer.x, pointer.y))
+      {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
+        textMouseOver.setText(cella_gr);
+        textMouseOver.x = RectCenter(areaCella).x;
+        textMouseOver.y = RectCenter(areaCella).y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else if(areaFacade.contains(pointer.x, pointer.y))
+      {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
+        textMouseOver.setText(facade_gr);
+        textMouseOver.x = RectCenter(areaFacade).x;
+        textMouseOver.y = RectCenter(areaFacade).y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else
+      {
+        if (isOnWord) {
+          mouseSetCursor(cursorType.default);
+          isOnWord = false;
+        }
+
+        imageMouseOver.visible = false;
+        textMouseOver.setText('');
+      }
+
+
+  });
 
     showBackground()
 

@@ -28,7 +28,7 @@ var configPopUpText = {
 
 var posPopUpTitle = {x: 936, y:522};
 
-  var configPopUpTitle = {
+var configPopUpTitle = {
     x: posPopUpTitle.x,
     y: posPopUpTitle.y,
     text: '',
@@ -39,7 +39,7 @@ var posPopUpTitle = {x: 936, y:522};
         align: 'center',
         wordWrap: { width: 850, useAdvancedWrap: true }
     }
-  };
+};
 
 var configScoreMenuText = { color: '#ffffff', font: 'bold 28px Arial', boundsAlignH: "center", boundsAlignV: "middle" };
 
@@ -120,3 +120,16 @@ var configLoginMessageText = {
         wordWrap: { width: 900, useAdvancedWrap: true }
     }
 }
+
+
+var configMouseOverText = {
+     text: '',
+     style: {
+         fontSize: '25px',
+         fontFamily: 'centuryGothicRegular',
+         color: '#ffffff',
+         align: 'bottom',
+         boundsAlignV: "middle",
+         wordWrap: { width: 600, useAdvancedWrap: true }
+     }
+ };

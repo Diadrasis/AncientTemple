@@ -68,10 +68,7 @@ function MoveObject(pos, objectTarget){
   objectTarget.visible = true;
 }
 
-function RepositionRect(rect){
-  rect.x -= rect.width / 2;
-  rect.y -= rect.height / 2;
-}
+
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -116,6 +113,14 @@ class SignScene extends Phaser.Scene
 
     posIntroCharacter = posIntroCharacterSign;
 
+    //GR
+
+    areaInscriptions = new Phaser.Geom.Rectangle(introZeroPos.x + 530, introZeroPos.y + 407, 175, 45);
+    RepositionRect(areaInscriptions);
+    
+
+    //EN
+
   }
 
   preload () {
@@ -137,6 +142,8 @@ class SignScene extends Phaser.Scene
     this.load.image(currentScene + 'try', getSceneImagesFolder() + 'try.png');
     this.load.image(currentScene + 'try_checked', getSceneImagesFolder() + 'try_checked.png');
 
+    this.load.image(currentScene + 'board', imagesGeneral + 'board.jpg');
+
     //#endregion
 
     loadPopUp();
@@ -153,6 +160,47 @@ class SignScene extends Phaser.Scene
   create () 
   { 
     console.info(currentScene+' started');
+
+    imageMouseOver = this.add.image(0,0, currentScene + 'board');
+    imageMouseOver.setOrigin(0.5);
+    imageMouseOver.depth = 5000;
+    imageMouseOver.visible = false;
+
+    textMouseOver = this.make.text(configMouseOverText);
+    textMouseOver.depth = 5006;
+    textMouseOver.setOrigin(0.5);
+
+    isOnWord = false;
+
+    this.input.on('pointermove', function (pointer) {
+
+      if(areaInscriptions.contains(pointer.x, pointer.y))
+      {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
+        textMouseOver.setText(inscriptions_gr);
+        textMouseOver.x = RectCenter(areaInscriptions).x;// pointer.x;
+        textMouseOver.y = RectCenter(areaInscriptions).y - 70; //pointer.y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else
+      {
+        if (isOnWord) {
+          mouseSetCursor(cursorType.default);
+          isOnWord = false;
+        }
+
+        imageMouseOver.visible = false;
+        textMouseOver.setText('');
+      }
+
+
+  });
 
     disableRightMouseClick();
 

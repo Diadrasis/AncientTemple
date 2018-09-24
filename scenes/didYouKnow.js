@@ -67,6 +67,7 @@ class DidYouKnowScene extends Phaser.Scene {
     this.load.image('dyk_bubble'+ languange, getSceneImagesFolder() + 'did_you_know_bubble_'+ languange + '.png');
 
     this.load.image('dyk_btnHome', getSceneImagesFolder() + 'btnHome.png');
+    this.load.image('dyk_btnPrint', getSceneImagesFolder() + 'print.png');
 
     this.load.image('did_you_know_hero', getSceneImagesFolder() + 'did_you_know_hero.png');
     this.load.image('did_you_know_photo', getSceneImagesFolder() + 'did_you_know_photo.png');
@@ -108,6 +109,10 @@ class DidYouKnowScene extends Phaser.Scene {
         game.scene.start('menu'); //menu
     }, _this);
     btnMenu.depth = 50;
+
+    var btnPrint = _this.add.sprite(55, 260, 'dyk_btnPrint').setInteractive({ cursor: 'pointer' });
+    btnPrint.on('pointerdown', PrintPage, this);
+    btnPrint.depth = 50;
  
 
     btnHomeIntro.depth = -3;

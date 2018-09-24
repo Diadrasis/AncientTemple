@@ -71,7 +71,30 @@ class SculptureScene extends Phaser.Scene {
 
     currObjectSculpture = null
 
-    posIntroCharacter = posIntroCharacterSculpture
+    posIntroCharacter = posIntroCharacterSculpture;
+
+
+    //GR
+
+    areaAkroteria = new Phaser.Geom.Rectangle(introZeroPos.x + 528, introZeroPos.y + 475, 151, 35);
+    RepositionRect(areaAkroteria);
+
+    areaPediments = new Phaser.Geom.Rectangle(introZeroPos.x + 825, introZeroPos.y + 366, 134, 35);
+    RepositionRect(areaPediments);
+
+    areaDoricFrieze = new Phaser.Geom.Rectangle(introZeroPos.x + 890, introZeroPos.y + 404, 104, 35);
+    RepositionRect(areaDoricFrieze);
+    
+    areaIonicFrieze = new Phaser.Geom.Rectangle(introZeroPos.x + 471, introZeroPos.y + 440, 89, 37);
+    RepositionRect(areaIonicFrieze);
+
+    areaCofferings = new Phaser.Geom.Rectangle(introZeroPos.x + 349, introZeroPos.y + 510, 160, 36);
+    RepositionRect(areaCofferings);
+
+    //EN
+
+
+
   }
 
   preload () {
@@ -98,6 +121,8 @@ class SculptureScene extends Phaser.Scene {
     this.load.image(currentScene + 'try', getSceneImagesFolder() + 'try.png');
     this.load.image(currentScene + 'try_checked', getSceneImagesFolder() + 'try_checked.png');
 
+    this.load.image(currentScene + 'board', imagesGeneral + 'board.jpg');
+
     // #endregion
 
     loadSceneFooter();
@@ -112,7 +137,112 @@ class SculptureScene extends Phaser.Scene {
   }
 
   create () {
-    console.info(currentScene + ' started')
+    console.info(currentScene + ' started');
+
+
+    imageMouseOver = this.add.image(0,0, currentScene + 'board');
+    imageMouseOver.setOrigin(0.5);
+    imageMouseOver.depth = 5000;
+    imageMouseOver.visible = false;
+
+    textMouseOver = this.make.text(configMouseOverText);
+    textMouseOver.depth = 5006;
+    textMouseOver.setOrigin(0.5);
+
+    isOnWord = false;
+
+    this.input.on('pointermove', function (pointer) {
+
+      var posX = pointer.x < 1615 ? pointer.x : 1615;
+
+
+      if(areaAkroteria.contains(pointer.x, pointer.y))
+      {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
+        textMouseOver.setText(akroteria_gr);
+
+        textMouseOver.x =  RectCenter(areaAkroteria).x;
+        textMouseOver.y = RectCenter(areaAkroteria).y - 70;// pointer.y - 70;
+       
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else if(areaPediments.contains(pointer.x, pointer.y))
+      {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
+        textMouseOver.setText(pediments_gr);
+        textMouseOver.x = RectCenter(areaPediments).x;
+        textMouseOver.y = RectCenter(areaPediments).y - 70; //pointer.y - 70;
+       
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else if(areaDoricFrieze.contains(pointer.x, pointer.y))
+      {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
+        textMouseOver.setText(doric_frieze_gr);
+        textMouseOver.x = 1615;
+        textMouseOver.y = RectCenter(areaDoricFrieze).y - 70;// pointer.y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else if(areaIonicFrieze.contains(pointer.x, pointer.y))
+      {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
+        textMouseOver.setText(ionic_frieze_gr);
+        textMouseOver.x = RectCenter(areaIonicFrieze).x;
+        textMouseOver.y = RectCenter(areaIonicFrieze).y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else if(areaCofferings.contains(pointer.x, pointer.y))
+      {
+        isOnWord = true;
+        mouseSetCursor(cursorType.pointer);
+
+        textMouseOver.setText(cofferings_gr);
+        textMouseOver.x = RectCenter(areaCofferings).x;
+        textMouseOver.y = RectCenter(areaCofferings).y - 70;
+
+        imageMouseOver.setDisplaySize(textMouseOver.getBounds().width + 10, textMouseOver.getBounds().height + 10);
+        imageMouseOver.x = textMouseOver.x;
+        imageMouseOver.y = textMouseOver.y;
+        imageMouseOver.visible = true;
+      }
+      else
+      {
+        if (isOnWord) {
+          mouseSetCursor(cursorType.default);
+          isOnWord = false;
+        }
+
+        imageMouseOver.visible = false;
+        textMouseOver.setText('');
+      }
+
+
+  });
+
+
+
 
     disableRightMouseClick()
 

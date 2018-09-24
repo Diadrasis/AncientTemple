@@ -21,6 +21,10 @@ var config =
         debug: true
       }
     },
+
+    // transparent: true,
+    // backgroundColor: 'rgba(255,110,110,0)',
+
     // plugins: {
     //   global: [{
     //       key: 'BBCodeTextPlugin',
