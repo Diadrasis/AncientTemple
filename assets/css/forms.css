@@ -5,9 +5,6 @@ body {
 }
 
 
-
-
-
 input {
     position:absolute;
 	background-color: transparent;
@@ -16,7 +13,7 @@ input {
 	color: #fff;
     font-family:centuryGothicRegular;
 }
-
+  
 input:focus{
 	outline: none;
 }
@@ -44,7 +41,7 @@ button:focus {
 
 @media screen and (min-width: 1200px) and (max-width:1700px) {
   input, button {
-      font-size:1.5em;
+      font-size:1.3em;
   }
 }
 

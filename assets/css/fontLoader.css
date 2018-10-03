@@ -5,6 +5,13 @@
 	src: url("../Fonts/centuryGothicRegular.ttf");
 }
 
+@font-face{
+    font-family: "diaryGirl";
+	font-style: normal;
+	font-weight: 400;
+	src: url("../Fonts/AC-DiaryGirl_Unicode.ttf");
+}
+
 
 @font-face {
 	font-family: "zoo";
