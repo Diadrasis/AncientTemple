@@ -35,6 +35,28 @@
 			    echo "Δεν υπάρχoυν λέξεις!";
 			}	
 			
+			break;
+			
+			case 'feedback_sign':   
+			$lang=$_GET['lang'];
+			$signid=$_GET['sign_id'];
+            $sql_activities="SELECT * FROM sign_signs WHERE sign_id='$signid'";
+		    $words_results = $conn->query($sql_activities);
+			$feedbacks=array();    
+			
+		    if ($words_results->num_rows > 0) 
+			{
+			    // output data of each row
+			    while($row = $words_results->fetch_assoc()) 
+				{
+                    $feedback=array($row["sign_feedback_" . $lang]);                
+			        $feedbacks[]=$feedback;          
+		        }               
+                echo json_encode($feedbacks);               
+		    } else {
+			    echo "Δεν υπάρχoυν λέξεις!";
+			}	
+			
 		    break;
         }
     $conn->close();

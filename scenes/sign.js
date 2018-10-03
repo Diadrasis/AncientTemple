@@ -40,8 +40,6 @@ var wrongSignIcon;
 
 var hightlighted_sign_keyName = 'hightlighted_sign';
 
-var graphics;
-
 var randomTextToChoose = 0;
 
 var logSize = {x:1.12, y:1.7};
@@ -279,6 +277,7 @@ function checkMatchSign()
 {
   DebugLog('checkMatchSign');
 
+
   if(currentWordsFound === totalWordsToFound){
     isGamePaused = true;
     //set delay timers
@@ -308,7 +307,7 @@ function winSignGame() {
   timeBar.setScale(1, 1);
   timeBar.setTint('0xffffff');
 
-  showPopUpMessage('\nSign feedback text');
+  showPopUpMessage('\n'+signFeedback[0]);
 
 }
 
@@ -402,6 +401,17 @@ function StartSign()
 
 }
 
+function ShowSignHelp(){
+
+  if(isGameOver || isGamePaused){return;}
+
+  timePenalty += timeToRemove * 7;
+  timerEventGame.delay -= timeToRemove * 7 * 1000;
+
+  ShowSignHelpWord();
+
+}
+
 //save found words in array
 //search if help word dont exist in save array
 function ShowSignHelpWord(){
@@ -429,8 +439,11 @@ function ShowSignHelpWord(){
     isTapOnText = true; 
 
     //light on help
+    graphics.clear();
+    graphics.lineStyle(3, 0x00ffff);
+    graphics.strokeRectShape(areasOnText[randomWord]);
     draftCopyText.setTint(0x00ff00);
-    _this.time.delayedCall(1000, function(){draftCopyText.clearTint();}, [], _this);
+    _this.time.delayedCall(1000, function(){draftCopyText.clearTint(); graphics.clear(); }, [], _this);
   }
   else{//on rock
 
@@ -444,22 +457,15 @@ function ShowSignHelpWord(){
     isTapOnRock = true; 
 
     //light on help
+    graphics.clear();
+    graphics.lineStyle(3, 0x00ffff);
+    graphics.strokeRectShape(areasOnRock[randomWord]);
     draftCopyRock.setTint(0x00ffff);
-    _this.time.delayedCall(1000, function(){draftCopyRock.clearTint();}, [], _this);
+    _this.time.delayedCall(1000, function(){draftCopyRock.clearTint(); graphics.clear();}, [], _this);
 
   }
 
-}
-
-
-function ShowSignHelp(){
-
-  if(isGameOver || isGamePaused){return;}
-
-  timePenalty += timeToRemove * 7;
-  timerEventGame.delay -= timeToRemove * 7 * 1000;
-
-  ShowSignHelpWord();
+    
 
 }
 
@@ -826,10 +832,10 @@ function SignGetWords() {
         if (this.readyState == 4 && this.status == 200) {
             signWords = JSON.parse(xmlhttp.responseText);
 
-            //console.log(signWords[0]);
-
             //console.log('DB OK! START SIGN GAME');
             StartSignAfterDatabase();
+            //get feedback texts
+            SignGetFeedback();
         }
     };
 
@@ -842,6 +848,39 @@ function SignGetWords() {
     xmlhttp.send();
 }
 
+var signFeedback = [];
+
+function SignGetFeedback() {
+    
+  //console.log('getting feedback...')
+  signFeedback = [];
+  
+  var xmlhttp;
+  if (window.XMLHttpRequest) {
+      xmlhttp = new XMLHttpRequest();
+  }
+  else
+  {
+      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+
+      signFeedback = JSON.parse(xmlhttp.responseText);
+      console.log(signFeedback[0]);
+
+    }
+  };
+
+  //language = 'gr';
+
+  var PageToSendTo = document.location.href + "php/sign_db.php?";
+  var action = "feedback_sign";
+  var UrlToSend = PageToSendTo + "action=" + action + "&sign_id=" + signId + "&lang=" + languange;
+  xmlhttp.open("GET", UrlToSend, true);
+  xmlhttp.send();
+}
 
 
 //####### LOADING IMAGE #########################################

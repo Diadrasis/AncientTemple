@@ -416,6 +416,15 @@ function onCanvasLoseFocus(){
 
 function pauseGame()
 {
+    //bug fix on tap to close pause or help time was removing
+    if (isGamePaused) {
+        _this.time.delayedCall(250, pauseDelayed, [], this);
+    }else{
+        pauseDelayed();
+    }
+}
+
+function pauseDelayed(){
     isGamePaused = !isGamePaused;
     //if the clock starts, play sound
     if (!isGamePaused) {
@@ -865,8 +874,13 @@ function showHelp() {
     }
    
     helpObject.visible = !isGamePaused;
-    isGamePaused = helpObject.visible;
-    timerEventGame.paused = isGamePaused;
+
+    //bug fix on tap to close pause or help >> time was removing
+    if (isGamePaused) {
+        _this.time.delayedCall(250, delayHelpPaused, [], this);
+    }else{
+        delayHelpPaused();
+    }
 
     if (currentScene === 'type') {
         if (isTypeFirstHelp && !isGamePaused) {
@@ -885,9 +899,12 @@ function showHelp() {
             _this.time.delayedCall(4000, formHidePreview, [], _this)
         }
     }
-    
 }
 
+function delayHelpPaused(){
+    isGamePaused = helpObject.visible;
+    timerEventGame.paused = isGamePaused;
+}
 
 
 //#endregion
@@ -1388,6 +1405,8 @@ function destroySelectPanel(){  DebugLog('destroySelectPanel');
 function startNewGame()
 {
     //sound
+
+    levelText.setText(selectedLevel);
     
     destroyButtonsExtra();
     destroySelectPanel();
