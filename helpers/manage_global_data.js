@@ -21,7 +21,9 @@ function GetPassword() {
             //alert(password);
             var message = this.responseText;
             if (message.includes('welcome')) {
-                load_anim.anims.play('kitsos');
+                //play animation
+                load_anim.anims.play('animLoader');
+
                 ShowLocaleMessage(loginTxtMessage, 960, 'Καλώς ήλθες!', 'Welcome!');
                 _this.time.delayedCall(2000, function () {
                     GetPlayerID(user, password);

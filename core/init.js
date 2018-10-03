@@ -24,7 +24,6 @@ var config =
 
     // transparent: true,
     // backgroundColor: 'rgba(255,110,110,0)',
-    //backgroundColor: 'rgba(178,220,255,255)',
 
     // plugins: {
     //   global: [{

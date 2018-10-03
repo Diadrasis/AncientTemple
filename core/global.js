@@ -1,6 +1,29 @@
 
+//common sounds
+
+var audioButton1;
+var audioButton2;
+var audioCountrySide;
+var audioIntro;
+var audioClock;
+var audioBellFuneral;
+var audioDisappointment;
+var audioFanfare;
+var audioCheer;
+var audioBellIdea;
+var audioBellOK;
+var audioGlassWrong;
+
 
 //intro mouse over texts
+function LoadSounds() {
+
+}
+
+
+var load_anim;
+var animBlink;
+var animWave;
 
 var textMouseOver, imageMouseOver;
 
@@ -394,6 +417,22 @@ function onCanvasLoseFocus(){
 function pauseGame()
 {
     isGamePaused = !isGamePaused;
+    //if the clock starts, play sound
+    if (!isGamePaused) {
+        //audioClock.volume = 0.7;
+        audioClock.play();
+        _this.add.tween({
+            targets: [audioClock],
+            ease: 'Sine.easeInOut',
+            duration: 3000,
+            delay: 7000,
+            volume: {
+                getStart: () => audioClock.volume,
+                getEnd: () =>0
+            },
+            onComplete: () => { audioClock.stop();}
+        });
+    }
     timerEventGame.paused = isGamePaused;
     backgroundObject.depth = isGamePaused ? 5000 : -5;
     pauseFog.visible = isGamePaused;
@@ -404,8 +443,9 @@ function pauseGame()
 
 function winGame()
 {
-    DebugLog('You win '+ currentScene + ' game!');
-
+    //not playing?
+    DebugLog('You win ' + currentScene + ' game!');
+   
     isGameOver = true;
     isGamePaused = true;
 
@@ -425,7 +465,11 @@ function winGame()
 
 function loseGame()
 {
-   DebugLog('You lose '+ currentScene +' game');
+    DebugLog('You lose ' + currentScene + ' game');
+
+    //sound
+    audioBellFuneral.play();
+    audioDisappointment.play();
 
    isGameOver = true;
    isGamePaused = true;
@@ -521,7 +565,7 @@ var pauseTextObject, pauseFog;
 
 var menuBarHomeButton, menuBarPauseButton, menuBarRestartButton, menuBarHelpButton, menuBarPreviewButton;
 
-var popUpMessage, popUpText, popUpTitle;
+var popUpMessage, popUpText, popUpTitle, popUpImage;
 var posPopUpMessage = {x: 941, y:740};
 
 var imgnotfoundKey = 'imgnotfound';
@@ -727,12 +771,10 @@ function createPopUpMessage()
 
 function showPopUpMessage(infoText) {
     //DebugLog(infoText);
-
     isGamePaused = true;
     popUpMessage.visible = true;
     popUpText.setText(infoText);
     popUpText.visible = true;
-
     popUpTitle.visible = true;
 }
 
@@ -741,13 +783,26 @@ function showPopUpTitle(infoTitle){
     popUpTitle.visible = true;
 }
 
+function showPopUpImage(img, x, y) {    
+    popUpImage = _this.add.image(posPopUpMessage.x, posPopUpMessage.y+y, img).setOrigin(0.5, 0.5);
+    popUpImage.setScale(0.3);
+    popUpImage.depth = 2600;
+
+}
+
 function hidePopUpMessage() {
     popUpText.visible = false;
     popUpText.setText('');
     popUpMessage.visible = false;
     //popUpTitle.setText('');
     popUpTitle.visible = false;
+    //if exists
+    if (popUpImage) {
+        popUpImage.visible = false;
+    }
 }
+
+
 
 
 //['geography', 'sign', 'type', 'construction', 'form', 'sculpture', 'neoclassic']
@@ -779,7 +834,22 @@ function createHelp()
 {
     helpObject = _this.add.image(0, 0, currentScene + '_help_' + languange).setOrigin(0, 0); 
     helpObject.setInteractive();
-    helpObject.on('pointerdown',  function () { showHelp(); }, _this);
+    helpObject.on('pointerdown', function () {
+        showHelp();
+        audioClock.play();
+        _this.add.tween({
+            targets: [audioClock],
+            ease: 'Sine.easeInOut',
+            duration: 3000,
+            delay: 7000,
+            volume: {
+                getStart: () => audioClock.volume,
+                getEnd: () =>0
+            },
+            onComplete: () => { audioClock.stop();}
+        });
+        
+    }, _this);
     helpObject.visible = false;
     helpObject.depth = 3000;
     createButtonsExtra();
@@ -789,7 +859,11 @@ var previewButton;
 var isPreviewOn = false;
 
 
-function showHelp() {
+function showHelp() { 
+    if (!helpObject.visible) {
+        audioBellIdea.play();
+    }
+   
     helpObject.visible = !isGamePaused;
     isGamePaused = helpObject.visible;
     timerEventGame.paused = isGamePaused;
@@ -855,33 +929,38 @@ function createButtonsExtra()
           /* go to learnomore.ancienttemple.gr, according to the current scene
         previousScene = currentScene;
         game.scene.stop(currentScene);
-        game.scene.start('moreToLearn'); */                 
+        game.scene.start('moreToLearn'); */
+          let learn_more_link;
           switch (currentScene) {
               case 'geography':
-                  window.open("http://learnmore.ancienttemple.gr/sacred-place/", "_blank");
+                  learn_more_link ="http://learnmore.ancienttemple.gr/sacred-place/";
                   break;
               case 'sign':
-                  window.open("http://learnmore.ancienttemple.gr/programming/", "_blank");
+                  learn_more_link = "http://learnmore.ancienttemple.gr/programming/";
                   break;
               case 'type':
-                  window.open("http://learnmore.ancienttemple.gr/type/", "_blank");
+                  learn_more_link="http://learnmore.ancienttemple.gr/type/";
                   break;
               case 'construction':
-                  window.open("http://learnmore.ancienttemple.gr/construction/", "_blank");
+                  learn_more_link = "http://learnmore.ancienttemple.gr/construction/";
                   break;
               case 'form':
-                  window.open("http://learnmore.ancienttemple.gr/form/", "_blank");
+                  learn_more_link ="http://learnmore.ancienttemple.gr/form/";
                   break;
               case 'sculpture':
-                  window.open("http://learnmore.ancienttemple.gr/statues-reliefs-and-color/", "_blank");
+                  learn_more_link = "http://learnmore.ancienttemple.gr/statues-reliefs-and-color/" ;
                   break;
               case 'neoclassic':
-                  window.open("http://learnmore.ancienttemple.gr/neoclassical/", "_blank");
+                  learn_more_link = "http://learnmore.ancienttemple.gr/neoclassical/";
                   break;
               default:
-                  window.open("http://learnmore.ancienttemple.gr/", "_blank");
+                  learn_more_link = "http://learnmore.ancienttemple.gr/";
           }
 
+          if (languange === "en") {
+              learn_more_link = learn_more_link + "?lang=en";
+          }
+          window.open(learn_more_link, "_blank");
       }
     );
 
@@ -902,7 +981,6 @@ function createButtonsExtra()
 
          btnCredits.depth = 3002;
     }
-
     
 }
 
@@ -973,9 +1051,11 @@ var btnPrintIntro, imageHomeIntro;
 var introAvatarShadow , introAvatarBody, introAvatarHead;
 
 var posIntroAvatarBoyShadow = {x:689, y:797};
+var posIntroAvatarBoyShadow2 = {x:679, y:804};
 var posIntroAvatarBoyHead = {x:689, y:666};
 var posIntroAvatarBoyBody = {x:679, y:855};
-var posIntroAvatarGirlShadow = {x:706, y:794};
+var posIntroAvatarGirlShadow = {x:705, y:793};
+var posIntroAvatarGirlShadow2 = {x:704, y:794};
 var posIntroAvatarGirlHead = {x:692, y:695};
 var posIntroAvatarGirlBody = {x:705, y:851};
 
@@ -1058,20 +1138,19 @@ function loadLevelSelectPanel()
     globalLoadCurrentAvatar();
 
     if (currAvatarIsBoy === 'true') {
-        _this.load.image('globalplayerShadow', imagesFolder + 'player/' + 'boy_shadow' + '.png');
+        _this.load.image('globalplayerShadow'  + playerId, imagesFolder + 'player/' + 'boy_shadow' + '.png');
     } 
     else if (currAvatarIsBoy === 'boy2') {
-        _this.load.image('globalplayerShadow', imagesFolder + 'player/' + 'boy2_shadow' + '.png');
+        _this.load.image('globalplayerShadow' + playerId, imagesFolder + 'player/' + 'boy2_shadow' + '.png');
     }
     else if (currAvatarIsBoy === 'girl2') {
-        _this.load.image('globalplayerShadow', imagesFolder + 'player/' + 'girl2_shadow' + '.png');
+        _this.load.image('globalplayerShadow' + playerId, imagesFolder + 'player/' + 'girl2_shadow' + '.png');
     }    
     else {
-        _this.load.image('globalplayerShadow', imagesFolder + 'player/' + 'girl_shadow' + '.png');
+        _this.load.image('globalplayerShadow' + playerId, imagesFolder + 'player/' + 'girl_shadow' + '.png');
     }
 
     _this.load.image('btnEmpty', imagesGeneral + 'btnMenuEmpty.png');
-    
     
 }
 
@@ -1105,21 +1184,32 @@ function showLevelSelectPanel()
     var posHead = posIntroAvatarBoyHead;
     var posBody = posIntroAvatarBoyBody;
 
-    if(currAvatarIsBoy != 'true'){
+    if(currAvatarIsBoy === 'boy2'){
+        posShadow = posIntroAvatarBoyShadow2;
+    }else
+    if(currAvatarIsBoy === 'girl2'){
+        posShadow = posIntroAvatarGirlShadow2;
+        posHead = posIntroAvatarGirlHead;
+        posBody = posIntroAvatarGirlBody;
+    }else
+    if(currAvatarIsBoy === 'false'){
         posShadow = posIntroAvatarGirlShadow;
         posHead = posIntroAvatarGirlHead;
         posBody = posIntroAvatarGirlBody;
     }
 
-    introAvatarShadow = _this.add.image(posShadow.x, posShadow.y, 'globalplayerShadow');
+    introAvatarShadow = _this.add.image(posShadow.x, posShadow.y, 'globalplayerShadow' + playerId);
+    introAvatarShadow.setOrigin(0.5);
     introAvatarShadow.setScale(0.8);
     introAvatarShadow.depth = 179;
 
-    introAvatarBody = _this.add.image(posBody.x, posBody.y, 'globalbody');
+    introAvatarBody = _this.add.image(posBody.x, posBody.y, 'globalbody' + playerId);
+    introAvatarBody.setOrigin(0.5);
     introAvatarBody.setScale(0.8);
     introAvatarBody.depth = 180;
 
-    introAvatarHead = _this.add.image(posHead.x, posHead.y, 'globalhead');
+    introAvatarHead = _this.add.image(posHead.x, posHead.y, 'globalhead' + playerId);
+    introAvatarHead.setOrigin(0.5);
     introAvatarHead.setScale(0.8);
     introAvatarHead.depth = 181;
 
@@ -1297,10 +1387,10 @@ function destroySelectPanel(){  DebugLog('destroySelectPanel');
 
 function startNewGame()
 {
+    //sound
+    
     destroyButtonsExtra();
-
     destroySelectPanel();
-
     mouseSetCursor(cursorType.default);
 
     if(currentScene==='geography'){
@@ -1341,37 +1431,51 @@ var timeToRemove=0;
 var totalTimeSelected = 0;
 var timeBar;
 
-
+var audioStartClock = true;
 function calculateTime()
-{
+{    
     if (!isGamePaused && !isGameOver) {
-
-        if (timerEventGame.paused) {
+        if (timerEventGame.paused) {         
             timerEventGame.paused = false;
         }
 
         timeOfGame = Math.round((totalTimeSelected / 1000) - ((timerEventGame.delay * timerEventGame.getProgress()) / 1000)) - timePenalty;
-
         timeBarPercentage = timeOfGame / totalxronos;
-
         timeBar.setScale(timeBarPercentage, 1);
 
         if (timeOfGame <= totalxronos / 2 && timeOfGame > totalxronos / 3) {
             timeBar.setTint('0xffe0c4');
-        }else
-        if (timeOfGame <= totalxronos / 3) {
-         timeBar.setTint('0xffc4c4');
+        } else if (timeOfGame <= totalxronos / 3) {
+            timeBar.setTint('0xffc4c4');
+        }
+
+        if (timeOfGame < 10  && audioStartClock) {
+            audioClock.volume = 1;
+            audioStartClock = false;
+            audioClock.play();
+            _this.add.tween({
+                targets: [audioClock],
+                ease: 'Sine.easeInOut',
+                duration: 3000,
+                delay: 0,
+                volume: {
+                    getStart: () => 0,
+                    getEnd: () => audioClock.volume
+                },
+                onComplete: () => { }
+            });
+
         }
 
         if (timeOfGame <= 0 || isNaN(timeOfGame) ) {
             timeOfGame = 0;
-            loseGame();
+            loseGame();           
             timerEventGame.paused = true;
         }
 
         textTime.setText(formatTime(Math.round(timeOfGame)));
-    }else{
-        if (!timerEventGame.paused) {
+    } else {       
+        if (!timerEventGame.paused) {        
             timerEventGame.paused = true;
         }
       }
@@ -1385,7 +1489,7 @@ function formatTime(s) {
 }
 
 function initTimer()
-{
+{   
     timerEventGame = _this.time.addEvent({ delay: totalTimeSelected, timeScale: 1.0 });
     timerEventGame.paused = true;
 }

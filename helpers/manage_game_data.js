@@ -93,3 +93,87 @@ function ConstructionGetActivites() {
     xmlhttp.open("GET", UrlToSend, true);
     xmlhttp.send();
 }
+
+/************ SCULPTURES ************/
+var sculptures=[];
+function SculptureGetSculptures() {
+    //alert("activites were called!")
+    //var activities = new Array();
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else
+    {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {          
+            sculptures = JSON.parse(xmlhttp.responseText);
+            //after read, read TempleParts
+            SculptureGetTempleParts();
+        }
+    };
+    //language = 'gr';
+    var PageToSendTo = document.location.href + "php/sculpture_db.php?";
+    var action = "select_sculptures";
+    var UrlToSend = PageToSendTo + "action=" + action + "&lang=" + languange;
+    xmlhttp.open("GET", UrlToSend, true);
+    xmlhttp.send();
+}
+
+var temple_parts = [];
+function SculptureGetTempleParts() {
+    //alert("activites were called!")
+    //var activities = new Array();
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {          
+            temple_parts = JSON.parse(xmlhttp.responseText);
+            //inform sculpture scene thata data were read;
+            //alert(temple_parts.length);
+            SculptureDataRead();
+        }
+    };
+    //language = 'gr';
+    var PageToSendTo = document.location.href + "php/sculpture_db.php?";
+    var action = "select_temple_parts";
+    var UrlToSend = PageToSendTo + "action=" + action + "&lang=" + languange;
+    xmlhttp.open("GET", UrlToSend, true);
+    xmlhttp.send();
+}
+
+
+//types
+var types_feedback = [];
+function TypeGetFeedback() {    
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {          
+            types_feedback = JSON.parse(xmlhttp.responseText);            
+            newTypeGame();
+        }
+    };  
+    var PageToSendTo = document.location.href + "php/type_db.php?";
+    var action = "select_types_feedback";
+    var UrlToSend = PageToSendTo + "action=" + action + "&lang=" + languange;
+    xmlhttp.open("GET", UrlToSend, true);
+    xmlhttp.send();
+}
+//TypeGetFeedback();
+

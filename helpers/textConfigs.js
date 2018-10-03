@@ -11,7 +11,7 @@ var configPauseText = {
     }
 };
 
-var posPopUpText = {x:941, y:699};
+var posPopUpText = {x:941, y:640};
 
 var configPopUpText = {
     x: posPopUpText.x,
@@ -22,12 +22,11 @@ var configPopUpText = {
         fontFamily: 'centuryGothicRegular',
         color: '#000000',
         align: 'center',
-        wordWrap: { width: 900, useAdvancedWrap: true }
+        wordWrap: { width: 800, useAdvancedWrap: true }
     }
   };
 
 var posPopUpTitle = {x: 936, y:522};
-
 var configPopUpTitle = {
     x: posPopUpTitle.x,
     y: posPopUpTitle.y,
@@ -56,7 +55,7 @@ var configConstructionActivityText = {
 }
 
 
-
+/*
 
 var loginMessageConfigText= {
     style: loginMessageTextStyle
@@ -64,11 +63,12 @@ var loginMessageConfigText= {
 
 var loginMessageTextStyle = {
     fontSize: '40px',
-    fontFamily: 'centuryGothicRegular',
+    fontFamily: 'diaryGirl',
     color: '#333',    
     align: 'top',
     wordWrap: { width: 300, useAdvancedWrap: true }
 }
+*/
 
 var configLeaderNameText = {
    // x: leaderTextNamePos.x,
@@ -114,7 +114,7 @@ var configLeaderPositionText = {
 var configLoginMessageText = {    
     style: {
         fontSize: '28px',
-        fontFamily: 'centuryGothicRegular',
+        fontFamily: ['diaryGirl' ,'centuryGothicRegular'] ,
         color: '#666666',       
         align: 'center',
         wordWrap: { width: 900, useAdvancedWrap: true }
