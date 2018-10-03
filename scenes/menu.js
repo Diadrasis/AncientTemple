@@ -11,12 +11,49 @@ class Menu extends Phaser.Scene
     _this = this;
     // set scene name
     currentScene = 'menu';
-      DebugLog(currentScene + ' init');
-      
+      DebugLog(currentScene + ' init');      
 
   }
 
   preload() {
+
+      //sounds   
+      this.load.audio('audioCountrySide', [
+         'assets/audio/countryside.ogg',
+         'assets/audio/countryside.mp3'
+      ]);
+              
+      this.load.audio('audioClock', [
+         'assets/audio/clock.ogg',
+         'assets/audio/clock.mp3'
+      ]);
+
+      this.load.audio('audioBellFuneral', [
+          'assets/audio/bellFuneral.ogg',
+          'assets/audio/bellFuneral.mp3'
+      ]);
+
+      this.load.audio('audioDisappointment', [
+          'assets/audio/disappointed.ogg',
+          'assets/audio/disappointed.mp3'
+      ]);
+
+      this.load.audio('audioFanfare', [
+          'assets/audio/fanfare.ogg',
+          'assets/audio/fanfare.mp3'
+      ]);
+
+      this.load.audio('audioCheer', [
+          'assets/audio/cheer.ogg',
+          'assets/audio/cheer.mp3'
+      ]);
+
+    //animation
+      _this.load.spritesheet('spshPristess', 'assets/animation/' + 'ieria_blink.png', { frameWidth: 168, frameHeight: 168 });
+      _this.load.spritesheet('spshArchitectMenu', 'assets/animation/' + 'arxitektonas_menu.png', { frameWidth: 168, frameHeight: 168 });
+      _this.load.spritesheet('spshSculptureMenu', 'assets/animation/' + 'gluptis_menu.png', { frameWidth: 168, frameHeight: 168 });
+
+
     //language buttons
     this.load.image('en', imagesFolder + currentScene + '/lang_en.jpg');
     this.load.image('gr', imagesFolder + currentScene + '/lang_gr.jpg');   
@@ -50,6 +87,81 @@ class Menu extends Phaser.Scene
   { 
     
       showBackground();
+
+      //#region sounds
+
+      //fade out audio
+      _this.add.tween({
+          targets: [audioStoneMason],
+          ease: 'Sine.easeInOut',
+          duration: 3000,
+          delay: 0,
+          volume: {
+              getStart: () => audioStoneMason.volume,
+              getEnd: () => 0
+          },
+          onComplete: () => { }
+      });
+
+      //fade in sound
+      audioCountrySide = this.sound.add('audioCountrySide');
+      audioCountrySide.volume = 0.7;
+      audioCountrySide.play({ 'loop': -1 });
+
+      //prepare clock for game start
+      audioClock = this.sound.add('audioClock');
+      audioClock.volume = 1;
+
+      //prepare bell for game finish
+      audioBellFuneral = this.sound.add('audioBellFuneral');
+      audioBellFuneral.volume = 1;
+
+      //disappointment
+      audioDisappointment = this.sound.add('audioDisappointment');
+      audioDisappointment.volume = 1;
+
+      audioFanfare = this.sound.add('audioFanfare');
+      audioFanfare.volume = 1;
+
+      audioCheer = this.sound.add('audioCheer');
+      audioCheer.volume = 1;
+      //#endregion
+
+      //#region animation
+      //animation test
+      _this.anims.create({
+          delay: 2000,
+          key: 'blink',
+          frames: _this.anims.generateFrameNumbers('spshPristess', { start: 0, end: 5 }),
+          frameRate: 24,
+          repeat: -1,
+          repeatDelay: 3000,
+          showOnStart: true
+      });
+
+
+     //#endregion
+      _this.anims.create({
+          delay: 1000,
+          key: 'sculpture_blink',
+          frames: _this.anims.generateFrameNumbers('spshSculptureMenu', { start: 0, end: 6}),
+          frameRate: 24,
+          repeat: -1,
+          repeatDelay: 3000,
+          showOnStart: true
+      });
+
+      //#endregion
+      _this.anims.create({
+          delay: 1000,
+          key: 'architect_blink',
+          frames: _this.anims.generateFrameNumbers('spshArchitectMenu', { start: 0, end: 9 }),
+          frameRate: 24,
+          repeat: -1,
+          repeatDelay: 3000,
+          showOnStart: true
+      });
+
      
      GetGameScores(playerId);
 
@@ -60,7 +172,7 @@ class Menu extends Phaser.Scene
     footer_menu = _this.add.image(game.config.width / 2, game.config.height - 50, 'footer_menu_' + languange);
 
     //show logo
-     _this.add.image(53, 148, 'side_menu');
+     _this.add.image(53, 220, 'side_menu');
 
     // _this.time.delayedCall(3500, createScores, [], this);
 
@@ -81,6 +193,14 @@ class Menu extends Phaser.Scene
     var btnPrint = this.add.image(54, 260, 'btnEmpty').setInteractive({ cursor: 'pointer' });
     btnPrint.on('pointerdown', PrintPage, this);
     btnPrint.depth = 70;
+
+    var btnMail = this.add.image(54, 337, 'btnEmpty').setInteractive({ cursor: 'pointer' });
+    btnMail.on('pointerdown', MailTo, this);
+      btnMail.depth = 70;
+
+      var btnPrivacy = this.add.image(54, 400, 'btnEmpty').setInteractive({ cursor: 'pointer' });
+      btnPrivacy.on('pointerdown', GoPrivacy, this);
+      btnPrivacy.depth = 70;
 
     btnHelpMenu = this.add.image(56, 108, 'btnEmpty').setInteractive({ cursor: 'pointer' });
     btnHelpMenu.on('pointerdown', ShowMenuHelp, this);
@@ -105,6 +225,11 @@ class Menu extends Phaser.Scene
   }//create
 
 }
+//anim
+var animBlink;
+
+//sound
+
 
 var isMenuFirstHelp = false;
 var helpMenu;
@@ -119,7 +244,8 @@ function ReturnToIntro(){
     game.scene.start('intro_site');
 }
 
-function ShowMenuHelp(){
+function ShowMenuHelp() {
+    audioBellIdea.play();
     helpMenu.setTexture('menu_help_'+languange);
     helpMenu.visible = true;
 }
@@ -154,23 +280,15 @@ function ShowLangFiles() {
      
 }
 
+function MailTo(){
+    window.location.href ='mailto:?subject=Ancient Temple&body=Δες το site ένας αρχαίος ναός εδώ: ' +window.location;
+   // console.log(window.location.href);
+}
 
-
-//#region loading functions
-
-function loadButtonsImages () 
-{
-    for(var i=0; i<6; i++)
-    {
-        if (gameScores[i][i]>0)
-        {
-            _this.load.image(sceneNames[i] + '_back', getSceneImagesFolder() + sceneNames[i] + '_back' + '.png');           
-        }else{
-            _this.load.image(sceneNames[i] + '_front', getSceneImagesFolder() + sceneNames[i] + '_front' + '.png');
-            _this.load.image(sceneNames[i] + '_menu_title_gr', getSceneImagesFolder() + sceneNames[i] + '_menu_title_gr' + '.png');
-            _this.load.image(sceneNames[i] + '_menu_title_en', getSceneImagesFolder() + sceneNames[i] + '_menu_title_en' + '.png');
-        }
-    }
+function GoPrivacy() {
+    let link = "http://learnmore.ancienttemple.gr/privacy-policy";
+    if (languange === "en") { link = link + "?lang=en" };
+    window.open(link, "_blank");
 }
 
 function loadScoreImages () {
@@ -208,14 +326,19 @@ var posGameButtons = Object.freeze([
 
 
 function createBtn(btn, posX, posY, name, action, sceneName) {   
-  if (action !== null) {
-    btn = _this.add.sprite(posX, posY, name).setInteractive({ cursor: 'pointer' });
-    btn.on('pointerdown', function(){ currentScene = sceneName;});
-    btn.on('pointerdown', action);     
-     
-  }else {
-    btn = Menu.add.sprite(0, 0, name);
-  }
+    if (action !== null) {
+        btn = _this.add.sprite(posX, posY, name).setInteractive({ cursor: 'pointer' });
+        btn.on('pointerover', function () {
+            audioButton1.play();
+        });
+        btn.on('pointerdown', function () {
+            currentScene = sceneName;
+            audioButton2.play();
+        });
+        btn.on('pointerdown', action);
+    } else {
+        btn = Menu.add.sprite(0, 0, name);
+    }
 }
 
 var btnTitles=[];
@@ -226,7 +349,8 @@ function createBtnTitles(posX, posY, scene) {
 }
 
 function loadScene(){
-  DebugLog('about to load '+currentScene);
+    DebugLog('about to load ' + currentScene);
+    
   game.scene.stop('menu');
   game.scene.start(currentScene);
 };
@@ -279,9 +403,7 @@ function loadButtonsImages() {
 
 function createGameButtons() {    
     var b1, b2, b3, b4, b5, b6;
-    var btns = [b1, b2, b3, b4, b5, b6];  
-
-    
+    var btns = [b1, b2, b3, b4, b5, b6]; 
 
     for (var i = 0; i < 6; i++) {        
         if (gameScores[i][1] > 0) {
@@ -289,6 +411,11 @@ function createGameButtons() {
         } else {
             createBtn(btns[i], posGameButtons[i].x, posGameButtons[i].y, sceneNames[i] + '_front', loadScene, sceneNames[i]);
             createBtnTitles(posGameButtons[i].x + 20, posGameButtons[i].y + 40, sceneNames[i]);
+            if (i === 0) {
+                animBlink = _this.add.sprite(575, 200, 'spshPristess');
+                animBlink.setDisplaySize(168, 168);
+                animBlink.anims.play('blink');
+            }
         }
     }
     createGameScores();

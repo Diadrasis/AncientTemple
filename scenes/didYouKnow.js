@@ -83,7 +83,9 @@ class DidYouKnowScene extends Phaser.Scene {
 
   create () {
        
-    showBackground();
+      showBackground();
+
+      audioBellIdea.play();
 
     GetGameDidYouKnow(gameId);
 

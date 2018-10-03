@@ -455,10 +455,14 @@ function winTypeGame () {
   textTime.setText(myScore);
   timeBar.setScale(1, 1);
   timeBar.setTint('0xffffff');
-
-  showPopUpMessage('\nType feedback text');
+       
+    showPopUpImage(currentScene + 'feedback_img_' + type_feedback[0], 0, 70);   
+    showPopUpTitle( type_feedback[1]);
+    showPopUpMessage(type_feedback[2]);  
   
 }
+
+
 
 function ContinueType(){
   isGameOver = true;
@@ -474,15 +478,26 @@ function ContinueType(){
 function startNewTypeGame () {
   DebugLog('starting ' + currentScene + ' game...')
 
-  _this.time.delayedCall(500, newTypeGame, [], _this)
+  //_this.time.delayedCall(500, newTypeGame, [], _this)
 
-  isTypeFirstHelp = true;
-  isTypeCanDrag = false;
+   isTypeFirstHelp = true;
+    isTypeCanDrag = false;
+
+    //read feedback from db
+    type_feedback = [];
+    TypeGetFeedback();
+    //when read, start new Type Game
+
 }
 
-function newTypeGame () {
-  isGamePaused = false
-  isGameOver = false
+var type_feedback = [];
+
+function newTypeGame() {
+    
+    
+
+    isGamePaused = false
+    isGameOver = false
 
   timeToRemove = 5
 
@@ -491,12 +506,27 @@ function newTypeGame () {
   timerEventGame.paused = false
   timeOfGame = totalTimeSelected
 
-  textTime.visible = true
-  if (selectedLevel === 1) { StartTypeB(); }
-  else if (selectedLevel === 2) { StartTypeC(); }
-  else if (selectedLevel === 3) { StartTypeD(); }
+    textTime.visible = true
 
-  showHelp();
+    //get types_feedback from database
+    if (selectedLevel === 1) { StartTypeB(); type_feedback = types_feedback[0]; }
+    else if (selectedLevel === 2) { StartTypeC(); type_feedback = types_feedback[1]; }
+    else if (selectedLevel === 3) { StartTypeD(); type_feedback = types_feedback[2]; }
+
+    //if feedback image exists, load it!!!    
+    if (type_feedback[3]) {
+        LoadSelectedFeedbackImage();
+    } else {
+        showHelp();
+    }
+
+  
+}
+
+function LoadSelectedFeedbackImage() {    
+    _this.load.once('complete', showHelp, this);  
+    _this.load.image(currentScene + 'feedback_img_' + type_feedback[0], getSceneImagesFolder() + type_feedback[3]);    
+    _this.load.start();
 }
 
 function typeShowPreview () {

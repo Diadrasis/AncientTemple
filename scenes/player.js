@@ -611,8 +611,8 @@ function initPlayerArrays() {
 //var currHairColor = 'black', currClothColor = 'red', currAvatarIsBoy = true;
 function globalLoadCurrentAvatar(){
   //load head
-  _this.load.image('globalhead', imagesFolder + 'player/' + getHeadFileName()+'.png');
-  _this.load.image('globalbody', imagesFolder + 'player/' + getClothFileName()+'.png');
+  _this.load.image('globalhead' + playerId, imagesFolder + 'player/' + getHeadFileName()+'.png');
+  _this.load.image('globalbody' + playerId, imagesFolder + 'player/' + getClothFileName()+'.png');
 }
 
 function getHeadFileName(){

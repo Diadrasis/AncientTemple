@@ -14,7 +14,6 @@ let naopoios, naopoios_bubble, naopoios_text;
 
 let btnskip;
 
-var musicIntroSite;
 
 var greyBG;
 
@@ -40,10 +39,21 @@ class IntroSiteScene extends Phaser.Scene
 
     //showProgress();
 
-    this.load.audio('themeIntro', [
-      'assets/audio/oedipus_wizball_highscore.ogg',
-      'assets/audio/oedipus_wizball_highscore.mp3'
+    /*** audio ***/
+    this.load.audio('audioIntro', [
+        'assets/audio/anon_part1.ogg',
+        'assets/audio/anon_part1.mp3'
     ]);
+
+    this.load.audio('button1', [
+        'assets/audio/button1.ogg',
+        'assets/audio/button1.mp3'
+    ]);
+
+    this.load.audio('button2', [
+       'assets/audio/button2.ogg',
+       'assets/audio/button2.mp3'
+    ]);   
 
     var folderPlano1 = 'plano_1/';
     var folderPlano1b = 'plano_1b/';
@@ -76,10 +86,36 @@ class IntroSiteScene extends Phaser.Scene
   }
 
   create () 
-  { 
+  {        
+      //create dummy texts to load fonts
+      var faketest1 = _this.make.text(configLoginMessageText);
+      faketest1.setText('áâãäåæçèéêëìíîïðñóôõö÷øù');
+      faketest1.visible = false;
 
-   
-    musicIntroSite = this.sound.add('themeIntro');
+      var faketest2 = _this.make.text(configPopUpText);
+      faketest2.setText('áâãäåæçèéêëìíîïðñóôõö÷øù');
+      faketest2.visible = false;
+
+      audioButton1 = this.sound.add("button1");
+      audioButton2 = this.sound.add("button2");         
+
+      audioIntro = this.sound.add('audioIntro');
+      audioIntro.volume = 0;
+      audioIntro.play({ 'loop': -1 });
+
+      _this.add.tween({
+          targets: [audioIntro],
+          ease: 'Sine.easeInOut',
+          duration: 700,
+          delay: 0,
+          volume: {
+              getStart: () => 0,
+              getEnd: () => 1
+          },
+          onComplete: () => { }
+      });
+
+     
 
     greyBG = _this.add.image(0, 0, currentScene + 'grey').setOrigin(0, 0);
     greyBG.depth = 500;
@@ -122,16 +158,17 @@ class IntroSiteScene extends Phaser.Scene
     
     _this.time.delayedCall(100, showPlaisio, [], _this);
 
-    var btnskip =  _this.add.image(1721, 968, currentScene+'skip').setInteractive({ cursor: 'pointer' });
+    var btnskip = _this.add.image(1721, 968, currentScene + 'skip').setInteractive({ cursor: 'pointer' });
+    btnskip.on('pointerover', function () {audioButton1.play() });
+
     btnskip.on('pointerup',
-      function () {
-        SkipIntro();
-      }
+        function () {
+            SkipIntro();
+            audioButton2.play();
+        }
     );
     btnskip.depth = 105;
-
-    fadeInCamera(1);
-    //SkipIntro();
+    fadeInCamera(0.5);  
 
 
   }//create
@@ -142,23 +179,7 @@ class IntroSiteScene extends Phaser.Scene
 
 var plaisio;
 
-function showPlaisio(){
-
-  musicIntroSite.volume = 0;
-
-  //musicIntroSite.play();
-
-  _this.add.tween({
-    targets: [musicIntroSite],
-    ease: 'Sine.easeInOut',
-    duration: 7000,
-    delay: 0,
-    volume: {
-      getStart: () => 0,
-      getEnd: () => 1
-    },
-    onComplete: () => {   }
-  });
+function showPlaisio(){  
 
   plaisio = _this.add.image(0, 0, currentScene+'frame');
   plaisio.setOrigin(0, 0);
@@ -568,16 +589,16 @@ function SkipIntro() {
   });
 
   _this.add.tween({
-    targets: [musicIntroSite],
+    targets: [audioIntro],
     ease: 'Sine.easeInOut',
-    duration: 2000,
+    duration: 3000,
     delay: 0,
     volume: {
-      getStart: () => musicIntroSite.volume,
+      getStart: () => audioIntro.volume,
       getEnd: () => 0
     },
     onComplete: () => {
-      musicIntroSite.stop();
+     audioIntro.stop();
       game.scene.stop(currentScene);
       game.scene.start('intro');
       //game.scene.start('menu');

@@ -1,44 +1,30 @@
-var posIconsFotoSculpture =
-[
-  {x: 387, y: 131},
-  {x: 640, y: 133},
-  {x: 889, y: 131},
-  {x: 1139, y: 139},
-  {x: 1399, y: 131},
-  {x: 1664, y: 131}
-]
+//guides to position the sculptures
+var posY1 = 125;
+var posX1 = 250;
+var noScultpures = 5; //sculptures to position
 
-var elementInfos =
-[
-  'default message\nfor element 1',
-  'default message\nfor element 2',
-  'default message\nfor element 3',
-  'default message\nfor element 4',
-  'default message\nfor element 5',
-  'default message\nfor element 6'
-]
+//cound found sculptures
+var foundSculptures = 0;
 
-var foundPhotoPositions =
-[
-  {x: 1236, y: 319},
-  {x: 859, y: 329},
-  {x: 1133, y: 381},
-  {x: 913, y: 329},
-  {x: 1022, y: 473},
-  {x: 1074, y: 381}
-]
+//array to hold sculpture thumbs and 
+var foto_thumbs = [];
+//positions of the foto_thumbs
+var previews = [];
 
-var foundPreviews = [];
-var foundPreviewPhoto1, foundPreviewPhoto2, foundPreviewPhoto3, foundPreviewPhoto4, foundPreviewPhoto5, foundPreviewPhoto6;
-
+// current sculpture
 var currObjectSculpture;
 
-var s1,w1;
+//right - wrong
+var s1, w1;
+//higlight selected 
 var selectedSculpture;
 
 var posIntroCharacterSculpture = {x: 389,  y: 689};
 
-var totalPiecesToFound = 6;
+//according to level
+var totalPiecesToFound;
+
+var canContinue = 0;
 
 class SculptureScene extends Phaser.Scene {
 
@@ -63,18 +49,17 @@ class SculptureScene extends Phaser.Scene {
 
     initTimer()
 
-    totalTime = {easy: 600000, medium: 600000, hard: 300000, champion: 90000}
+    totalTime = {easy: 60000, medium: 600000, hard: 300000, champion: 90000}
 
-    foundPoints = [0, 0, 0, 0, 0, 0]
+    //foundPoints = [0, 0, 0, 0, 0, 0]
 
-    allFotoContainers = []
+    //allFotoContainers = []
 
     currObjectSculpture = null
 
     posIntroCharacter = posIntroCharacterSculpture;
-
-
-    //GR
+    
+    //#region set intro links
     if (languange === 'gr') {
       areaAkroteria = new Phaser.Geom.Rectangle(introZeroPos.x + 528, introZeroPos.y + 475, 151, 35);
       RepositionRect(areaAkroteria);
@@ -106,54 +91,44 @@ class SculptureScene extends Phaser.Scene {
 
       areaCofferings = new Phaser.Geom.Rectangle(introZeroPos.x + 858, introZeroPos.y + 493, 135, 39);
       RepositionRect(areaCofferings);
-    }
-
-
-
+    }  
+    //#endregion
   }
 
   preload () {
-    DebugLog('loading ' + currentScene)
+      DebugLog('loading ' + currentScene)
 
-    loadBackground()
+      /******** READ DATA FROM DATABASE *******/
+     // SculptureGetSculptures();     
+      /****************************************/
 
-    loadMenuBar()
+      loadBackground();
+
+      loadMenuBar();
 
     // #region Load Images
-
     this.load.image(currentScene + 'lathos', getSceneImagesFolder() + 'lathos.png');
     this.load.image(currentScene + 'sosto', getSceneImagesFolder() + 'sosto.png');
-    this.load.image(currentScene + 'hitArea', getSceneImagesFolder() + 'hitArea.png');
+    //this.load.image(currentScene + 'hitArea', getSceneImagesFolder() + 'hitArea.png');
     this.load.image(currentScene + 'selected', getSceneImagesFolder() + 'selected.png');
-
-    this.load.image(currentScene + 'temple_spots_'+ languange, getSceneImagesFolder() + 'temple_spots_'+ languange+'.png');
-
-    for (var i = 1; i < 7; i++) {
-      this.load.image(currentScene + 'img_0' + i, getSceneImagesFolder() + 'img_0' + i + '.png')
-    }
-
+   
+    this.load.image(currentScene + 'temple_spots_' + languange, getSceneImagesFolder() + 'temple_spots_' + languange + '.png');
+   
     //indicators
     this.load.image(currentScene + 'try', getSceneImagesFolder() + 'try.png');
     this.load.image(currentScene + 'try_checked', getSceneImagesFolder() + 'try_checked.png');
-
     this.load.image(currentScene + 'board', imagesGeneral + 'board.jpg');
 
     // #endregion
-
     loadSceneFooter();
-
     loadPopUp();
-
     loadLevelSelectPanel();
-
     loadHelp();
-
     showProgress();
   }
 
   create () {
     console.info(currentScene + ' started');
-
 
     imageMouseOver = this.add.image(0,0, currentScene + 'board');
     imageMouseOver.setOrigin(0.5);
@@ -164,13 +139,11 @@ class SculptureScene extends Phaser.Scene {
     textMouseOver.depth = 5006;
     textMouseOver.setOrigin(0.5);
 
-    isOnWord = false;
-
+      isOnWord = false;
+     
+    //#region set intro links
     this.input.on('pointermove', function (pointer) {
-
       var posX = pointer.x < 1615 ? pointer.x : 1615;
-
-
       if(areaAkroteria.contains(pointer.x, pointer.y))
       {
         isOnWord = true;
@@ -261,16 +234,12 @@ class SculptureScene extends Phaser.Scene {
         imageMouseOver.visible = false;
         textMouseOver.setText('');
       }
-
-
   });
+    //#endregion
 
+      disableRightMouseClick();
 
-
-
-    disableRightMouseClick()
-
-    showBackground()
+      showBackground();
 
     showMenuBar();
 
@@ -280,14 +249,15 @@ class SculptureScene extends Phaser.Scene {
     //  Create some custom cursor boxes
     // this.add.sprite(100, 300, 'box').setInteractive({ cursor: 'url(assets/input/cursors/vigyori/link.cur), pointer' })
 
-    selectedSculpture = this.add.image(posIconsFotoSculpture[0].x, posIconsFotoSculpture[0].y, currentScene + 'selected').setOrigin(0.5, 0.5);
+    selectedSculpture = this.add.image(0, 0, currentScene + 'selected').setOrigin(0, 0.5);
     selectedSculpture.visible = false;
-    selectedSculpture.depth = 20;
+    selectedSculpture.depth = 0;
 
-    w1 = this.add.image(posIconsFotoSculpture[0].x, posIconsFotoSculpture[0].y, currentScene + 'lathos').setOrigin(0.5, 0.5);
+    w1 = this.add.image(0, 0, currentScene + 'lathos').setOrigin(0.5, 0.5);
     w1.visible = false;
     w1.depth = 20;
 
+      /*
     var hitArea = this.add.image(1004, 524, currentScene + 'hitArea').setInteractive().setOrigin(0.5, 0.5).setName('hitArea');
     hitArea.on('pointerdown', function () {
       if (usePenaltyTime) {
@@ -296,118 +266,10 @@ class SculptureScene extends Phaser.Scene {
       }
 
       checkMatchSculpture(hitArea);
-    })
-
-    // #region ELEMENTS
-
-
-    foto1 = this.add.image(posIconsFotoSculpture[0].x, posIconsFotoSculpture[0].y, currentScene + 'img_01').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5).setName('1')
-    foto1.setDataEnabled()
-    foto1.data.set('zone', 'zone1')
-    foto1.data.set('index', 0)
-    foto1.data.set('info', elementInfos[0])
-    foto1.on('pointerdown', function () { btnListener(foto1); })
-
-
-    foto2 = this.add.image(posIconsFotoSculpture[1].x, posIconsFotoSculpture[1].y, currentScene + 'img_02').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5).setName('2')
-    foto2.setDataEnabled()
-    foto2.data.set('zone', 'zone3')
-    foto2.data.set('index', 1)
-    foto2.data.set('info', elementInfos[1])
-    foto2.on('pointerdown', function () { btnListener(foto2); })
-
-    foto3 = this.add.image(posIconsFotoSculpture[2].x, posIconsFotoSculpture[2].y, currentScene + 'img_03').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5).setName('3')
-    foto3.setDataEnabled()
-    foto3.data.set('zone', 'zone4')
-    foto3.data.set('index', 2)
-    foto3.data.set('info', elementInfos[2])
-    foto3.on('pointerdown', function () { btnListener(foto3); })
-
-    foto4 = this.add.image(posIconsFotoSculpture[3].x, posIconsFotoSculpture[3].y, currentScene + 'img_04').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5).setName('4')
-    foto4.setDataEnabled()
-    foto4.data.set('zone', 'zone3')
-    foto4.data.set('index', 3)
-    foto4.data.set('info', elementInfos[3])
-    foto4.on('pointerdown', function () { btnListener(foto4); })
-
-    foto5 = this.add.image(posIconsFotoSculpture[4].x, posIconsFotoSculpture[4].y, currentScene + 'img_05').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5).setName('5')
-    foto5.setDataEnabled()
-    foto5.data.set('zone', 'zone2')
-    foto5.data.set('index', 4)
-    foto5.data.set('info', elementInfos[4])
-    foto5.on('pointerdown', function () { btnListener(foto5); })
-
-    foto6 = this.add.image(posIconsFotoSculpture[5].x, posIconsFotoSculpture[5].y, currentScene + 'img_06').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5).setName('6')
-    foto6.setDataEnabled()
-    foto6.data.set('zone', 'zone4')
-    foto6.data.set('index', 5)
-    foto6.data.set('info', elementInfos[5])
-    foto6.on('pointerdown', function () { btnListener(foto6); })
-
-    allFotoContainers.push(foto1)
-    allFotoContainers.push(foto2)
-    allFotoContainers.push(foto3)
-    allFotoContainers.push(foto4)
-    allFotoContainers.push(foto5)
-    allFotoContainers.push(foto6)
-
-    for (var i = 0; i < allFotoContainers.length; i++) {
-      allFotoContainers[i].visible = false;
-    // DebugLog(allFotoContainers[i].data.get('info'))
-    }
-
+      })
+      */
+         
     
-
-    // #endregion
-
-    // #region ZONES
-
-    //  A drop zone positioned at 600x300 with a circular drop zone 128px in radius
-    // var zone = this.add.zone(600, 300).setCircleDropZone(128)
-
-    // ακρωτήριο
-    var z1 = this.add.zone(1480, 342, 100, 100).setName('zone1').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5)
-    z1.on('pointerdown', function () { checkMatchSculpture(z1); })
-
-    // μετόπη
-    var z2 = this.add.zone(576, 486, 542, 44).setName('zone2').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5)
-    z2.on('pointerdown', function () { checkMatchSculpture(z2); })
-
-    // αέτωμα
-    var z3 = this.add.zone(583, 408, 260, 75).setName('zone3').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5)
-    z3.on('pointerdown', function () { checkMatchSculpture(z3); })
-
-    // ζωοφόρος
-    var z4 = this.add.zone(1472, 458, 518, 44).setName('zone4').setInteractive({ cursor: 'pointer' }).setOrigin(0.5, 0.5)
-    z4.on('pointerdown', function () { checkMatchSculpture(z4); })
-
-    // #endregion
-
-    groupEffortIcons = _this.add.group({
-      key: currentScene + 'try',
-      maxSize: 10,
-      setXY:
-        {
-          x: 855,
-          y: 998,
-          stepX: 62
-        },
-      repeat: 10
-    });
-
-    groupCorrectIcons = _this.add.group({
-      key: currentScene + 'try_checked',
-      maxSize: 10,
-      setXY:
-        {
-          x: 855,
-          y: 998,
-          stepX: 62
-        },
-      repeat: 10
-    });
-
-    hideGroupCorrectIcons();
 
     createSceneFooter();
 
@@ -428,146 +290,239 @@ class SculptureScene extends Phaser.Scene {
 
 }
 
-function btnListener (gameObject) {  DebugLog('btnListener for '+gameObject.data.get('index'));
+function SculptureDataRead() {   
+    //CREATE ZONES
+    for (let i = 0; i < temple_parts.length; i++) {
+        //alert(temple_parts[i]);
+        var id = temple_parts[i][0];
+        var memberid = temple_parts[i][1];
+        var name = temple_parts[i][2]
+        var x = temple_parts[i][3];
+        var y = temple_parts[i][4];
+        var w = temple_parts[i][5];
+        var h = temple_parts[i][6];
+        var z = _this.add.zone(x, y, w, h).setInteractive({ cursor: 'pointer' }).setOrigin(0, 0);
+        z.setDataEnabled();
+        z.data.set('zone', temple_parts[i][0]);
+        z.data.set('member', 'member' + temple_parts[i][1]);       
+        z.on('pointerdown', function () {           
+            checkMatchSculpture(this);
+        })
+                
+        var preview = [temple_parts[i][0], temple_parts[i][3], parseInt(temple_parts[i][4]), 0];        
+        previews.push(preview);
+    }
+    
+    //to READ  RANDOM SCULPTURES
+    shuffleArray(sculptures);   
+    //Load images of the randomly selected sculptures
+    LoadSelectedSculptureImages();
+
+}
+
+function LoadSelectedSculptureImages() {
+    _this.load.once('complete', SetSculptureImagesIntereaction, this);
+
+    //give image a name according to the database value and not the i
+    for (let i = 0; i < noScultpures; i++) {       
+        _this.load.image(currentScene + '_img_' + sculptures[i][0], getSceneImagesFolder() + sculptures[i][2]);
+        //alert(currentScene + '_img_' + sculptures[i][0]);
+    }
+    _this.load.start();
+}
+
+function SetSculptureImagesIntereaction() {
+    var guideX = posX1;
+    //calculate scale!!!
+    var totalWidth = 0;
+    var fotos = [];
+    for (let i = 0; i < noScultpures; i++) {        
+        var foto = _this.add.image(posX1, posY1, currentScene + '_img_' + sculptures[i][0]).setInteractive({ cursor: 'pointer' }).setOrigin(0, 0.5).setName(sculptures[i][0]);
+
+        //calulate total images width
+        totalWidth += foto.width; 
+
+        foto.setDataEnabled();
+        foto.data.set('found', 'no');
+        foto.data.set('zone', sculptures[i][1]);
+        foto.data.set('member', 'member' + sculptures[i][3]);
+        foto.data.set('index', i)
+        foto.data.set('info', sculptures[i][4])
+        foto.on('pointerdown', function () {
+             btnListener(this);           
+        })
+        fotos.push(foto);
+    }
+    //calculate the scale for all images to fit
+    let scale = (game.config.width - posX1) / totalWidth;
+      
+    //scale and reposition images
+    for (var i = 0; i < fotos.length; i++) {
+        fotos[i].setScale(scale);
+        fotos[i].x = guideX;
+        fotos[i].y=posY1;
+       // fotos[i].y = (250 - fotos[i].displayHeight)/2;
+        guideX += fotos[i].displayWidth;
+    }
+
+    //create preview images 
+    foto_thumbs = [];
+    for (let i = 0; i < noScultpures; i++) {
+        var foto_thumb = _this.add.image(0, 0, currentScene + '_img_' + sculptures[i][0]).setOrigin(0, 0.5);
+        foto_thumb.setScale(0.4);
+        foto_thumb.setCrop(0, 0, foto_thumb.height, foto_thumb.height);
+        foto_thumb.visible = false;
+        foto_thumbs.push(foto_thumb);
+    }
+}
+
+//Shuffle array
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
+function btnListener(gameObject) {
+ 
   if (!isGamePaused && !isGameOver) {
-    currObjectSculpture = gameObject;
-    var indx = currObjectSculpture.data.get('index');
-    if (foundPoints[indx] === 0) {
-      selectedSculpture.setPosition(gameObject.x, gameObject.y)
-      selectedSculpture.visible = true;
-      w1.visible = false;
-      isChecking = true;
-    }else {
-      currObjectSculpture = null;
+    currObjectSculpture = gameObject;   
+      if (currObjectSculpture.data.get('found') === 'no') {
+          selectedSculpture.setDisplaySize(gameObject.displayWidth, gameObject.displayHeight);
+          selectedSculpture.setPosition(gameObject.x, gameObject.y);
+          selectedSculpture.visible = true;
+          w1.visible = false;
+          isChecking = true;
+    } else {
+        currObjectSculpture = null;
     }
   }
 }
 
 function checkMatchSculpture (gameObject) {
   if (isChecking) {
-    DebugLog('checking zone ' + gameObject.name)
-
     isChecking = false;
-
     selectedSculpture.visible = false;
+    if (currObjectSculpture.data.get('member') === gameObject.data.get('member')) {      
+        currObjectSculpture.setAlpha(0.5);
+        currObjectSculpture.data.set('found', 'yes');                
+        var curZone = gameObject.data.get('zone'); 
+        for (var i=0; i < temple_parts.length; i++) {
+            if (previews[i][0] === curZone) {               
+                curPreview = previews[i];
+            }
+        }        
+       
+        var curIndex = currObjectSculpture.data.get('index');
+        var curThumb = foto_thumbs[curIndex];       
+        curThumb.x = parseInt(curPreview[3]) * curThumb.displayHeight + parseInt(curPreview[1]);
+        curThumb.y = parseInt(curPreview[2]) ;
+        if (curZone == 3 || curZone==4) { curThumb.y +=75;}
+               
+        curThumb.visible = true;
+        curPreview[3]++; //add to move next preview       
 
-    if (currObjectSculpture.data.get('zone') === gameObject.name) {
-
-      DebugLog(gameObject.name + ' is correct zone!');
-
-      currObjectSculpture.setAlpha(0.5);
-
-      foundPoints[currObjectSculpture.data.get('index')] = 1;
-
-      //show in correct position
-      // posFotosFound[currObjectSculpture.data.get('index')].x
-      foundPreviews[currObjectSculpture.data.get('index')].visible = true;
-
-      totalPiecesToFound --;
-
-      var count = 0;
-
-      for (var x = 0; x < foundPoints.length; x++) {
-        // if not founded add it to list
-        if (foundPoints[x] === 1) {
-          // count founded points
-          count++
-        }
-      }
-
-     // DebugLog('count = ' + count);
-
-      showCorrectEffort(count - 1);
-
-      //if (count === foundPoints.length) {  canContinue = 1; }
-
-      if(totalPiecesToFound === 0){ canContinue = 1; }
-
-      // show popup info text
-      showPopUpMessage(currObjectSculpture.data.get('info'));
-
+        totalPiecesToFound--;
+        foundSculptures++;     
+        
+     
+        showCorrectEffort(foundSculptures-1);     
+        if (totalPiecesToFound === 0) { canContinue = 1; }
+      
+        showPopUpMessage(currObjectSculpture.data.get('info'));
 
     } else {
-      w1.setPosition(currObjectSculpture.x, currObjectSculpture.y)
-      w1.visible = true
-
-      DebugLog(gameObject.name + ' is fault zone!');
-
-      if (usePenaltyTime) {
-        timePenalty += timeToRemove;
-        timerEventGame.delay -= timeToRemove * 1000;
-      }
+        w1.setPosition(currObjectSculpture.x+currObjectSculpture.displayWidth/2, currObjectSculpture.y)
+        w1.visible = true; 
+        if (usePenaltyTime) {
+            timePenalty += timeToRemove;
+            timerEventGame.delay -= timeToRemove * 1000;
+        }
     }
-
     currObjectSculpture = null;
   }
 }
 
-function startNewSculptureGame () {
-  DebugLog('starting ' + currentScene + ' game...')
-
+function startNewSculptureGame () { 
   _this.time.delayedCall(500, newSculptureGame, [], _this)
 }
 
+function newSculptureGame() {
 
-function newSculptureGame () {
-  isGamePaused = false;
-  isGameOver = false;
+    /******** READ DATA FROM DATABASE *******/
+    SculptureGetSculptures();  
+    //when read, go to load the images
+    /****************************************/ 
+    isGamePaused = false;
+    isGameOver = false;
 
-  isChecking = false;
-  canContinue = 0;
+    isChecking = false;
+    canContinue = 0;
 
-  timeToRemove = 5;
+    timeToRemove = 5;
 
-  timePenalty = 0;
-  timerEventGame = _this.time.addEvent({ delay: totalTimeSelected, timeScale: 1.0 });
-  timerEventGame.paused = false;
-  timeOfGame = totalTimeSelected;
+    timePenalty = 0;
+    timerEventGame = _this.time.addEvent({ delay: totalTimeSelected, timeScale: 1.0 });
+    timerEventGame.paused = false;
+    timeOfGame = totalTimeSelected;
 
-  textTime.visible = true;
+    textTime.visible = true;
 
-  if (selectedLevel === 1) {usePenaltyTime = true; timeToRemove = 5; totalPiecesToFound = 3;  }
-  else if (selectedLevel === 2) {usePenaltyTime = true; timeToRemove = 10; totalPiecesToFound = 4;  }
-  else if (selectedLevel === 3) {usePenaltyTime = true; timeToRemove = 15; totalPiecesToFound = 6;  }
+    if (selectedLevel === 1) { usePenaltyTime = true; timeToRemove = 5; totalPiecesToFound = 3;  }
+    else if (selectedLevel === 2) { usePenaltyTime = true; timeToRemove = 10; totalPiecesToFound = 4; }
+    else if (selectedLevel === 3) { usePenaltyTime = true; timeToRemove = 15; totalPiecesToFound = 5; }
 
-  foundPoints = [0, 0, 0, 0, 0, 0];
+    maxEfforts = totalPiecesToFound;
 
-  for(var i=0; i<allFotoContainers.length; i++){
-    //if (i < totalPiecesToFound) {
-      allFotoContainers[i].visible = true;
-    //} else {
-      //allFotoContainers[i].visible = false;
-    //}
-  }
+    //#region Indicators
+    //try indicators
+    groupEffortIcons = _this.add.group({
+        key: currentScene + 'try',
+        maxSize: 10,
+        setXY:
+        {
+            x: 855,
+            y: 998,
+            stepX: 62
+        },
+        repeat: 10
+    });
 
-  foundPreviews = [foundPreviewPhoto1, foundPreviewPhoto2, foundPreviewPhoto3, foundPreviewPhoto4, foundPreviewPhoto5, foundPreviewPhoto6];
+    groupCorrectIcons = _this.add.group({
+        key: currentScene + 'try_checked',
+        maxSize: 10,
+        setXY:
+        {
+            x: 855,
+            y: 998,
+            stepX: 62
+        },
+        repeat: 10
+    });
 
-  for (var i = 0; i < 6; i++) {
-    var nameIndex = i+1;
-    foundPreviews[i] = _this.add.image(foundPhotoPositions[i].x, foundPhotoPositions[i].y, currentScene + 'img_0' + nameIndex.toString()).setScale(0.2);
-    foundPreviews[i].visible = false;
-  }
+    hideGroupCorrectIcons();
+    showEfforts();
 
-  //load database info
+    //#endregion    
 
+    currObjectSculpture = null;
 
-  maxEfforts = totalPiecesToFound; 
-  showEfforts();
-
-  currObjectSculpture = null;
-
-  isChecking = false;
-
-  showHelp();
+    isChecking = false;
+    showHelp();
 }
 
 function loseSculptureGame () {
-  hideGroupCorrectIcons();
+    hideGroupCorrectIcons();
 }
 
 function winSculptureGame () {
   // winGame()
-  DebugLog('You win ' + currentScene + ' game!');
+  //DebugLog('You win ' + currentScene + ' game!');
+   // audio
+   
 
   canContinue = 2;
 
@@ -583,13 +538,9 @@ function winSculptureGame () {
 
   textTime.setText(myScore);
   timeBar.setScale(1, 1);
-  timeBar.setTint('0xffffff');
-
-  showPopUpMessage('\Sculpture feedback text');
+  timeBar.setTint('0xffffff');  
 
 }
-
-var canContinue = 0;
 
 function ContinueSculpture(){
 
@@ -607,6 +558,8 @@ function ContinueSculpture(){
   isGamePaused = true;
   var myScore = selectedLevel * timeOfGame;
   showPopUpMessage('\nΜπράβο!!!\n\nΚέρδισες ' + myScore + ' βαθμούς.\n\nΠαίξε πάλι για να αποκτήσεις περισσότερους.');
-
+    //play sound
+    audioFanfare.play();
+    audioCheer.play(); 
   //_this.time.delayedCall(3500, restartScene, [], _this);
 }

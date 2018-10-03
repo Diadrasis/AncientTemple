@@ -11,8 +11,10 @@ class LoginScene extends Phaser.Scene
      _this = this;    
     // set scene name
     currentScene = 'login';
-    console.info(currentScene+' init')
-    //isLoginFinishLoading = false; 
+    console.info(currentScene + ' init');
+      //isLoginFinishLoading = false; 
+
+      /*
       
       if (this.sys.game.device.browser.chrome) {
           //alert('chrome ' + this.sys.game.device.browser.chrome.chromeVersion + ' is runninng!');
@@ -29,6 +31,7 @@ class LoginScene extends Phaser.Scene
       } else if (this.sys.game.device.browser.trident) {//running a Trident version of Internet Explorer(IE11 +)
 
       }
+      */
 
   }
 
@@ -45,13 +48,13 @@ class LoginScene extends Phaser.Scene
     this.load.image('logo_gr', imagesFolder + currentScene + '/logo_gr.png');
     this.load.image('logo_en', imagesFolder + currentScene + '/logo_en.png');
 
-    //load image button for newPlayer - oldPlayer
-    //_this.load.image(currentScene + 'draftButton', imagesFolder + 'login/' + 'emptyButton' + '.png');
-    _this.load.image(currentScene + 'draftButton', getSceneImagesFolder() + 'button' + '.png');
-    //_this.load.image(currentScene + 'loading', getSceneImagesFolder() + 'loading' + '.png');
-    //_this.load.image(currentScene + 'loading', getSceneImagesFolder() + 'loading_icon' + '.gif');
+    //load image button for newPlayer - oldPlayer  
+    _this.load.image(currentScene + 'draftButton', getSceneImagesFolder() + 'button' + '.png');   
 
-    _this.load.spritesheet('mitsos', getSceneImagesFolder() + 'loading_animation.png', { frameWidth: 128, frameHeight: 128});
+      //load sprite sheets for animation
+    _this.load.spritesheet('spshLoader', 'assets/animation/' + 'loader.png', { frameWidth: 380, frameHeight: 380 });  
+    _this.load.spritesheet('spshNaopios', 'assets/animation/' + 'naopoios_intro.png', { frameWidth: 289, frameHeight: 371});
+
     
   } 
 
@@ -60,17 +63,31 @@ class LoginScene extends Phaser.Scene
   { 
       showBackground();
 
-      
-
+      //the animation is called by 
       _this.anims.create({
-          key: 'kitsos',
-          frames: _this.anims.generateFrameNumbers('mitsos', { start: 0, end: 6 }),
-          frameRate: 5,
+          key: 'animLoader',
+          frames: _this.anims.generateFrameNumbers('spshLoader', { start: 0, end: 11 }),
+          frameRate: 6,
           repeat: -1,
+          showOnStart: true
+      });
+      load_anim = _this.add.sprite(960, 600, 'spshLoader');
+      load_anim.visible = false;
+      load_anim.setDisplaySize(120, 120);
+          
+     
+      _this.anims.create({
+          delay: 600,
+          key: 'wave',
+          frames: _this.anims.generateFrameNumbers('spshNaopios', { start: 0, end: 15 }),
+          frameRate: 12,
+          repeat: -1,
+          repeatDelay: 3000,
           showOnStart: false
       });
-      load_anim = _this.add.sprite(960, 600, 'mitsos');
-      
+      animWave = _this.add.sprite(1400, 840, 'spshNaopios');
+      //animBlink.setDisplaySize(168, 168);
+      animWave.anims.play('wave');
 
       //show logo
       logo_login = _this.add.image(1825, 150, 'logo_' + languange);
@@ -98,6 +115,7 @@ class LoginScene extends Phaser.Scene
 
       var inputPsw = document.createElement("input");
       inputPsw.type = 'text';
+     
       inputPsw.id = 'txtPsw';
       inputPsw.name = 'txtPsw';           
       body.appendChild(inputPsw);
@@ -156,7 +174,10 @@ class LoginScene extends Phaser.Scene
 var logo_login;
 var btn_lang_login;
 var loginTxtMessage;
+
+
 var load_anim;
+var animWave;
 
 function ChangeLoginLang() {
     languange = languange === 'gr' ? 'en' : 'gr';

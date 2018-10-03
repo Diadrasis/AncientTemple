@@ -47,6 +47,8 @@ var timerEventGame;
 
 var btnDorikos, btnIonikos, btnKotinthiakos;
 
+var bases;
+
 
 class FormScene extends Phaser.Scene {
 
@@ -136,12 +138,13 @@ class FormScene extends Phaser.Scene {
 
   preload () {
 
-    
     DebugLog('loading ' + currentScene);
 
     loadBackground();
 
     loadMenuBar();
+
+    this.load.image(currentScene + 'bases' + languange, getSceneImagesFolder() + 'columns_order_'+languange+'.png');
 
 
     // load pieces images
@@ -286,8 +289,12 @@ class FormScene extends Phaser.Scene {
 
     showMenuBar();
 
+    bases = this.add.image(888, 999, currentScene + 'bases' + languange);
+    bases.depth = 9;
+    bases.visible = false;
+
     // synora physics
-    this.matter.world.setBounds()
+    this.matter.world.setBounds();
 
     //#region Pieces
 
@@ -989,8 +996,6 @@ class FormScene extends Phaser.Scene {
 
     //#endregion
 
-    
-
     nextPiece.visible = false;
     currentPiece.visible = false;
 
@@ -1072,6 +1077,7 @@ function newFormGame()
   arrowDown.visible = true;
   nextPiece.visible = true;
   currentPiece.visible = true;
+  bases.visible = true;
 
   if(selectedLevel == 1){
     speed = fallSpeed.easy;
